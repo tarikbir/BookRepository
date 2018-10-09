@@ -94,9 +94,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\iconApp.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="images\resources\bookrepoicon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
