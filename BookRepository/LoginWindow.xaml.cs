@@ -14,9 +14,6 @@ using System.Windows.Shapes;
 
 namespace BookRepository
 {
-    /// <summary>
-    /// LoginWindow.xaml etkileşim mantığı
-    /// </summary>
     public partial class LoginWindow : Window
     {
         public LoginWindow()
