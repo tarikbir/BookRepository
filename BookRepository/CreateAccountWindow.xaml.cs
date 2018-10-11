@@ -10,20 +10,18 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace BookRepository
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// CreateAccountWindow.xaml etkileşim mantığı
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class CreateAccountWindow : Window
     {
-        public MainWindow()
+        public CreateAccountWindow()
         {
             InitializeComponent();
-            MessageBox.Show("mal mısın aq", "ERROR", MessageBoxButton.YesNo, MessageBoxImage.Error);
         }
     }
 }
