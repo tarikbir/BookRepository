@@ -20,7 +20,9 @@ namespace BookRepository
         public MainWindow()
         {
             InitializeComponent();
-            //LoginWindow pick10 = new LoginWindow();
+            //Yeni pencere açma örneği:
+            LoginWindow pick10 = new LoginWindow();
+            pick10.Show();
         }
     }
 }
