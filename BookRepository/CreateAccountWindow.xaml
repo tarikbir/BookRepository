@@ -5,8 +5,29 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BookRepository"
         mc:Ignorable="d"
-        Title="CreateAccountWindow" Height="450" Width="800">
-    <Grid>
-        
+        Title="CreateAccountWindow" Height="644.88" Width="1052.579">
+    <Grid x:Name="CreateWind" RenderTransformOrigin="0.5,0.5">
+        <Grid.RenderTransform>
+            <TransformGroup>
+                <ScaleTransform/>
+                <SkewTransform/>
+                <RotateTransform Angle="-0.12"/>
+                <TranslateTransform/>
+            </TransformGroup>
+        </Grid.RenderTransform>
+        <Label x:Name="lblUser" Content="Username" Margin="75,70,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Label x:Name="lblAge" Content="Age" Height="27" Margin="75,100,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Button x:Name="btnRegister" Content="Register" HorizontalAlignment="Left" Height="24" Margin="143,269,0,0" VerticalAlignment="Top" Width="124" RenderTransformOrigin="0.5,0.5" BorderThickness="1"/>
+        <TextBox x:Name="txtUser" HorizontalAlignment="Left" Height="26" Margin="143,70,0,0" VerticalAlignment="Top" Width="124" IsInactiveSelectionHighlightEnabled="True" MaxLines="1" MaxLength="24" VerticalContentAlignment="Center"/>
+        <TextBox x:Name="txtUser_Copy" HorizontalAlignment="Left" Height="26" Margin="143,100,0,0" VerticalAlignment="Top" Width="124" IsInactiveSelectionHighlightEnabled="True" MaxLines="1" MaxLength="24" VerticalContentAlignment="Center"/>
+        <TextBox x:Name="txtUser_Copy1" HorizontalAlignment="Left" Height="26" Margin="143,130,0,0" VerticalAlignment="Top" Width="124" IsInactiveSelectionHighlightEnabled="True" MaxLines="1" MaxLength="24" VerticalContentAlignment="Center"/>
+        <TextBox x:Name="txtUser_Copy3" HorizontalAlignment="Left" Height="26" Margin="143,160,0,0" VerticalAlignment="Top" Width="124" IsInactiveSelectionHighlightEnabled="True" MaxLines="1" MaxLength="24" VerticalContentAlignment="Center"/>
+        <TextBox x:Name="txtUser_Copy4" HorizontalAlignment="Left" Height="26" Margin="143,190,0,0" VerticalAlignment="Top" Width="124" IsInactiveSelectionHighlightEnabled="True" MaxLines="1" MaxLength="24" VerticalContentAlignment="Center"/>
+        <Label x:Name="lblCountry" Content="Country" Margin="75,130,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Label x:Name="lblCounty" Content="County/State" Margin="68,160,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Label x:Name="lblPassword_Copy" Content="Password" Margin="75,224,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Label x:Name="lblCity" Content="City" Margin="75,194,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <PasswordBox x:Name="txtPass" HorizontalAlignment="Left" Height="26" Margin="143,224,0,0" VerticalAlignment="Top" Width="124" RenderTransformOrigin="-0.032,1.365" VerticalContentAlignment="Center"/>
+
     </Grid>
 </Window>
