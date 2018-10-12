@@ -29,7 +29,7 @@ namespace BookRepository
         private void btnRegister_Click(object sender, RoutedEventArgs e)
         {
             CreateAccountWindow createAccountWindow = new CreateAccountWindow();
-            createAccountWindow.Show();
+            createAccountWindow.ShowDialog();
         }
 
         private void btnRecover_Click(object sender, RoutedEventArgs e)

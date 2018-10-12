@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:BookRepository"
         mc:Ignorable="d"
         Title="Book Repository" Height="768" Width="1390" Background="#FFBBBBBB" ResizeMode="CanMinimize" Icon="pack://siteoforigin:,,,/images/resources/bookrepoicon.png" WindowStartupLocation="CenterScreen">
-    <Grid>
+    <Grid ScrollViewer.CanContentScroll="True">
         <WrapPanel x:Name="wrapNews" HorizontalAlignment="Left" Height="160" Margin="40,60,0,0" VerticalAlignment="Top" Width="1310" Grid.RowSpan="10"/>
         <WrapPanel x:Name="wrapMostLiked" HorizontalAlignment="Left" Height="160" Margin="40,280,0,0" VerticalAlignment="Top" Width="1310" Grid.RowSpan="10"/>
         <WrapPanel x:Name="wrapRecommended" HorizontalAlignment="Left" Height="160" Margin="40,500,0,0" VerticalAlignment="Top" Width="1310" Grid.RowSpan="10"/>

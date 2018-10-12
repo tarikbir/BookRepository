@@ -18,8 +18,6 @@ namespace BookRepository
         public string ImageURI_L { get; set; } //362x475
 
         public Book()
-        {
-
-        }
+        { }
     }
 }

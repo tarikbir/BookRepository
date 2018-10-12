@@ -22,6 +22,9 @@ namespace BookRepository
             //this.Show();
             LoginWindow loginWindow = new LoginWindow();
             loginWindow.ShowDialog();
+
+            BookImage bImage = new BookImage(SqlHandler.GetBook("0140201092"));
+            wrapNews.Children.Add(bImage);
         }
     }
 }
