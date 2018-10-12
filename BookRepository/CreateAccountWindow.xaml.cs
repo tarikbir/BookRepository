@@ -20,5 +20,10 @@ namespace BookRepository
         {
             InitializeComponent();
         }
+
+        private void btnRegister_Click(object sender, RoutedEventArgs e)
+        {
+            //check and save sql
+        }
     }
 }

@@ -14,11 +14,32 @@ using System.Windows.Shapes;
 
 namespace BookRepository
 {
-    public partial class LoginWindow : Window
+    public partial class LoginWindow : Window, IDisposable
     {
         public LoginWindow()
         {
             InitializeComponent();
+        }
+
+        private void btnLogin_Click(object sender, RoutedEventArgs e)
+        {
+            //sql check
+        }
+
+        private void btnRegister_Click(object sender, RoutedEventArgs e)
+        {
+            CreateAccountWindow createAccountWindow = new CreateAccountWindow();
+            createAccountWindow.Show();
+        }
+
+        private void btnRecover_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Yok ki.", "Yoo", MessageBoxButton.OK, MessageBoxImage.Warning);
+        }
+
+        public void Dispose()
+        {
+            ((MainWindow)Owner).Close();
         }
     }
 }

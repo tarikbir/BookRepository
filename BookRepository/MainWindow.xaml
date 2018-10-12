@@ -5,5 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BookRepository"
         mc:Ignorable="d"
-        Title="Book Repository" Height="768" Width="1366" Background="#FFBBBBBB" MinWidth="1366" MinHeight="766" MaxWidth="1366" MaxHeight="768" ResizeMode="CanMinimize" Icon="pack://siteoforigin:,,,/images/resources/bookrepoicon.png" WindowStartupLocation="CenterScreen">
+        Title="Book Repository" Height="768" Width="1390" Background="#FFBBBBBB" ResizeMode="CanMinimize" Icon="pack://siteoforigin:,,,/images/resources/bookrepoicon.png" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <WrapPanel x:Name="wrapNews" HorizontalAlignment="Left" Height="160" Margin="40,60,0,0" VerticalAlignment="Top" Width="1310" Grid.RowSpan="10"/>
+        <WrapPanel x:Name="wrapMostLiked" HorizontalAlignment="Left" Height="160" Margin="40,280,0,0" VerticalAlignment="Top" Width="1310" Grid.RowSpan="10"/>
+        <WrapPanel x:Name="wrapRecommended" HorizontalAlignment="Left" Height="160" Margin="40,500,0,0" VerticalAlignment="Top" Width="1310" Grid.RowSpan="10"/>
+        <ScrollBar HorizontalAlignment="Right" VerticalAlignment="Top" Height="739"/>
+    </Grid>
 </Window>

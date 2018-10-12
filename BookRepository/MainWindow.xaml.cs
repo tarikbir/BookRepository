@@ -10,8 +10,6 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace BookRepository
 {
@@ -21,8 +19,9 @@ namespace BookRepository
         {
             InitializeComponent();
             //Yeni pencere açma örneği:
-            LoginWindow pick10 = new LoginWindow();
-            pick10.Show();
+            //this.Show();
+            LoginWindow loginWindow = new LoginWindow();
+            loginWindow.ShowDialog();
         }
     }
 }
