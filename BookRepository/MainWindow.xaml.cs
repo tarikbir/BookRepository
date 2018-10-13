@@ -20,11 +20,12 @@ namespace BookRepository
             InitializeComponent();
             //Yeni pencere açma örneği:
             //this.Show();
-            LoginWindow loginWindow = new LoginWindow();
-            loginWindow.ShowDialog();
+            //LoginWindow loginWindow = new LoginWindow();
+            //loginWindow.ShowDialog();
 
-            BookImage bImage = new BookImage(SqlHandler.GetBook("0140201092"));
-            wrapNews.Children.Add(bImage);
+            var returned = SqlHandler.GetBook("fsfsgs");
+            if (!returned.Success) MessageBox.Show(returned.ErrorText, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            else MessageBox.Show("Got book: " + returned.Book.BookTitle);
         }
     }
 }

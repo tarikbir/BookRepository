@@ -56,8 +56,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="BookImage.cs" />
-    <Compile Include="SqlHandler.cs" />
+    <Compile Include="Handlers\WebHandler.cs" />
+    <Compile Include="Objects\BookImage.cs" />
+    <Compile Include="Handlers\SqlHandler.cs" />
+    <Compile Include="Response\GetBookResponse.cs" />
     <Page Include="CreateAccountWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -74,7 +76,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Book.cs" />
+    <Compile Include="Objects\Book.cs" />
     <Compile Include="CreateAccountWindow.xaml.cs">
       <DependentUpon>CreateAccountWindow.xaml</DependentUpon>
     </Compile>
@@ -119,6 +121,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\bookrepoicon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Request\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
