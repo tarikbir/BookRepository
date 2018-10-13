@@ -52,6 +52,11 @@
             </Rectangle.Fill>
         </Rectangle>
         <WrapPanel x:Name="wrapRecommended" HorizontalAlignment="Left" Height="160" Margin="40,500,0,0" VerticalAlignment="Top" Width="1310" Grid.RowSpan="10"/>
+        <Label x:Name="lblUserName" Content="Welcome Guest," HorizontalAlignment="Right" VerticalAlignment="Top" FontFamily="Nueva Std" FontSize="36">
+            <Label.Effect>
+                <DropShadowEffect Opacity="0.6" ShadowDepth="0"/>
+            </Label.Effect>
+        </Label>
 
     </Grid>
 </Window>

@@ -15,6 +15,8 @@ namespace BookRepository
 {
     public partial class MainWindow : Window
     {
+        public string UserName;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -36,8 +38,6 @@ namespace BookRepository
 
             wrapMostLiked.Children.Add(new BookImage(SqlHandler.GetBook("0001053736").Book));
             wrapMostLiked.Children.Add(new BookImage(SqlHandler.GetBook("0001056107").Book));
-
-
         }
     }
 }
