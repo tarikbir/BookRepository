@@ -10,13 +10,13 @@ namespace BookRepository
 {
     class BookImage : Image
     {
-        Book book;
+        Book Book;
         
         public BookImage(Book book)
         {
-            this.book = book;
-            var image = new BitmapImage();
-
+            this.Book = book;
+            var image = new BitmapImage(new Uri(book.ImageURI_M,UriKind.Absolute));
+            this.Source = image;
         }
     }
 }
