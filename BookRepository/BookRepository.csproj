@@ -57,7 +57,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Handlers\WebHandler.cs" />
-    <Compile Include="Objects\BookImage.cs" />
+    <Compile Include="Objects\BookObject.cs" />
     <Compile Include="Handlers\SqlHandler.cs" />
     <Compile Include="Response\GetBookResponse.cs" />
     <Page Include="CreateAccountWindow.xaml">
