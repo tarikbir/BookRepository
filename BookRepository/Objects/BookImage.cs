@@ -12,11 +12,11 @@ namespace BookRepository
     {
         Book Book;
         
-        public BookImage(Book book)
+        /*public BookImage(Book book)
         {
             this.Book = book;
             var image = new BitmapImage(new Uri(book.ImageURI_M,UriKind.Absolute));
             this.Source = image;
-        }
+        }*/
     }
 }

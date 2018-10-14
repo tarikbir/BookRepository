@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -23,7 +24,34 @@ namespace BookRepository
 
         private void btnRegister_Click(object sender, RoutedEventArgs e)
         {
-            //check and save sql
+            var register = SqlHandler.Register(txtUser.Text,Int32.Parse(txtAge.Text),txtCountry.Text,txtState.Text,txtCity.Text,txtPass.Password);
+            if (register.Success)
+            {
+                MessageBox.Show("User added successfully","Success",MessageBoxButton.OK,MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show("Oops! A problem has occured!\n\n"+register.ErrorText,"Error",MessageBoxButton.OK,MessageBoxImage.Error);
+            }
+        }
+        private void txtAge_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = new Regex("[^0-9]+").IsMatch(e.Text);
+        }
+
+        private void txtCountry_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = new Regex("[^A-z]+").IsMatch(e.Text);
+        }
+
+        private void txtState_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = new Regex("[^A-z]+").IsMatch(e.Text);
+        }
+
+        private void txtCity_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = new Regex("[^A-z]+").IsMatch(e.Text);
         }
     }
 }
