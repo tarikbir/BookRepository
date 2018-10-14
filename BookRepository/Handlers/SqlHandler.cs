@@ -15,7 +15,7 @@ namespace BookRepository
 
         public static Response.GetBookResponse GetBook(string ISBN)
         {
-            Response.GetBookResponse BookResponse = new Response.GetBookResponse();
+            Response.GetBookResponse bookResponse = new Response.GetBookResponse();
             string query = "SELECT * FROM `bx-books` WHERE ISBN = @ISBN";
 
             using (MySqlConnection conn = new MySqlConnection(connectionString))
@@ -45,20 +45,107 @@ namespace BookRepository
                         throw new Exception("Could not find a book with ISBN no: '" + ISBN + "'.");
                     }
 
-                    BookResponse.Book = Book;
-                    BookResponse.Success = true;
+                    bookResponse.Book = Book;
+                    bookResponse.Success = true;
                 }
                 catch (MySqlException e)
                 {
-                    BookResponse.ErrorText = e.Message;
+                    bookResponse.ErrorText = e.Message;
                 }
                 catch (Exception e)
                 {
-                    BookResponse.ErrorText = e.Message;
+                    bookResponse.ErrorText = e.Message;
                 }
             }
 
-            return BookResponse;
+            return bookResponse;
+        }
+
+        public static Response.RegisterResponse Register(string username,int age, string country, string county, string city,string password)
+        {
+            string Concat = string.Join(",", country, county, city);
+            string queryUser = "INSERT INTO `bx-users`(`Age`, `Location`) VALUES (@Age,@Concat)";
+            string queryRegister = "INSERT INTO `bx-registry` VALUES (@Username,@UserID,@Password)";
+            Response.RegisterResponse register = new Response.RegisterResponse();
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                MySqlCommand mySqlCommandUser = new MySqlCommand(queryUser, conn);
+                MySqlCommand mySqlCommandRegister = new MySqlCommand(queryRegister, conn);
+                mySqlCommandUser.Parameters.AddWithValue("@Age", age);
+                mySqlCommandUser.Parameters.AddWithValue("@Concat", Concat);
+                try
+                {
+                    conn.Open();
+                    int rowsAffected = mySqlCommandUser.ExecuteNonQuery();
+                    if(rowsAffected!=1)
+                    {
+                        throw new Exception("Error inserting into users table.");
+                    }
+                    Response.LastIDResponse lastID = GetLastID();
+                    if(!lastID.Success)
+                    {
+                        throw new Exception(lastID.ErrorText);
+                    }
+                    mySqlCommandRegister.Parameters.AddWithValue("@Username",username);
+                    mySqlCommandRegister.Parameters.AddWithValue("@UserID",lastID.LastID);
+                    mySqlCommandRegister.Parameters.AddWithValue("@Password",password);
+                    rowsAffected = mySqlCommandRegister.ExecuteNonQuery();
+                    if (rowsAffected != 1)
+                    {
+                        throw new Exception("Error inserting into registry table.");
+                    }
+                    register.Success = true;
+    
+
+                }
+                catch (MySqlException e)
+                {
+                    register.ErrorText = e.Message;
+                }
+                catch (Exception e)
+                {
+                    register.ErrorText = e.Message;
+                }
+                return register;
+            }
+        }
+        public static Response.LastIDResponse GetLastID()
+        {
+            string query = "SELECT MAX(`User-ID`) FROM `bx-users`";
+            string lastID;
+            Response.LastIDResponse lastIDresponse = new Response.LastIDResponse();
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                MySqlCommand mySqlCommand = new MySqlCommand(query, conn);
+                try
+                {
+                    conn.Open();
+                    MySqlDataReader reader = mySqlCommand.ExecuteReader();
+
+                    if (reader.Read())
+                    {
+                        lastID = reader.GetString(0);
+                    }
+                    else
+                    {
+                        throw new Exception("Unknown error has occured.");
+                    }
+                    lastIDresponse.LastID = lastID;
+                    lastIDresponse.Success = true;
+                }
+                catch (MySqlException e)
+                {
+                    lastIDresponse.ErrorText = e.Message;
+                }
+                catch (Exception e)
+                {
+                    lastIDresponse.ErrorText = e.Message;
+                }
+            }
+            return lastIDresponse;
         }
     }
 }
+
+

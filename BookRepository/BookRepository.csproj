@@ -60,6 +60,8 @@
     <Compile Include="Objects\BookObject.cs" />
     <Compile Include="Handlers\SqlHandler.cs" />
     <Compile Include="Response\GetBookResponse.cs" />
+    <Compile Include="Response\LastIDResponse.cs" />
+    <Compile Include="Response\RegisterResponse.cs" />
     <Page Include="CreateAccountWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
