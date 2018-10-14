@@ -5,14 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BookRepository"
         mc:Ignorable="d"
-        Title="Login" Height="208" Width="500" ResizeMode="CanMinimize" ShowInTaskbar="False" WindowStartupLocation="CenterOwner">
+        Title="Login" Height="186" Width="380" ResizeMode="CanMinimize" ShowInTaskbar="False" WindowStartupLocation="CenterOwner">
     <Grid>
-        <Label x:Name="lblUser" Content="Username" HorizontalAlignment="Left" Margin="133,36,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="lblPass" Content="Password" HorizontalAlignment="Left" Height="27" Margin="137,67,0,0" VerticalAlignment="Top"/>
-        <PasswordBox x:Name="txtPass" HorizontalAlignment="Left" Height="26" Margin="202,68,0,0" VerticalAlignment="Top" Width="124" RenderTransformOrigin="-0.032,1.365" VerticalContentAlignment="Center"/>
-        <Button x:Name="btnLogin" Content="Log in" HorizontalAlignment="Left" Height="24" Margin="94,121,0,0" VerticalAlignment="Top" Width="100" IsDefault="True" Click="btnLogin_Click"/>
-        <Button x:Name="btnRegister" Content="Register" HorizontalAlignment="Left" Height="24" Margin="202,121,0,0" VerticalAlignment="Top" Width="100" RenderTransformOrigin="0.5,0.5" BorderThickness="1" Click="btnRegister_Click"/>
-        <Button x:Name="btnRecover" Content="Recover Pass" HorizontalAlignment="Left" Height="24" Margin="310,121,0,0" VerticalAlignment="Top" Width="100" Click="btnRecover_Click"/>
-        <TextBox x:Name="txtUser" HorizontalAlignment="Left" Height="26" Margin="202,36,0,0" VerticalAlignment="Top" Width="124" IsInactiveSelectionHighlightEnabled="True" MaxLines="1" MaxLength="24" VerticalContentAlignment="Center"/>
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="#FF003972" Offset="0"/>
+                <GradientStop Color="#FFB2D9FF" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+        <Label x:Name="lblUser" Content="Username" HorizontalAlignment="Left" Margin="90,30,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="lblPass" Content="Password" HorizontalAlignment="Left" Margin="90,60,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="txtUser" HorizontalAlignment="Left" Height="26" Margin="160,30,0,0" VerticalAlignment="Top" Width="124" MaxLines="1" MaxLength="24" VerticalContentAlignment="Center"/>
+        <PasswordBox x:Name="txtPass" HorizontalAlignment="Left" Height="26" Margin="160,60,0,0" VerticalAlignment="Top" Width="124" VerticalContentAlignment="Center"/>
+        <Button x:Name="btnLogin" Content="Log in" HorizontalAlignment="Left" Height="26" Margin="30,100,0,0" VerticalAlignment="Top" Width="100" IsDefault="True" Click="btnLogin_Click"/>
+        <Button x:Name="btnRegister" Content="Register" HorizontalAlignment="Left" Height="26" Margin="140,100,0,0" VerticalAlignment="Top" Width="100" Click="btnRegister_Click"/>
+        <Button x:Name="btnRecover" Content="Recover Pass" HorizontalAlignment="Left" Height="26" Margin="250,100,0,0" VerticalAlignment="Top" Width="100" Click="btnRecover_Click"/>
+        
     </Grid>
 </Window>

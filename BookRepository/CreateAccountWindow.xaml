@@ -5,20 +5,26 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BookRepository"
         mc:Ignorable="d"
-        Title="Register" Height="375" Width="375" ResizeMode="CanMinimize" ShowInTaskbar="False" WindowStartupLocation="CenterOwner">
-    <Grid x:Name="CreateWind" RenderTransformOrigin="0.5,0.5">
-        <Label x:Name="lblUser" Content="Username" Margin="59,70,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <Label x:Name="lblAge" Content="Age" Height="27" Margin="59,100,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <Button x:Name="btnRegister" Content="Register" HorizontalAlignment="Left" Height="24" Margin="143,269,0,0" VerticalAlignment="Top" Width="124" RenderTransformOrigin="0.5,0.5" BorderThickness="1" Click="btnRegister_Click"/>
-        <TextBox x:Name="txtUser" HorizontalAlignment="Left" Height="26" Margin="143,70,0,0" VerticalAlignment="Top" Width="124" IsInactiveSelectionHighlightEnabled="True" MaxLines="1" MaxLength="24" VerticalContentAlignment="Center"/>
-        <TextBox x:Name="txtAge" HorizontalAlignment="Left" Height="26" Margin="143,100,0,0" VerticalAlignment="Top" Width="35" IsInactiveSelectionHighlightEnabled="True" MaxLines="1" MaxLength="3" VerticalContentAlignment="Center" PreviewTextInput="txtAge_PreviewTextInput"/>
-        <TextBox x:Name="txtCountry" HorizontalAlignment="Left" Height="26" Margin="143,130,0,0" VerticalAlignment="Top" Width="124" IsInactiveSelectionHighlightEnabled="True" MaxLines="1" MaxLength="24" VerticalContentAlignment="Center" PreviewTextInput="txtCountry_PreviewTextInput"/>
-        <TextBox x:Name="txtState" HorizontalAlignment="Left" Height="26" Margin="143,160,0,0" VerticalAlignment="Top" Width="124" IsInactiveSelectionHighlightEnabled="True" MaxLines="1" MaxLength="24" VerticalContentAlignment="Center" PreviewTextInput="txtState_PreviewTextInput"/>
-        <TextBox x:Name="txtCity" HorizontalAlignment="Left" Height="26" Margin="143,190,0,0" VerticalAlignment="Top" Width="124" IsInactiveSelectionHighlightEnabled="True" MaxLines="1" MaxLength="24" VerticalContentAlignment="Center" PreviewTextInput="txtCity_PreviewTextInput"/>
-        <Label x:Name="lblCountry" Content="Country" Margin="59,130,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <Label x:Name="lblCounty" Content="County/State" Margin="59,160,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <Label x:Name="lblPassword" Content="Password" Margin="59,224,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <Label x:Name="lblCity" Content="City" Margin="59,194,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <PasswordBox x:Name="txtPass" HorizontalAlignment="Left" Height="26" Margin="143,224,0,0" VerticalAlignment="Top" Width="124" RenderTransformOrigin="-0.032,1.365" VerticalContentAlignment="Center"/>
+        Title="Register New User" Height="324" Width="300" ResizeMode="CanMinimize" ShowInTaskbar="False" WindowStartupLocation="CenterOwner">
+    <Grid x:Name="Grid">
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="#FF003972" Offset="0"/>
+                <GradientStop Color="#FFB2D9FF" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+        <Label x:Name="lblUser" Content="Username" Margin="30,30,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Label x:Name="lblAge" Content="Age" Margin="30,60,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Label x:Name="lblCountry" Content="Country" Margin="30,90,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Label x:Name="lblState" Content="County/State" Margin="30,120,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Label x:Name="lblCity" Content="City" Margin="30,150,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Label x:Name="lblPassword" Content="Password" Margin="30,180,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <TextBox x:Name="txtUser" HorizontalAlignment="Left" Height="26" Margin="120,30,0,0" VerticalAlignment="Top" Width="124" IsInactiveSelectionHighlightEnabled="True" MaxLines="1" MaxLength="24" VerticalContentAlignment="Center" TabIndex="1"/>
+        <TextBox x:Name="txtAge" HorizontalAlignment="Left" Height="26" Margin="120,60,0,0" VerticalAlignment="Top" Width="36" IsInactiveSelectionHighlightEnabled="True" MaxLines="1" MaxLength="3" VerticalContentAlignment="Center" PreviewTextInput="txtAge_PreviewTextInput" TabIndex="2"/>
+        <TextBox x:Name="txtCountry" HorizontalAlignment="Left" Height="26" Margin="120,90,0,0" VerticalAlignment="Top" Width="124" IsInactiveSelectionHighlightEnabled="True" MaxLines="1" MaxLength="24" VerticalContentAlignment="Center" PreviewTextInput="txtCountry_PreviewTextInput" TabIndex="3"/>
+        <TextBox x:Name="txtState" HorizontalAlignment="Left" Height="26" Margin="120,120,0,0" VerticalAlignment="Top" Width="124" IsInactiveSelectionHighlightEnabled="True" MaxLines="1" MaxLength="24" VerticalContentAlignment="Center" PreviewTextInput="txtState_PreviewTextInput" TabIndex="4"/>
+        <TextBox x:Name="txtCity" HorizontalAlignment="Left" Height="26" Margin="120,150,0,0" VerticalAlignment="Top" Width="124" IsInactiveSelectionHighlightEnabled="True" MaxLines="1" MaxLength="24" VerticalContentAlignment="Center" PreviewTextInput="txtCity_PreviewTextInput" TabIndex="5"/>
+        <PasswordBox x:Name="txtPass" HorizontalAlignment="Left" Height="26" Margin="120,180,0,0" VerticalAlignment="Top" Width="124" VerticalContentAlignment="Center" TabIndex="6"/>
+        <Button x:Name="btnRegister" Content="Register" HorizontalAlignment="Left" Height="26" Margin="120,240,0,0" VerticalAlignment="Top" Width="124" Click="btnRegister_Click" TabIndex="7"/>
     </Grid>
 </Window>

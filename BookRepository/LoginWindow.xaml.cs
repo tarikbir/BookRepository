@@ -14,7 +14,7 @@ using System.Windows.Shapes;
 
 namespace BookRepository
 {
-    public partial class LoginWindow : Window, IDisposable
+    public partial class LoginWindow : Window
     {
         public LoginWindow()
         {
@@ -34,12 +34,7 @@ namespace BookRepository
 
         private void btnRecover_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Yok ki.", "Yoo", MessageBoxButton.OK, MessageBoxImage.Warning);
-        }
-
-        public void Dispose()
-        {
-            ((MainWindow)Owner).Close();
+            DialogResult = true;
         }
     }
 }

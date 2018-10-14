@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -17,69 +18,78 @@ namespace BookRepository
     public partial class MainWindow : Window
     {
         public string UserName;
+        private BackgroundWorker bgwNews;
+        private BackgroundWorker bgwMostLiked;
+        private BackgroundWorker bgwRecommended;
 
         public MainWindow()
         {
             InitializeComponent();
-
-            //Yeni pencere açma örneği:
-            //LoginWindow loginWindow = new LoginWindow();
-            //loginWindow.ShowDialog();
-
-            //var returned = SqlHandler.GetBook("0001010565");
-            //if (!returned.Success) MessageBox.Show(returned.ErrorText, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            //else MessageBox.Show("Got book: " + returned.Book.BookTitle);
-
-            //wrapNews.Children.Add(new BookImage(returned.Book));
-            LoadNews();
-            LoadMostLiked();
-            LoadRecommended();
-
+            bgwNews = new BackgroundWorker();
+            bgwMostLiked = new BackgroundWorker();
+            bgwRecommended = new BackgroundWorker();
+            InitializeBackgroundWorkers();
+            LoginWindow loginWindow = new LoginWindow();
+            if (loginWindow.ShowDialog() == true)
+            {
+                bgwNews.RunWorkerAsync();
+                bgwMostLiked.RunWorkerAsync();
+                bgwRecommended.RunWorkerAsync();
+            }
+            else
+            {
+                this.Close();
+            }
         }
 
-        private void LoadRecommended()
+        private void InitializeBackgroundWorkers()
         {
-            // User-Based Collaborative Filtering Algorithm
-            //await Task.Run<int> (() => wrapRecommended.Children.Add(new BookObject(SqlHandler.GetBook("000104799X").Book)));
+            bgwNews.DoWork += new DoWorkEventHandler(bgwNews_DoWork);
+            bgwMostLiked.DoWork += new DoWorkEventHandler(bgwMostLiked_DoWork);
+            bgwRecommended.DoWork += new DoWorkEventHandler(bgwRecommended_DoWork);
+        }
+
+        private void bgwNews_DoWork(object sender, DoWorkEventArgs e)
+        {
+            //SQL Latest Book Additions Return
             List<string> list = new List<string>() { "000104799X", "0001046713", "0001046934", "0001047663", "000104799X", "0001061127", "0001053736" };
             this.Dispatcher.Invoke(() =>
             {
                 foreach (string item in list)
                 {
-                    wrapRecommended.Children.Add(new BookObject(SqlHandler.GetBook(item).Book));
+                    Book book = SqlHandler.GetBook(item).Book;
+                    if (book != null)
+                        wrapNews.Children.Add(new BookObject(book));
                 }
             });
         }
 
-        private void LoadMostLiked()
+        private void bgwMostLiked_DoWork(object sender, DoWorkEventArgs e)
         {
             //SQL Highest Book Rating Return
             List<string> list = new List<string>() { "000104799X", "0001046713", "0001046934", "0001047663", "000104799X", "0001061127", "0001053736" };
-            this.Dispatcher.Invoke(()=>
+            this.Dispatcher.Invoke(() =>
             {
-                foreach(string item in list)
+                foreach (string item in list)
                 {
-                    wrapMostLiked.Children.Add(new BookObject(SqlHandler.GetBook(item).Book));
+                    Book book = SqlHandler.GetBook(item).Book;
+                    if (book != null)
+                        wrapMostLiked.Children.Add(new BookObject(book));
                 }
             });
-            /*
-            foreach (string item in list)
-            {
-                await Task.Run<int>(() => wrapRecommended.Children.Add(new BookObject(SqlHandler.GetBook(item).Book)));
-            }*/
-            
         }
 
-        private void LoadNews()
+        private void bgwRecommended_DoWork(object sender, DoWorkEventArgs e)
         {
-            //SQL Latest Book Additions Return
-            //await Task.Run<int>(() => wrapRecommended.Children.Add(new BookObject(SqlHandler.GetBook("000104799X").Book)));
+            // User-Based Collaborative Filtering Algorithm
             List<string> list = new List<string>() { "000104799X", "0001046713", "0001046934", "0001047663", "000104799X", "0001061127", "0001053736" };
             this.Dispatcher.Invoke(() =>
             {
                 foreach (string item in list)
                 {
-                    wrapNews.Children.Add(new BookObject(SqlHandler.GetBook(item).Book));
+                    Book book = SqlHandler.GetBook(item).Book;
+                    if (book != null)
+                        wrapRecommended.Children.Add(new BookObject(book));
                 }
             });
         }
