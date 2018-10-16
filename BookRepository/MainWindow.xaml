@@ -28,7 +28,7 @@
             </Rectangle.Fill>
         </Rectangle>
         <WrapPanel x:Name="wrapNews" HorizontalAlignment="Left" Height="160" Margin="40,60,0,0" VerticalAlignment="Top" Width="1310" Grid.RowSpan="10"/>
-        <Label x:Name="lblMostLiked" Content="Most Liked Books" HorizontalAlignment="Left" Margin="40,236,0,0" VerticalAlignment="Top" FontFamily="MS Gothic" FontSize="32">
+        <Label x:Name="lblMostLiked" Content="Popular Books" HorizontalAlignment="Left" Margin="40,236,0,0" VerticalAlignment="Top" FontFamily="MS Gothic" FontSize="32">
             <Label.Effect>
                 <DropShadowEffect Opacity="0.6" ShadowDepth="0"/>
             </Label.Effect>
