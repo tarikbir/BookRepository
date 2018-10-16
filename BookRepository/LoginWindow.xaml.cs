@@ -35,6 +35,7 @@ namespace BookRepository
         private void btnRecover_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = true;
+            //DialogResult should be true
         }
     }
 }

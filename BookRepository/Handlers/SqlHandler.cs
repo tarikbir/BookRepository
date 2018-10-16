@@ -13,6 +13,24 @@ namespace BookRepository
     {
         private static string connectionString = "server=localhost;user=root;port=3306;database=bookrepository;password=;charset=utf8;SslMode=none";
 
+        public static bool IsConnected()
+        {
+            bool check;
+            try
+            {
+                using (MySqlConnection conn = new MySqlConnection(connectionString))
+                {
+                    conn.Open();
+                    check = true;
+                }
+            }
+            catch
+            {
+                check = false;
+            }
+            return check;
+        }
+
         public static Response.GetBookResponse GetBook(string ISBN)
         {
             Response.GetBookResponse bookResponse = new Response.GetBookResponse();
@@ -61,7 +79,7 @@ namespace BookRepository
             return bookResponse;
         }
 
-        public static Response.RegisterResponse Register(string username,int age, string country, string county, string city,string password)
+        public static Response.RegisterResponse Register(string username, int age, string country, string county, string city, string password)
         {
             string Concat = string.Join(",", country, county, city);
             string queryUser = "INSERT INTO `bx-users`(`Age`, `Location`) VALUES (@Age,@Concat)";
@@ -77,25 +95,25 @@ namespace BookRepository
                 {
                     conn.Open();
                     int rowsAffected = mySqlCommandUser.ExecuteNonQuery();
-                    if(rowsAffected!=1)
+                    if (rowsAffected != 1)
                     {
                         throw new Exception("Error inserting into users table.");
                     }
                     Response.LastIDResponse lastID = GetLastID();
-                    if(!lastID.Success)
+                    if (!lastID.Success)
                     {
                         throw new Exception(lastID.ErrorText);
                     }
-                    mySqlCommandRegister.Parameters.AddWithValue("@Username",username);
-                    mySqlCommandRegister.Parameters.AddWithValue("@UserID",lastID.LastID);
-                    mySqlCommandRegister.Parameters.AddWithValue("@Password",password);
+                    mySqlCommandRegister.Parameters.AddWithValue("@Username", username);
+                    mySqlCommandRegister.Parameters.AddWithValue("@UserID", lastID.LastID);
+                    mySqlCommandRegister.Parameters.AddWithValue("@Password", password);
                     rowsAffected = mySqlCommandRegister.ExecuteNonQuery();
                     if (rowsAffected != 1)
                     {
                         throw new Exception("Error inserting into registry table.");
                     }
                     register.Success = true;
-    
+
 
                 }
                 catch (MySqlException e)

@@ -28,6 +28,15 @@ namespace BookRepository
             bgwNews = new BackgroundWorker();
             bgwMostLiked = new BackgroundWorker();
             bgwRecommended = new BackgroundWorker();
+            while (!SqlHandler.IsConnected())
+            {
+                if (MessageBox.Show("Error connecting to the server. Would you like to retry?", "Connection Error", 
+                    MessageBoxButton.YesNo, MessageBoxImage.Error) == MessageBoxResult.No)
+                {
+                    this.Close();
+                    break;
+                }
+            }
             InitializeBackgroundWorkers();
             LoginWindow loginWindow = new LoginWindow();
             if (loginWindow.ShowDialog() == true)
