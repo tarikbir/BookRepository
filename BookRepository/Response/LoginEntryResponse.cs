@@ -9,6 +9,7 @@ namespace BookRepository.Response
     public class LoginEntryResponse
     {
         public string Username { get; set; }
+        public string UserID { get; set; }
         public bool Success = false;
         public string ErrorText = String.Empty;
     }

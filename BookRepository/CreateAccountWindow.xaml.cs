@@ -28,6 +28,7 @@ namespace BookRepository
             if (register.Success)
             {
                 MessageBox.Show("User has been added successfully","Success",MessageBoxButton.OK,MessageBoxImage.Information);
+                this.Close();
             }
             else
             {

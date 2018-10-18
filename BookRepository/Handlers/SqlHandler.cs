@@ -15,8 +15,7 @@ namespace BookRepository
 
         public static Response.LoginEntryResponse UserEntry(string username, string password)
         {
-            string queryLogin = "SELECT * FROM `bx-registry` WHERE username = @username AND password = @password ";
-            int count;
+            string queryLogin = "SELECT * FROM `bx-registry` WHERE username = @username AND password = @password";
             Response.LoginEntryResponse loginEntry = new Response.LoginEntryResponse();
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
@@ -26,20 +25,18 @@ namespace BookRepository
                 try
                 {
                     conn.Open();
-                    count = mySqlCommandLogin.ExecuteNonQuery();
-                    count = Convert.ToInt32(mySqlCommandLogin.ExecuteScalar());
-                    //MySqlDataReader mySqlDataReader = mySqlCommandLogin.ExecuteReader();
-                    if(count == 1)
+                    MySqlDataReader reader = mySqlCommandLogin.ExecuteReader();
+
+                    if (reader.Read())
                     {
-                        MainWindow Screen = new MainWindow();
-                        Screen.ShowDialog();
-                        Screen.Close();
+                        loginEntry.Username = reader.GetFieldValue<string>(0);
+                        loginEntry.UserID = reader.GetFieldValue<UInt32>(1).ToString();
+                    }
+                    else
+                    {
+                        throw new Exception("No matching username and password combination.");
                     }
                     loginEntry.Success = true;
-                }
-                catch (MySqlException e)
-                {
-                    loginEntry.ErrorText = e.Message;
                 }
                 catch(Exception e)
                 {
@@ -102,10 +99,6 @@ namespace BookRepository
                     bookResponse.Book = Book;
                     bookResponse.Success = true;
                 }
-                catch (MySqlException e)
-                {
-                    bookResponse.ErrorText = e.Message;
-                }
                 catch (Exception e)
                 {
                     bookResponse.ErrorText = e.Message;
@@ -152,10 +145,6 @@ namespace BookRepository
 
 
                 }
-                catch (MySqlException e)
-                {
-                    register.ErrorText = e.Message;
-                }
                 catch (Exception e)
                 {
                     register.ErrorText = e.Message;
@@ -187,10 +176,6 @@ namespace BookRepository
                     }
                     lastIDresponse.LastID = lastID;
                     lastIDresponse.Success = true;
-                }
-                catch (MySqlException e)
-                {
-                    lastIDresponse.ErrorText = e.Message;
                 }
                 catch (Exception e)
                 {

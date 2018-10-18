@@ -16,6 +16,8 @@ namespace BookRepository
 {
     public partial class LoginWindow : Window
     {
+        public Response.LoginEntryResponse login;
+
         public LoginWindow()
         {
             InitializeComponent();
@@ -23,14 +25,15 @@ namespace BookRepository
 
         private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
-            var login = SqlHandler.UserEntry(txtUser.Text, txtPass.Password);
+            login = SqlHandler.UserEntry(txtUser.Text, txtPass.Password);
             if(login.Success)
             {
-                MessageBox.Show("You have successfully logged in", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("You have successfully logged in.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                this.Close();
             }
             else
             {
-                MessageBox.Show("Username or password is incorrect", "Error", MessageBoxButton.OKCancel, MessageBoxImage.Error);
+                MessageBox.Show("An error occured.\n\n" + login.ErrorText, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -42,8 +45,7 @@ namespace BookRepository
 
         private void btnRecover_Click(object sender, RoutedEventArgs e)
         {
-            DialogResult = true;
-            //DialogResult should be true
+            this.Close();
         }
     }
 }

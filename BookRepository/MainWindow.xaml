@@ -28,7 +28,7 @@
             </Rectangle.Fill>
         </Rectangle>
         <WrapPanel x:Name="wrapNews" HorizontalAlignment="Left" Height="160" Margin="40,60,0,0" VerticalAlignment="Top" Width="1310" Grid.RowSpan="10"/>
-        <Label x:Name="lblMostLiked" Content="Popular Books" HorizontalAlignment="Left" Margin="40,236,0,0" VerticalAlignment="Top" FontFamily="MS Gothic" FontSize="32">
+        <Label x:Name="lblPopular" Content="Popular Books" HorizontalAlignment="Left" Margin="40,236,0,0" VerticalAlignment="Top" FontFamily="MS Gothic" FontSize="32">
             <Label.Effect>
                 <DropShadowEffect Opacity="0.6" ShadowDepth="0"/>
             </Label.Effect>
@@ -42,7 +42,7 @@
                 </LinearGradientBrush>
             </Rectangle.Fill>
         </Rectangle>
-        <WrapPanel x:Name="wrapMostLiked" HorizontalAlignment="Left" Height="160" Margin="40,280,0,0" VerticalAlignment="Top" Width="1310" Grid.RowSpan="10"/>
+        <WrapPanel x:Name="wrapPopular" HorizontalAlignment="Left" Height="160" Margin="40,280,0,0" VerticalAlignment="Top" Width="1310" Grid.RowSpan="10"/>
         <Label x:Name="lblRecommended" Content="Recommended Books" HorizontalAlignment="Left" Margin="40,456,0,0" VerticalAlignment="Top" FontFamily="MS Gothic" FontSize="32">
             <Label.Effect>
                 <DropShadowEffect Opacity="0.6" ShadowDepth="0"/>
@@ -58,7 +58,7 @@
             </Rectangle.Fill>
         </Rectangle>
         <WrapPanel x:Name="wrapRecommended" HorizontalAlignment="Left" Height="160" Margin="40,500,0,0" VerticalAlignment="Top" Width="1310" Grid.RowSpan="10"/>
-        <Label x:Name="lblUserName" Content="Welcome Guest," HorizontalAlignment="Right" VerticalAlignment="Top" FontFamily="MS Gothic" FontSize="32">
+        <Label x:Name="lblGreeting" Content="Welcome Guest," HorizontalAlignment="Right" VerticalAlignment="Top" FontFamily="MS Gothic" FontSize="32">
             <Label.Effect>
                 <DropShadowEffect Opacity="0.6" ShadowDepth="0"/>
             </Label.Effect>
