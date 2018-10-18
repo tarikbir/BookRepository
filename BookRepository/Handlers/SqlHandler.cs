@@ -48,20 +48,18 @@ namespace BookRepository
 
         public static bool IsConnected()
         {
-            bool check;
             try
             {
                 using (MySqlConnection conn = new MySqlConnection(connectionString))
                 {
                     conn.Open();
-                    check = true;
                 }
             }
             catch
             {
-                check = false;
+                return false;
             }
-            return check;
+            return true;
         }
 
         public static Response.GetBookResponse GetBook(string ISBN)

@@ -28,28 +28,18 @@ namespace BookRepository
             bgwNews = new BackgroundWorker();
             bgwPopular = new BackgroundWorker();
             bgwRecommended = new BackgroundWorker();
-            while (!SqlHandler.IsConnected())
-            {
-                if (MessageBox.Show("Error connecting to the server. Would you like to retry?", "Connection Error", 
-                    MessageBoxButton.YesNo, MessageBoxImage.Error) == MessageBoxResult.No)
-                {
-                    this.Close();
-                    break;
-                }
-            }
-            InitializeBackgroundWorkers();
             LoginWindow loginWindow = new LoginWindow();
+
+            if (!CheckConnection()) this.Close();
+
+            InitializeBackgroundWorkers();
             loginWindow.ShowDialog();
-            if (loginWindow.login.Success)
+            if (loginWindow.login?.Success == true)
             {
                 lblGreeting.Content = $"Welcome {loginWindow.login.Username},";
                 bgwNews.RunWorkerAsync();
                 bgwPopular.RunWorkerAsync();
                 bgwRecommended.RunWorkerAsync();
-            }
-            else
-            {
-                this.Close();
             }
         }
 
@@ -104,6 +94,19 @@ namespace BookRepository
                         wrapRecommended.Children.Add(new BookObject(book));
                 }
             });
+        }
+
+        private bool CheckConnection()
+        {
+            while (!SqlHandler.IsConnected())
+            {
+                if (MessageBox.Show("Error connecting to the server. Would you like to retry?", "Connection Error",
+                    MessageBoxButton.YesNo, MessageBoxImage.Error) == MessageBoxResult.No)
+                {
+                    return false;
+                }
+            }
+            return true;
         }
     }
 }
