@@ -23,7 +23,15 @@ namespace BookRepository
 
         private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
-            //sql check
+            var login = SqlHandler.UserEntry(txtUser.Text, txtPass.Password);
+            if(login.Success)
+            {
+                MessageBox.Show("You have successfully logged in", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show("Username or password is incorrect", "Error", MessageBoxButton.OKCancel, MessageBoxImage.Error);
+            }
         }
 
         private void btnRegister_Click(object sender, RoutedEventArgs e)

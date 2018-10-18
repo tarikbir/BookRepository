@@ -13,6 +13,42 @@ namespace BookRepository
     {
         private static string connectionString = "server=localhost;user=root;port=3306;database=bookrepository;password=;charset=utf8;SslMode=none";
 
+        public static Response.LoginEntryResponse UserEntry(string username, string password)
+        {
+            string queryLogin = "SELECT * FROM `bx-registry` WHERE username = @username AND password = @password ";
+            int count;
+            Response.LoginEntryResponse loginEntry = new Response.LoginEntryResponse();
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                MySqlCommand mySqlCommandLogin = new MySqlCommand(queryLogin, conn);
+                mySqlCommandLogin.Parameters.AddWithValue("@username", username);
+                mySqlCommandLogin.Parameters.AddWithValue("@password", password);
+                try
+                {
+                    conn.Open();
+                    count = mySqlCommandLogin.ExecuteNonQuery();
+                    count = Convert.ToInt32(mySqlCommandLogin.ExecuteScalar());
+                    //MySqlDataReader mySqlDataReader = mySqlCommandLogin.ExecuteReader();
+                    if(count == 1)
+                    {
+                        MainWindow Screen = new MainWindow();
+                        Screen.ShowDialog();
+                        Screen.Close();
+                    }
+                    loginEntry.Success = true;
+                }
+                catch (MySqlException e)
+                {
+                    loginEntry.ErrorText = e.Message;
+                }
+                catch(Exception e)
+                {
+                    loginEntry.ErrorText = e.Message;
+                }
+                return loginEntry;
+            }
+        }
+
         public static bool IsConnected()
         {
             bool check;
