@@ -15,11 +15,11 @@
         </Grid.Background>
         <Label x:Name="lblUser" Content="Username" HorizontalAlignment="Left" Margin="90,30,0,0" VerticalAlignment="Top"/>
         <Label x:Name="lblPass" Content="Password" HorizontalAlignment="Left" Margin="90,60,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="txtUser" HorizontalAlignment="Left" Height="26" Margin="160,30,0,0" VerticalAlignment="Top" Width="124" MaxLines="1" MaxLength="24" VerticalContentAlignment="Center"/>
-        <PasswordBox x:Name="txtPass" HorizontalAlignment="Left" Height="26" Margin="160,60,0,0" VerticalAlignment="Top" Width="124" VerticalContentAlignment="Center"/>
-        <Button x:Name="btnLogin" Content="Log in" HorizontalAlignment="Left" Height="26" Margin="30,100,0,0" VerticalAlignment="Top" Width="100" IsDefault="True" Click="btnLogin_Click"/>
-        <Button x:Name="btnRegister" Content="Register" HorizontalAlignment="Left" Height="26" Margin="140,100,0,0" VerticalAlignment="Top" Width="100" Click="btnRegister_Click"/>
-        <Button x:Name="btnRecover" Content="Recover Pass" HorizontalAlignment="Left" Height="26" Margin="250,100,0,0" VerticalAlignment="Top" Width="100" Click="btnRecover_Click"/>
+        <TextBox x:Name="txtUser" HorizontalAlignment="Left" Height="26" Margin="160,30,0,0" VerticalAlignment="Top" Width="124" MaxLines="1" MaxLength="24" VerticalContentAlignment="Center" TabIndex="1"/>
+        <PasswordBox x:Name="txtPass" HorizontalAlignment="Left" Height="26" Margin="160,60,0,0" VerticalAlignment="Top" Width="124" VerticalContentAlignment="Center" TabIndex="2"/>
+        <Button x:Name="btnLogin" Content="Log in" HorizontalAlignment="Left" Height="26" Margin="30,100,0,0" VerticalAlignment="Top" Width="100" IsDefault="True" Click="btnLogin_Click" TabIndex="3"/>
+        <Button x:Name="btnRegister" Content="Register" HorizontalAlignment="Left" Height="26" Margin="140,100,0,0" VerticalAlignment="Top" Width="100" Click="btnRegister_Click" TabIndex="4"/>
+        <Button x:Name="btnRecover" Content="Recover Pass" HorizontalAlignment="Left" Height="26" Margin="250,100,0,0" VerticalAlignment="Top" Width="100" Click="btnRecover_Click" TabIndex="5"/>
         
     </Grid>
 </Window>

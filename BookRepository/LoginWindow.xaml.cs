@@ -21,6 +21,7 @@ namespace BookRepository
         public LoginWindow()
         {
             InitializeComponent();
+            txtUser.Focus();
         }
 
         private void btnLogin_Click(object sender, RoutedEventArgs e)

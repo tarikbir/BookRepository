@@ -41,6 +41,7 @@ namespace BookRepository
                 bgwPopular.RunWorkerAsync();
                 bgwRecommended.RunWorkerAsync();
             }
+            else this.Close();
         }
 
         private void InitializeBackgroundWorkers()
