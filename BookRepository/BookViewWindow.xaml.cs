@@ -47,6 +47,7 @@ namespace BookRepository
                 txtAuthor.Text = book.BookAuthor;
                 txtPublishDate.Text = book.YearOfPublication + " - " + book.Publisher;
                 this.Title = "Viewing " + book.BookTitle;
+                this.imgBookImage.Source = new BitmapImage(new Uri(book.ImageURI_L, UriKind.Absolute));
             }
             else
             {

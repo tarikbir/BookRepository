@@ -13,11 +13,11 @@
                 <GradientStop Color="#FFB2D9FF" Offset="1"/>
             </LinearGradientBrush>
         </Grid.Background>
-        <Image HorizontalAlignment="Left" Height="250" Margin="25,25,0,0" VerticalAlignment="Top" Width="158"/>
+        <Image x:Name="imgBookImage" HorizontalAlignment="Left" Height="250" Margin="25,25,0,0" VerticalAlignment="Top" Width="158"/>
         <TextBlock x:Name="txtName" Text="Name" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="MS Gothic" FontSize="16" Margin="188,25,0,0" Height="32" Width="296" TextWrapping="Wrap"/>
         <TextBlock x:Name="txtAuthor" Text="Author" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="MS Gothic" FontSize="13" Margin="188,62,0,0" Height="26" FontStyle="Italic" Width="296" TextWrapping="Wrap"/>
         <TextBlock x:Name="txtPublishDate" Text="1881" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="MS Gothic" FontSize="10" Margin="188,93,0,0" Height="20" TextWrapping="Wrap"/>
-        <Button x:Name="btnReadBook" Content="Read Book" HorizontalAlignment="Left" Height="22" Margin="188,255,0,0" VerticalAlignment="Top" Width="100" TabIndex="1" Click="btnReadBook_Click"/>
-        <Button x:Name="btnClose" Content="Go Back" HorizontalAlignment="Left" Height="22" Margin="293,255,0,0" VerticalAlignment="Top" Width="100" TabIndex="2" Click="btnClose_Click"/>
+        <Button x:Name="btnReadBook" Content="Read Book" HorizontalAlignment="Right" Height="22" Margin="0,0,130,25" VerticalAlignment="Bottom" Width="100" TabIndex="1" Click="btnReadBook_Click"/>
+        <Button x:Name="btnClose" Content="Go Back" HorizontalAlignment="Right" Height="22" Margin="0,0,25,25" VerticalAlignment="Bottom" Width="100" TabIndex="2" Click="btnClose_Click"/>
     </Grid>
 </Window>
