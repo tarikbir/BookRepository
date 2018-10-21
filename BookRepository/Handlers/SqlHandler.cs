@@ -13,39 +13,7 @@ namespace BookRepository
     {
         private static string connectionString = "server=localhost;user=root;port=3306;database=bookrepository;password=;charset=utf8;SslMode=none";
 
-        public static Response.LoginEntryResponse UserEntry(string username, string password)
-        {
-            string queryLogin = "SELECT * FROM `bx-registry` WHERE username = @username AND password = @password";
-            Response.LoginEntryResponse loginEntry = new Response.LoginEntryResponse();
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
-            {
-                MySqlCommand mySqlCommandLogin = new MySqlCommand(queryLogin, conn);
-                mySqlCommandLogin.Parameters.AddWithValue("@username", username);
-                mySqlCommandLogin.Parameters.AddWithValue("@password", password);
-                try
-                {
-                    conn.Open();
-                    MySqlDataReader reader = mySqlCommandLogin.ExecuteReader();
-
-                    if (reader.Read())
-                    {
-                        loginEntry.Username = reader.GetFieldValue<string>(0);
-                        loginEntry.UserID = reader.GetFieldValue<UInt32>(1).ToString();
-                    }
-                    else
-                    {
-                        throw new Exception("No matching username and password combination.");
-                    }
-                    loginEntry.Success = true;
-                }
-                catch(Exception e)
-                {
-                    loginEntry.ErrorText = e.Message;
-                }
-                return loginEntry;
-            }
-        }
-
+        #region Functional Methods
         public static bool IsConnected()
         {
             try
@@ -62,6 +30,99 @@ namespace BookRepository
             return true;
         }
 
+        public static Book GetBookFromReader(MySqlDataReader reader)
+        {
+            Int32.TryParse(reader.GetFieldValue<string>(3), out int year);
+            Book Book = new Book() {
+                ISBN = reader.GetFieldValue<string>(0),
+                BookTitle = reader.GetFieldValue<string>(1),
+                BookAuthor = reader.GetFieldValue<string>(2),
+                Publisher = reader.GetFieldValue<string>(4),
+                ImageURI_S = reader.GetFieldValue<string>(5),
+                ImageURI_M = reader.GetFieldValue<string>(6),
+                ImageURI_L = reader.GetFieldValue<string>(7),
+                YearOfPublication = year
+            };
+            return Book;
+        }
+        #endregion
+
+        #region SQL Responses
+        public static Response.BookListResponse GetPopularList()
+        {
+            Response.BookListResponse bookListResponse = new Response.BookListResponse();
+            string query = "SELECT * FROM `bx-books` AS B INNER JOIN (SELECT `ISBN`, COUNT(`ISBN`) AS NumberRating FROM `bx-book-ratings` GROUP BY `ISBN`) AS F ON B.`ISBN` = F.`ISBN` ORDER BY F.NumberRating DESC LIMIT 10";
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                MySqlCommand mySqlCommand = new MySqlCommand(query, conn);
+
+                try
+                {
+                    conn.Open();
+                    
+                    MySqlDataReader reader = mySqlCommand.ExecuteReader();
+
+                    while(reader.Read())
+                    {
+                        try
+                        {
+                            bookListResponse.Books.Add(GetBookFromReader(reader));
+                        }
+                        catch
+                        {
+                            continue;
+                        }
+                    }
+                    bookListResponse.Success = true;
+                }
+                catch (Exception e)
+                {
+                    bookListResponse.ErrorText = e.Message;
+                }
+            }
+            return bookListResponse;
+        }
+
+        public static Response.LoginResponse UserEntry(string username, string password)
+        {
+            string queryLogin = "SELECT * FROM `bx-users` WHERE username = @username AND password = @password";
+            Response.LoginResponse loginEntry = new Response.LoginResponse();
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                MySqlCommand mySqlCommandLogin = new MySqlCommand(queryLogin, conn);
+                mySqlCommandLogin.Parameters.AddWithValue("@username", username);
+                mySqlCommandLogin.Parameters.AddWithValue("@password", password);
+                try
+                {
+                    conn.Open();
+                    MySqlDataReader reader = mySqlCommandLogin.ExecuteReader();
+
+                    if (reader.Read())
+                    {
+                        //Full texts UserID Username Password Location Age
+                        loginEntry.User = new User()
+                        {
+                            UserID = reader.GetFieldValue<UInt32>(0),
+                            Username = reader.GetFieldValue<string>(1),
+                            Location = reader.GetFieldValue<string>(3) ?? String.Empty,
+                            Age = reader.IsDBNull(4)? 0 : reader.GetUInt32(4)
+                        };
+                    }
+                    else
+                    {
+                        throw new Exception("No matching username and password combination.");
+                    }
+                    loginEntry.Success = true;
+                }
+                catch(Exception e)
+                {
+                    loginEntry.ErrorText = e.Message;
+                }
+                return loginEntry;
+            }
+        }
+
         public static Response.GetBookResponse GetBook(string ISBN)
         {
             Response.GetBookResponse bookResponse = new Response.GetBookResponse();
@@ -75,19 +136,11 @@ namespace BookRepository
                 {
                     conn.Open();
                     MySqlDataReader reader = mySqlCommand.ExecuteReader();
-                    Book Book = new Book();
+                    Book Book;
 
                     if (reader.Read())
                     {
-                        Book.ISBN = reader.GetFieldValue<string>(0);
-                        Book.BookTitle = reader.GetFieldValue<string>(1);
-                        Book.BookAuthor = reader.GetFieldValue<string>(2);
-                        Int32.TryParse(reader.GetFieldValue<string>(3), out int year);
-                        Book.Publisher = reader.GetFieldValue<string>(4);
-                        Book.ImageURI_S = reader.GetFieldValue<string>(5);
-                        Book.ImageURI_M = reader.GetFieldValue<string>(6);
-                        Book.ImageURI_L = reader.GetFieldValue<string>(7);
-                        Book.YearOfPublication = year;
+                        Book = GetBookFromReader(reader);
                     }
                     else
                     {
@@ -106,12 +159,12 @@ namespace BookRepository
             return bookResponse;
         }
 
-        public static Response.RegisterResponse Register(string username, int age, string country, string county, string city, string password)
+        public static Response.BaseResponse Register(string username, int age, string country, string county, string city, string password)
         {
             string Concat = string.Join(",", country, county, city);
             string queryUser = "INSERT INTO `bx-users`(`Age`, `Location`) VALUES (@Age,@Concat)";
             string queryRegister = "INSERT INTO `bx-registry` VALUES (@Username,@UserID,@Password)";
-            Response.RegisterResponse register = new Response.RegisterResponse();
+            Response.BaseResponse register = new Response.BaseResponse();
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
                 MySqlCommand mySqlCommandUser = new MySqlCommand(queryUser, conn);
@@ -150,6 +203,7 @@ namespace BookRepository
                 return register;
             }
         }
+
         public static Response.LastIDResponse GetLastID()
         {
             string query = "SELECT MAX(`User-ID`) FROM `bx-users`";
@@ -182,6 +236,7 @@ namespace BookRepository
             }
             return lastIDresponse;
         }
+        #endregion
     }
 }
 

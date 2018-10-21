@@ -16,8 +16,5 @@ namespace BookRepository
         public string ImageURI_S { get; set; } //57x75
         public string ImageURI_M { get; set; } //122x160
         public string ImageURI_L { get; set; } //362x475
-
-        public Book()
-        { }
     }
 }

@@ -56,13 +56,22 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BookViewWindow.xaml.cs">
+      <DependentUpon>BookViewWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Handlers\WebHandler.cs" />
     <Compile Include="Objects\BookObject.cs" />
     <Compile Include="Handlers\SqlHandler.cs" />
+    <Compile Include="Objects\User.cs" />
+    <Compile Include="Response\BookListResponse.cs" />
     <Compile Include="Response\GetBookResponse.cs" />
     <Compile Include="Response\LastIDResponse.cs" />
-    <Compile Include="Response\LoginEntryResponse.cs" />
-    <Compile Include="Response\RegisterResponse.cs" />
+    <Compile Include="Response\LoginResponse.cs" />
+    <Compile Include="Response\BaseResponse.cs" />
+    <Page Include="BookViewWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CreateAccountWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

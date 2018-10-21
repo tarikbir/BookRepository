@@ -20,8 +20,12 @@ namespace BookRepository
         {
             this.Book = book;
             this.Image = new Image();
-            this.Bitmap = new BitmapImage(new Uri(book.ImageURI_M, UriKind.Absolute));
-            Bitmap.DownloadCompleted += new EventHandler(AddTextOnButton);
+            this.Bitmap = new BitmapImage();
+            this.Bitmap.BeginInit();
+            this.Bitmap.UriSource = new Uri(book.ImageURI_M, UriKind.Absolute);
+            this.Bitmap.DownloadCompleted += new EventHandler(AddTextOnButton);
+            this.Bitmap.CacheOption = BitmapCacheOption.OnLoad;
+            this.Bitmap.EndInit();
             Image.Source = Bitmap;            
             this.Click += new System.Windows.RoutedEventHandler(OnBookClick);
 
@@ -43,7 +47,8 @@ namespace BookRepository
 
         public void OnBookClick(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Book '" + Book.BookTitle + "' clicked.");
+            BookViewWindow bookWindow = new BookViewWindow(Book);
+            bookWindow.ShowDialog();
         }
     }
 }
