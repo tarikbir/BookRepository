@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace BookRepository.Response
 {
-    public class RegisterResponse
+    public class LoginResponse : BaseResponse
     {
-        public bool Success = false;
-        public string ErrorText = String.Empty;
+        public User User { get; set; }
     }
 }

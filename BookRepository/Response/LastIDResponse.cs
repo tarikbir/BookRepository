@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace BookRepository.Response
 {
-    public class LastIDResponse
+    public class LastIDResponse : BaseResponse
     {
         public string LastID { get; set; }
-        public bool Success = false;
-        public string ErrorText = String.Empty;
     }
 }

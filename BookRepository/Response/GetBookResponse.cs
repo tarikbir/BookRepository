@@ -6,13 +6,8 @@ using System.Threading.Tasks;
 
 namespace BookRepository.Response
 {
-    public class GetBookResponse
+    public class GetBookResponse : BaseResponse
     {
         public Book Book;
-        public bool Success = false;
-        public string ErrorText = String.Empty;
-
-        public GetBookResponse()
-        { }
     }
 }
