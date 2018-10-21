@@ -69,8 +69,46 @@ namespace BookRepository
                         {
                             bookListResponse.Books.Add(GetBookFromReader(reader));
                         }
-                        catch
+                        catch (Exception e)
                         {
+                            bookListResponse.ErrorText += e.Message + "\n";
+                            continue;
+                        }
+                    }
+                    bookListResponse.Success = true;
+                }
+                catch (Exception e)
+                {
+                    bookListResponse.ErrorText = e.Message;
+                }
+            }
+            return bookListResponse;
+        }
+
+        public static Response.BookListResponse GetHighRatedList()
+        {
+            Response.BookListResponse bookListResponse = new Response.BookListResponse();
+            string query = "SELECT * FROM `bx-books` AS B INNER JOIN (SELECT DISTINCT `ISBN`, Weight FROM `bx-book-ratings` ORDER BY Weight DESC LIMIT 10) AS F ON B.`ISBN` = F.`ISBN`";
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                MySqlCommand mySqlCommand = new MySqlCommand(query, conn);
+
+                try
+                {
+                    conn.Open();
+
+                    MySqlDataReader reader = mySqlCommand.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        try
+                        {
+                            bookListResponse.Books.Add(GetBookFromReader(reader));
+                        }
+                        catch (Exception e)
+                        {
+                            bookListResponse.ErrorText += e.Message + "\n";
                             continue;
                         }
                     }

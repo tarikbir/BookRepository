@@ -72,7 +72,7 @@ namespace BookRepository
 
         private void bgwPopular_DoWork(object sender, DoWorkEventArgs e)
         {
-            //SQL Highest Book Rating Return
+            //SQL Books with most distinct ratings
             List<Book> list = SqlHandler.GetPopularList().Books;
             this.Dispatcher.Invoke(() =>
             {
@@ -91,17 +91,20 @@ namespace BookRepository
 
         private void bgwHighRated_DoWork(object sender, DoWorkEventArgs e)
         {
-            //SQL Highest Book Rating Return
-            //SELECT N.`ISBN`, (NumberRating/1147285)*AverageRatingForItem+(1-(NumberRating/1147285))*2.866898 AS Weight FROM `bx-book-ratings` AS B INNER JOIN (SELECT `ISBN`, COUNT(`ISBN`) AS NumberRating, AVG(`Book-Rating`) AS AverageRatingForItem FROM `bx-book-ratings` GROUP BY `ISBN`) AS N on N.`ISBN` = B.`ISBN` GROUP BY N.`ISBN` ORDER BY Weight DESC LIMIT 10
-            List<string> list = new List<string>() { "0316666343", "0385504209", "059035342X", "0312195516", "0679781587", "043935806X", "0142001740", "0446310786", "0446672211", "0786868716" };
+            //SQL Books with highest rating
+            List<Book> list = SqlHandler.GetHighRatedList().Books;
             this.Dispatcher.Invoke(() =>
             {
-                foreach (string item in list)
-                {
-                    Book book = SqlHandler.GetBook(item).Book;
-                    if (book != null)
-                        wrapHighRated.Children.Add(new BookObject(book));
-                }
+                if (!(list.Count > 0))
+                    {
+                        MessageBox.Show("Error getting high rated list.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
+                    }
+                    foreach (Book book in list)
+                    {
+                        if (book != null)
+                            wrapHighRated.Children.Add(new BookObject(book));
+                    }
             });
         }
 
