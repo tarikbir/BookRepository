@@ -24,7 +24,7 @@ namespace BookRepository
 
         private void btnRegister_Click(object sender, RoutedEventArgs e)
         {
-            var register = SqlHandler.Register(txtUser.Text,Int32.Parse(txtAge.Text),txtCountry.Text,txtState.Text,txtCity.Text,txtPass.Password);
+            var register = SqlHandler.Register(txtUser.Text,Int32.Parse(txtAge.Text),txtCountry.Text,txtState.Text,txtCity.Text,txtPass.Password,chkIsAdmin.IsChecked ?? false);
             if (register.Success)
             {
                 MessageBox.Show("User has been added successfully","Success",MessageBoxButton.OK,MessageBoxImage.Information);

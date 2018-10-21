@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using MySql.Data;
 using MySql.Data.MySqlClient;
@@ -12,7 +13,7 @@ namespace BookRepository
     public static class SqlHandler
     {
         private static string connectionString = "server=localhost;user=root;port=3306;database=bookrepository;password=;charset=utf8;SslMode=none";
-
+        private static object lockMech;
         #region Functional Methods
         public static bool IsConnected()
         {
@@ -197,18 +198,19 @@ namespace BookRepository
             return bookResponse;
         }
 
-        public static Response.BaseResponse Register(string username, int age, string country, string county, string city, string password)
+        public static Response.BaseResponse Register(string username, int age, string country, string county, string city, string password, bool isAdmin)
         {
             string Concat = string.Join(",", country, county, city);
-            string queryUser = "INSERT INTO `bx-users`(`Age`, `Location`) VALUES (@Age,@Concat)";
-            string queryRegister = "INSERT INTO `bx-registry` VALUES (@Username,@UserID,@Password)";
+            string queryUser = "INSERT INTO `bx-users`(`Username`, `Password`, `Location`, `Age`, `IsAdmin`) VALUES (@Username,@Password,@Concat,@Age,@IsAdmin)";
             Response.BaseResponse register = new Response.BaseResponse();
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
                 MySqlCommand mySqlCommandUser = new MySqlCommand(queryUser, conn);
-                MySqlCommand mySqlCommandRegister = new MySqlCommand(queryRegister, conn);
                 mySqlCommandUser.Parameters.AddWithValue("@Age", age);
                 mySqlCommandUser.Parameters.AddWithValue("@Concat", Concat);
+                mySqlCommandUser.Parameters.AddWithValue("@Username", username);
+                mySqlCommandUser.Parameters.AddWithValue("@Password", password);
+                mySqlCommandUser.Parameters.AddWithValue("@IsAdmin", isAdmin);
                 try
                 {
                     conn.Open();
@@ -217,22 +219,7 @@ namespace BookRepository
                     {
                         throw new Exception("Error inserting into users table.");
                     }
-                    Response.LastIDResponse lastID = GetLastID();
-                    if (!lastID.Success)
-                    {
-                        throw new Exception(lastID.ErrorText);
-                    }
-                    mySqlCommandRegister.Parameters.AddWithValue("@Username", username);
-                    mySqlCommandRegister.Parameters.AddWithValue("@UserID", lastID.LastID);
-                    mySqlCommandRegister.Parameters.AddWithValue("@Password", password);
-                    rowsAffected = mySqlCommandRegister.ExecuteNonQuery();
-                    if (rowsAffected != 1)
-                    {
-                        throw new Exception("Error inserting into registry table.");
-                    }
                     register.Success = true;
-
-
                 }
                 catch (Exception e)
                 {
@@ -240,39 +227,6 @@ namespace BookRepository
                 }
                 return register;
             }
-        }
-
-        public static Response.LastIDResponse GetLastID()
-        {
-            string query = "SELECT MAX(`User-ID`) FROM `bx-users`";
-            string lastID;
-            Response.LastIDResponse lastIDresponse = new Response.LastIDResponse();
-
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
-            {
-                MySqlCommand mySqlCommand = new MySqlCommand(query, conn);
-                try
-                {
-                    conn.Open();
-                    MySqlDataReader reader = mySqlCommand.ExecuteReader();
-
-                    if (reader.Read())
-                    {
-                        lastID = reader.GetString(0);
-                    }
-                    else
-                    {
-                        throw new Exception("Unknown error has occured.");
-                    }
-                    lastIDresponse.LastID = lastID;
-                    lastIDresponse.Success = true;
-                }
-                catch (Exception e)
-                {
-                    lastIDresponse.ErrorText = e.Message;
-                }
-            }
-            return lastIDresponse;
         }
         #endregion
     }
