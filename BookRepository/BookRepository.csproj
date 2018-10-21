@@ -56,13 +56,35 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AdminPanel\AdminPanel.xaml.cs">
+      <DependentUpon>AdminPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AdminPanel\BookListPanel.xaml.cs">
+      <DependentUpon>BookListPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AdminPanel\UserListPanel.xaml.cs">
+      <DependentUpon>UserListPanel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Handlers\WebHandler.cs" />
     <Compile Include="Objects\BookObject.cs" />
     <Compile Include="Handlers\SqlHandler.cs" />
+    <Compile Include="Response\BindListBox.cs" />
     <Compile Include="Response\GetBookResponse.cs" />
     <Compile Include="Response\LastIDResponse.cs" />
     <Compile Include="Response\LoginEntryResponse.cs" />
     <Compile Include="Response\RegisterResponse.cs" />
+    <Page Include="AdminPanel\AdminPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AdminPanel\BookListPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AdminPanel\UserListPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CreateAccountWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

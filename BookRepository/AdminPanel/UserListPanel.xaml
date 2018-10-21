@@ -1,0 +1,15 @@
+﻿<Window x:Class="BookRepository.AdminPanel.UserListPanel"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BookRepository.AdminPanel"
+        mc:Ignorable="d"
+        Title="UserListPanel" Height="450" Width="800">
+    <Grid>
+        <ListBox x:Name="ListBoxUser" HorizontalAlignment="Left" Height="420" VerticalAlignment="Top" Width="640"/>
+        <Button x:Name="btnUserList" Content="List Users" HorizontalAlignment="Left" Height="26" Margin="657,26,0,0" VerticalAlignment="Top" Width="100"  TabIndex="4"/>
+        <Button x:Name="btnRemoveUser" Content="Remove User" HorizontalAlignment="Left" Height="26" Margin="657,57,0,0" VerticalAlignment="Top" Width="100" TabIndex="4"/>
+
+    </Grid>
+</Window>

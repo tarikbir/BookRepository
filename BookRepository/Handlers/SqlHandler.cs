@@ -13,6 +13,33 @@ namespace BookRepository
     {
         private static string connectionString = "server=localhost;user=root;port=3306;database=bookrepository;password=;charset=utf8;SslMode=none";
 
+        public static void FillUserListBox()
+        {  
+            string queryUserList = "SELECT * FROM `bx-users`";
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                MySqlCommand UserList = new MySqlCommand(queryUserList, conn);
+                try
+                {
+                    conn.Open();
+                    MySqlDataReader reader = UserList.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        int userID = reader.GetInt32(1);
+                        string location = reader.GetString(2);
+                        int age = reader.GetInt32(3);
+                        
+
+                    }
+                }
+                catch(Exception e)
+                {
+                    
+                }
+            }
+                
+        }
+
         public static Response.LoginEntryResponse UserEntry(string username, string password)
         {
             string queryLogin = "SELECT * FROM `bx-registry` WHERE username = @username AND password = @password";
