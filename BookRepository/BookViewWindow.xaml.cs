@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Microsoft.Win32;
 
 namespace BookRepository
 {
@@ -31,7 +32,15 @@ namespace BookRepository
 
         private void btnReadBook_Click(object sender, RoutedEventArgs e)
         {
-            //Open pdf
+            try
+            {
+                string name_of_file = "poc.pdf";
+                System.Diagnostics.Process.Start(name_of_file);
+            }
+            catch(Exception error)
+            {
+                MessageBox.Show("Could not open a PDF File", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
