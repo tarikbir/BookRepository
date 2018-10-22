@@ -139,6 +139,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="Books\75 Greatest Motivational Stories Ever Told!.pdf" />
+    <None Include="Books\everyday-life-in-medieval-england.pdf" />
+    <None Include="Books\poc.pdf" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
