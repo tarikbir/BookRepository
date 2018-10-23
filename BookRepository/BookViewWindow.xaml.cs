@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,29 +18,48 @@ namespace BookRepository
 {
     public partial class BookViewWindow : Window
     {
-        public Book book;
+        private Book Book;
+        private User User;
 
-        public BookViewWindow()
+        public BookViewWindow(Book book, User user)
         {
             InitializeComponent();
+            Book = book;
+            User = user;
+
+            InitUser();
         }
 
-        public BookViewWindow(Book book)
+        private void InitUser()
         {
-            InitializeComponent();
-            this.book = book;
+            var voteResponse = SqlHandler.GetVote(User.UserID.ToString(), Book.ISBN);
+
+            if (voteResponse.Success)
+            {
+                string votedBox = "Vote"+voteResponse.Content.ToString();
+                foreach (var item in Grid.Children.OfType<RadioButton>())
+                {
+                    if (item.Name == votedBox)
+                    {
+                        item.IsChecked = true;
+                        break;
+                    }
+                }
+            }
         }
 
         private void btnReadBook_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                string name_of_file = "poc.pdf";
-                System.Diagnostics.Process.Start(name_of_file);
+                string executableLocation = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                int fileNo = HashBookName(Book.ISBN);
+                string fileName = System.IO.Path.Combine(executableLocation, "Books\\book" + fileNo + ".pdf");
+                System.Diagnostics.Process.Start(fileName);
             }
-            catch(Exception error)
+            catch(Exception ex)
             {
-                MessageBox.Show("Could not open a PDF File", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Could not open a PDF File\n\n" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -49,13 +70,13 @@ namespace BookRepository
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            if (book != null)
+            if (Book != null)
             {
-                txtName.Text = book.BookTitle + " (" + book.ISBN + ")";
-                txtAuthor.Text = book.BookAuthor;
-                txtPublishDate.Text = book.YearOfPublication + " - " + book.Publisher;
-                this.Title = "Viewing " + book.BookTitle;
-                this.imgBookImage.Source = new BitmapImage(new Uri(book.ImageURI_L, UriKind.Absolute));
+                txtName.Text = Book.BookTitle + " (" + Book.ISBN + ")";
+                txtAuthor.Text = Book.BookAuthor;
+                txtPublishDate.Text = Book.YearOfPublication + " - " + Book.Publisher;
+                this.Title = "Viewing " + Book.BookTitle;
+                this.imgBookImage.Source = new BitmapImage(new Uri(Book.ImageURI_L, UriKind.Absolute));
             }
             else
             {
@@ -65,6 +86,19 @@ namespace BookRepository
                 this.Title = "Could Not Find Book";
                 btnReadBook.IsEnabled = false;
             }
+        }
+
+        private int HashBookName (string ISBN)
+        {
+            int hashNumber = 0, i = 0;
+            var reg = new Regex("[0-9]");
+            var match = reg.Matches(ISBN);
+            foreach (var item in match)
+            {
+                Int32.TryParse(item.ToString(), out int num);
+                hashNumber += num*++i;
+            }
+            return hashNumber%3;
         }
     }
 }

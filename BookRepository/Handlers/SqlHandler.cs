@@ -13,7 +13,7 @@ namespace BookRepository
     public static class SqlHandler
     {
         private static string connectionString = "server=localhost;user=root;port=3306;database=bookrepository;password=;charset=utf8;SslMode=none";
-        private static object lockMech;
+
         #region Functional Methods
         public static bool IsConnected()
         {
@@ -196,6 +196,38 @@ namespace BookRepository
             }
 
             return bookResponse;
+        }
+
+        public static Response.GenericResponse<int> GetVote(string userID, string bookISBN)
+        {
+            Response.GenericResponse<int> vote = new Response.GenericResponse<int>();
+            string query = "SELECT `Book-Rating` FROM `bx-book-ratings` WHERE ISBN = @ISBN AND `User-ID` = @UserID";
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                MySqlCommand mySqlCommand = new MySqlCommand(query, conn);
+                mySqlCommand.Parameters.AddWithValue("@ISBN", bookISBN);
+                mySqlCommand.Parameters.AddWithValue("@UserID", userID);
+                try
+                {
+                    conn.Open();
+                    MySqlDataReader reader = mySqlCommand.ExecuteReader();
+
+                    if (reader.Read())
+                    {
+                        vote.Content = reader.GetFieldValue<int>(0);
+                    }
+                    else
+                    {
+                        throw new Exception("No vote has been cast by user '" + userID + "' for the book '" + bookISBN + "'.");
+                    }
+                }
+                catch (Exception e)
+                {
+                    vote.ErrorText = e.Message;
+                }
+            }
+            return vote;
         }
 
         public static Response.BaseResponse Register(string username, int age, string country, string county, string city, string password, bool isAdmin)

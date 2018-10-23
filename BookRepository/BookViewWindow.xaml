@@ -1,4 +1,4 @@
-﻿<Window x:Class="BookRepository.BookViewWindow"
+﻿<Window x:Name="BookView"  x:Class="BookRepository.BookViewWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -19,5 +19,18 @@
         <TextBlock x:Name="txtPublishDate" Text="Year" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="MS Gothic" FontSize="10" Margin="188,93,0,0" Height="20" TextWrapping="Wrap"/>
         <Button x:Name="btnReadBook" Content="Read Book" HorizontalAlignment="Right" Height="22" Margin="0,0,130,25" VerticalAlignment="Bottom" Width="100" TabIndex="1" Click="btnReadBook_Click"/>
         <Button x:Name="btnClose" Content="Go Back" HorizontalAlignment="Right" Height="22" Margin="0,0,25,25" VerticalAlignment="Bottom" Width="100" TabIndex="2" Click="btnClose_Click"/>
+        <UniformGrid HorizontalAlignment="Left" Margin="188,118,0,0" VerticalAlignment="Top" Columns="11" Rows="1" Width="290">
+            <RadioButton x:Name="Vote0" Content="0" IsTabStop="False" Focusable="False" GroupName="Vote" FontSize="9"/>
+            <RadioButton x:Name="Vote1" Content="1" IsTabStop="False" Focusable="False" GroupName="Vote" FontSize="9"/>
+            <RadioButton x:Name="Vote2" Content="2" IsTabStop="False" Focusable="False" GroupName="Vote" FontSize="9"/>
+            <RadioButton x:Name="Vote3" Content="3" IsTabStop="False" Focusable="False" GroupName="Vote" FontSize="9"/>
+            <RadioButton x:Name="Vote4" Content="4" IsTabStop="False" Focusable="False" GroupName="Vote" FontSize="9"/>
+            <RadioButton x:Name="Vote5" Content="5" IsTabStop="False" Focusable="False" GroupName="Vote" FontSize="9"/>
+            <RadioButton x:Name="Vote6" Content="6" IsTabStop="False" Focusable="False" GroupName="Vote" FontSize="9"/>
+            <RadioButton x:Name="Vote7" Content="7" IsTabStop="False" Focusable="False" GroupName="Vote" FontSize="9"/>
+            <RadioButton x:Name="Vote8" Content="8" IsTabStop="False" Focusable="False" GroupName="Vote" FontSize="9"/>
+            <RadioButton x:Name="Vote9" Content="9" IsTabStop="False" Focusable="False" GroupName="Vote" FontSize="9"/>
+            <RadioButton x:Name="Vote10" Content="10" IsTabStop="False" Focusable="False" GroupName="Vote" FontSize="9"/>
+        </UniformGrid>
     </Grid>
 </Window>

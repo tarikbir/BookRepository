@@ -17,7 +17,7 @@ namespace BookRepository
 {
     public partial class MainWindow : Window
     {
-        //public User currentUser;
+        public User currentUser;
         private BackgroundWorker bgwNews;
         private BackgroundWorker bgwPopular;
         private BackgroundWorker bgwHighRated;
@@ -38,6 +38,7 @@ namespace BookRepository
             loginWindow.ShowDialog();
             if (loginWindow.LoggedIn)
             {
+                currentUser = loginWindow.User;
                 lblGreeting.Content = $"Welcome {loginWindow.User.Username},";
                 bgwNews.RunWorkerAsync();
                 bgwPopular.RunWorkerAsync();
@@ -65,7 +66,7 @@ namespace BookRepository
                 {
                     Book book = SqlHandler.GetBook(item).Book;
                     if (book != null)
-                        wrapNews.Children.Add(new BookObject(book));
+                        wrapNews.Children.Add(new BookObject(book, currentUser));
                 }
             });
         }
@@ -84,7 +85,7 @@ namespace BookRepository
                 foreach (Book book in list)
                 {
                     if (book != null)
-                        wrapPopular.Children.Add(new BookObject(book));
+                        wrapPopular.Children.Add(new BookObject(book, currentUser));
                 }
             });
         }
@@ -103,7 +104,7 @@ namespace BookRepository
                     foreach (Book book in list)
                     {
                         if (book != null)
-                            wrapHighRated.Children.Add(new BookObject(book));
+                            wrapHighRated.Children.Add(new BookObject(book, currentUser));
                     }
             });
         }
@@ -118,7 +119,7 @@ namespace BookRepository
                 {
                     Book book = SqlHandler.GetBook(item).Book;
                     if (book != null)
-                        wrapRecommended.Children.Add(new BookObject(book));
+                        wrapRecommended.Children.Add(new BookObject(book, currentUser));
                 }
             });
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,48 +13,42 @@ namespace BookRepository
 {
     public partial class BookObject : Button
     {
-        public Book Book { get; set; }
-        public Image image = new Image();
+        public Book Book { get; private set; }
+        public User User;
 
-        public BookObject(Book book)
+        public BookObject(Book book, User user)
         {
-            this.Book = book;
-            
-            this.Click += new System.Windows.RoutedEventHandler(OnBookClick);
-            this.Loaded += new RoutedEventHandler(GetImageResult);
+            Book = book;
+            User = user;
+            Click += new System.Windows.RoutedEventHandler(OnBookClick);
 
-            this.ToolTip = Book.BookTitle;
-            this.MaxWidth = 126;
+            ToolTip = Book.BookTitle;
+            MaxWidth = 126;
+
+            SetImage();
         }
 
-        private void AddTextOnButton(object sender, EventArgs e)
+        public async void SetImage()
         {
-            if (((BitmapImage)sender).Width > 1)
+            var image = await WebHandler.GetNewImageAsync(new Uri(Book.ImageURI_M));
+            if (image != null && image?.Width > 1)
             {
-                this.AddChild(image);
+                var bookImage = new Image
+                {
+                    Source = image
+                };
+                AddChild(bookImage);
             }
             else
             {
-                this.AddChild(new TextBlock() { Text = "No Image Available" });
+                AddChild(new TextBlock() { Text = "No Image Available" });
             }
         }
 
         public void OnBookClick(object sender, RoutedEventArgs e)
         {
-            BookViewWindow bookWindow = new BookViewWindow(Book);
+            BookViewWindow bookWindow = new BookViewWindow(Book,User);
             bookWindow.ShowDialog();
-        }
-
-        public void GetImageResult(object sender, RoutedEventArgs e)
-        {
-            BitmapImage Bitmap = new BitmapImage();
-            Bitmap.BeginInit();
-            Bitmap.UriSource = new Uri(Book.ImageURI_M, UriKind.Absolute);
-            Bitmap.DownloadCompleted += new EventHandler(AddTextOnButton);
-            Bitmap.CacheOption = BitmapCacheOption.OnLoad;
-            Bitmap.EndInit();
-            image.Source = Bitmap;
-            this.UpdateLayout();
         }
     }
 }

@@ -69,12 +69,15 @@
       <DependentUpon>BookViewWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Handlers\WebHandler.cs" />
+    <Compile Include="FullBookListWindow.xaml.cs">
+      <DependentUpon>FullBookListWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Objects\BookObject.cs" />
     <Compile Include="Handlers\SqlHandler.cs" />
     <Compile Include="Objects\User.cs" />
     <Compile Include="Response\BookListResponse.cs" />
     <Compile Include="Response\GetBookResponse.cs" />
-    <Compile Include="Response\LastIDResponse.cs" />
+    <Compile Include="Response\GenericResponse.cs" />
     <Compile Include="Response\LoginResponse.cs" />
     <Compile Include="Response\BaseResponse.cs" />
     <Page Include="AdminPanel\AdminPanel.xaml">
@@ -100,6 +103,10 @@
     <Page Include="LoginWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="FullBookListWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -139,9 +146,15 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="Books\75 Greatest Motivational Stories Ever Told!.pdf" />
-    <None Include="Books\everyday-life-in-medieval-england.pdf" />
-    <None Include="Books\poc.pdf" />
+    <None Include="Books\book0.pdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Books\book1.pdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Books\book2.pdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

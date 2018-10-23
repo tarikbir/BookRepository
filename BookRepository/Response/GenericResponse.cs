@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace BookRepository.Response
 {
-    public class LastIDResponse : BaseResponse
+    public class GenericResponse<T> : BaseResponse
     {
-        public string LastID { get; set; }
+        public T Content { get; set; }
     }
 }
