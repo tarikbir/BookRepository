@@ -31,9 +31,7 @@ namespace BookRepository.AdminPanel
                 MessageBox.Show("Please enter a Username");
             }
             else
-            {
-                try
-                {
+            {     
                     ListBoxUser.Items.Add(txtAddUser.Text);
                     ListBoxUser.Items.Add(Int32.Parse(txtAddAge.Text));
                     ListBoxUser.Items.Add(txtAddCountry.Text);
@@ -42,12 +40,6 @@ namespace BookRepository.AdminPanel
                     ListBoxUser.Items.Add(txtAddPass.Password);
                     var adduser = SqlHandler.AddUser(txtAddUser.Text, Int32.Parse(txtAddAge.Text), txtAddCountry.Text, txtAddState.Text, txtAddCity.Text, txtAddPass.Password);
                 }
-                catch(Exception error)
-                {
-                    MessageBox.Show("An Error has occured while adding a User", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-                }
-
         }
 
         private void RemoveUserButton_Click(object sender, RoutedEventArgs e)
@@ -59,5 +51,6 @@ namespace BookRepository.AdminPanel
         {
             
         }
+
     }
 }

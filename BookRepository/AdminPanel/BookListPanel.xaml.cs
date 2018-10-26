@@ -23,5 +23,20 @@ namespace BookRepository.AdminPanel
         {
             InitializeComponent();
         }
+
+        private void btnAddBook_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        private void btnRemoveBook_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnListBooks_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
