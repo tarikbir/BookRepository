@@ -13,5 +13,10 @@ namespace BookRepository
         public string Location { get; set; }
         public UInt32? Age { get; set; }
         public bool IsAdmin { get; set; }
+
+        public override string ToString()
+        {
+            return String.Concat(UserID, " - ", Username);
+        }
     }
 }

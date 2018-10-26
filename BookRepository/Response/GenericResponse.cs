@@ -9,5 +9,8 @@ namespace BookRepository.Response
     public class GenericResponse<T> : BaseResponse
     {
         public T Content { get; set; }
+
+        public GenericResponse()
+        {}
     }
 }

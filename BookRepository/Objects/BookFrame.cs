@@ -30,16 +30,23 @@ namespace BookRepository
 
         public async void SetImage()
         {
-            var image = await WebHandler.GetNewImageAsync(new Uri(Book.ImageURI_M));
-            if (image != null && image?.Width > 1)
+            try
             {
-                var bookImage = new Image
+                var image = await WebHandler.GetNewImageAsync(new Uri(Book.ImageURI_M));
+                if (image != null && image?.Width > 1)
                 {
-                    Source = image
-                };
-                AddChild(bookImage);
+                    var bookImage = new Image
+                    {
+                        Source = image
+                    };
+                    AddChild(bookImage);
+                }
+                else
+                {
+                    AddChild(new TextBlock() { Text = "No Image Available" });
+                }
             }
-            else
+            catch (Exception e)
             {
                 AddChild(new TextBlock() { Text = "No Image Available" });
             }

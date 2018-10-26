@@ -23,7 +23,13 @@ namespace BookRepository.AdminPanel
 
         private void btnBookList_Click(object sender, RoutedEventArgs e)
         {
-
+            var allBookResponse = SqlHandler.GetAllBooks();
+            allBookResponse.Content.Sort();
+            lbxBook.Items.Clear();
+            foreach (var item in allBookResponse.Content)
+            {
+                lbxBook.Items.Add(item);
+            }
         }
 
         private void btnBookAdd_Click(object sender, RoutedEventArgs e)

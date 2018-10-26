@@ -31,13 +31,13 @@ namespace BookRepository
             return true;
         }
 
-        public static Book GetBookFromReader(MySqlDataReader reader)
+        private static Book GetBookFromReader(MySqlDataReader reader)
         {
             Int32.TryParse(reader.GetFieldValue<string>(3), out int year);
             Book Book = new Book()
             {
                 ISBN = reader.GetFieldValue<string>(0),
-                BookTitle = reader.GetFieldValue<string>(1),
+                BookTitle = reader.GetFieldValue<string>(1).Trim(),
                 BookAuthor = reader.GetFieldValue<string>(2),
                 Publisher = reader.GetFieldValue<string>(4),
                 ImageURI_S = reader.GetFieldValue<string>(5),
@@ -47,12 +47,26 @@ namespace BookRepository
             };
             return Book;
         }
+
+        private static User GetUserFromReader(MySqlDataReader reader)
+        {
+            User user = new User()
+            {
+                UserID = reader.GetFieldValue<UInt32>(0),
+                Username = reader.GetFieldValue<string>(1),
+                Location = reader.GetFieldValue<string>(3) ?? String.Empty,
+                Age = reader.IsDBNull(4) ? 0 : reader.GetUInt32(4),
+                IsAdmin = reader.GetFieldValue<bool>(5)
+            };
+            return user;
+        }
         #endregion
 
         #region SQL Responses
         public static Response.GenericResponse<List<Book>> GetPopularList()
         {
             Response.GenericResponse<List<Book>> bookListResponse = new Response.GenericResponse<List<Book>>();
+            bookListResponse.Content = new List<Book>();
             string query = "SELECT * FROM `bx-books` AS B INNER JOIN (SELECT `ISBN`, COUNT(`ISBN`) AS NumberRating FROM `bx-book-ratings` GROUP BY `ISBN`) AS F ON B.`ISBN` = F.`ISBN` ORDER BY F.NumberRating DESC LIMIT 10";
 
             using (MySqlConnection conn = new MySqlConnection(connectionString))
@@ -90,6 +104,7 @@ namespace BookRepository
         public static Response.GenericResponse<List<Book>> GetHighRatedList()
         {
             Response.GenericResponse<List<Book>> bookListResponse = new Response.GenericResponse<List<Book>>();
+            bookListResponse.Content = new List<Book>();
             string query = "SELECT * FROM `bx-books` AS B INNER JOIN (SELECT DISTINCT `ISBN`, Weight FROM `bx-book-ratings` ORDER BY Weight DESC LIMIT 10) AS F ON B.`ISBN` = F.`ISBN`";
 
             using (MySqlConnection conn = new MySqlConnection(connectionString))
@@ -140,14 +155,7 @@ namespace BookRepository
 
                     if (reader.Read())
                     {
-                        loginEntry.Content = new User()
-                        {
-                            UserID = reader.GetFieldValue<UInt32>(0),
-                            Username = reader.GetFieldValue<string>(1),
-                            Location = reader.GetFieldValue<string>(3) ?? String.Empty,
-                            Age = reader.IsDBNull(4) ? 0 : reader.GetUInt32(4),
-                            IsAdmin = reader.GetFieldValue<bool>(5)
-                        };
+                        loginEntry.Content = GetUserFromReader(reader);
                     }
                     else
                     {
@@ -230,41 +238,39 @@ namespace BookRepository
             return vote;
         }
 
-        public static Response.BaseResponse AddUser(string username, int age, string country, string county, string city, string password)
+        public static Response.BaseResponse AddUser(User user, string password)
         {
-            string concat2 = string.Join(",", country, county, city);
-            string queryAddUser = "INSERT INTO `bx-users`(`Username`, `Password`, `Location`, `Age`) VALUES (@Username,@Password,@Concat2,@Age)";
-            Response.BaseResponse adduser = new Response.BaseResponse();
+            string queryAddUser = "INSERT INTO `bx-users`(`Username`, `Password`, `Location`, `Age`) VALUES (@Username,@Password,@Location,@Age)";
+            Response.BaseResponse addUserResponse = new Response.BaseResponse();
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
                 MySqlCommand mySqlCommandAddUser = new MySqlCommand(queryAddUser, conn);
-                mySqlCommandAddUser.Parameters.AddWithValue("@Username", username);
+                mySqlCommandAddUser.Parameters.AddWithValue("@Username", user.Username);
                 mySqlCommandAddUser.Parameters.AddWithValue("@Password", password);
-                mySqlCommandAddUser.Parameters.AddWithValue("@Concat2", concat2);
-                mySqlCommandAddUser.Parameters.AddWithValue("@Age", age);
+                mySqlCommandAddUser.Parameters.AddWithValue("@Location", user.Location);
+                mySqlCommandAddUser.Parameters.AddWithValue("@Age", user.Age);
                 try
                 {
                     conn.Open();
-                    int AffectedRows = mySqlCommandAddUser.ExecuteNonQuery();
-                    if (AffectedRows != 1)
+                    int affectedRows = mySqlCommandAddUser.ExecuteNonQuery();
+                    if (affectedRows != 1)
                     {
                         throw new Exception("The Error has occured while inserting into users table");
                     }
-                    adduser.Success = true;
+                    addUserResponse.Success = true;
                 }
                 catch (Exception e)
                 {
-                    adduser.ErrorText = e.Message;
+                    addUserResponse.ErrorText = e.Message;
                 }
-                return adduser;
+                return addUserResponse;
             }
         }
 
-        public static Response.BaseResponse RemoveUser(string username)
+        public static Response.BaseResponse RemoveUser(User user)
         {
-
             string queryRemoveUser = ("DELETE FROM `bx-users` WHERE Username=@username");
-            Response.BaseResponse removeuser = new Response.BaseResponse();
+            Response.BaseResponse removeUserResponse = new Response.BaseResponse();
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
                 MySqlCommand mySqlCommandRemoveUser = new MySqlCommand(queryRemoveUser, conn);
@@ -272,38 +278,50 @@ namespace BookRepository
                 {
                     conn.Open();
                     mySqlCommandRemoveUser.ExecuteNonQuery();
-                    removeuser.Success = true;
+                    removeUserResponse.Success = true;
                 }
                 catch (Exception e)
                 {
-                    removeuser.ErrorText = e.Message;
+                    removeUserResponse.ErrorText = e.Message;
                 }
-                return removeuser;
-
+                return removeUserResponse;
             }
         }
 
-        public static Response.BaseResponse GetAllUsers()
+        public static Response.GenericResponse<List<User>> GetAllUsers()
         {
-            string queryGetBooks = "SELECT * FROM `bx-users`";
-            Response.BaseResponse getallusers = new Response.BaseResponse();
-            Response.GenericResponse<List<User>> user; 
+            string queryGetBooks = "SELECT * FROM `bx-users` WHERE Username IS NOT NULL";
+            Response.GenericResponse<List<User>> userResponse = new Response.GenericResponse<List<User>>{Content = new List<User>()};
+
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
-                MySqlCommand mySqlCommandgetallusers = new MySqlCommand(queryGetBooks, conn);
+                MySqlCommand mySqlCommandGetAllUsers = new MySqlCommand(queryGetBooks, conn);
 
                 try
                 {
                     conn.Open();
 
+                    MySqlDataReader reader = mySqlCommandGetAllUsers.ExecuteReader();
 
-                    getallusers.Success = true;
+                    while (reader.Read())
+                    {
+                        try
+                        {
+                            userResponse.Content.Add(GetUserFromReader(reader));
+                        }
+                        catch (Exception e)
+                        {
+                            userResponse.ErrorText += e.Message + "\n";
+                            continue;
+                        }
+                    }
+                    userResponse.Success = true;
                 }
                 catch(Exception e)
                 {
-                    getallusers.ErrorText = e.Message;
+                    userResponse.ErrorText = e.Message;
                 }
-                return getallusers;
+                return userResponse;
             }
         }
 
@@ -345,23 +363,38 @@ namespace BookRepository
             }
         }
 
-        public static Response.BaseResponse GetAllBooks()
+        public static Response.GenericResponse<List<Book>> GetAllBooks()
         {
             string queryGetBooks = ("SELECT * FROM `bx-books`");
-            Response.BaseResponse getallbooks = new Response.BaseResponse();
+            Response.GenericResponse<List<Book>> bookResponse = new Response.GenericResponse<List<Book>>{Content = new List<Book>()};
+
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
-                MySqlCommand mySqlCommandgetallbooks = new MySqlCommand();
+                MySqlCommand mySqlCommandGetAllBooks = new MySqlCommand(queryGetBooks,conn);
                 try
                 {
                     conn.Open();
-                    getallbooks.Success = true;
+                    MySqlDataReader reader = mySqlCommandGetAllBooks.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        try
+                        {
+                            bookResponse.Content.Add(GetBookFromReader(reader));
+                        }
+                        catch (Exception e)
+                        {
+                            bookResponse.ErrorText += e.Message + "\n";
+                            continue;
+                        }
+                    }
+                    bookResponse.Success = true;
                 }
                 catch (Exception e)
                 {
-                    getallbooks.ErrorText = e.Message;
+                    bookResponse.ErrorText = e.Message;
                 }
-                return getallbooks;
+                return bookResponse;
             }
         }
 

@@ -13,7 +13,7 @@
                 <GradientStop Color="#FFB2D9FF" Offset="1"/>
             </LinearGradientBrush>
         </Grid.Background>
-        <ListBox x:Name="lbxUser" HorizontalAlignment="Left" Height="420" VerticalAlignment="Top" Width="550"/>
+        <ListBox x:Name="lbxUser" HorizontalAlignment="Left" Height="420" VerticalAlignment="Top" Width="550" SelectionChanged="lbxUser_SelectionChanged"/>
         <Button x:Name="btnUserList" Content="List Users" HorizontalAlignment="Left" Height="26" Margin="660,28,0,0" VerticalAlignment="Top" Width="100" TabIndex="1" Click="btnUserList_Click"/>
         <Button x:Name="btnUserAdd" Content="Add a User" HorizontalAlignment="Left" Height="26" Margin="660,58,0,0" VerticalAlignment="Top" Width="100" TabIndex="2" Click="btnUserAdd_Click"/>
         <Button x:Name="btnUserRemove" Content="Remove a User" HorizontalAlignment="Left" Height="26" Margin="660,88,0,0" VerticalAlignment="Top" Width="100" TabIndex="3" Click="btnUserRemove_Click"/>
@@ -23,7 +23,7 @@
         <Label x:Name="lblState" Content="County/State" Margin="570,232,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         <Label x:Name="lblCity" Content="City" Margin="570,262,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         <Label x:Name="lblPassword" Content="Password" Margin="570,292,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <TextBox x:Name="txtAddUser" HorizontalAlignment="Left" Height="26" Margin="685,142,0,0" VerticalAlignment="Top" Width="147" IsInactiveSelectionHighlightEnabled="True" MaxLines="1" MaxLength="24" VerticalContentAlignment="Center" TabIndex="4"/>
+        <TextBox x:Name="txtAddUsername" HorizontalAlignment="Left" Height="26" Margin="685,142,0,0" VerticalAlignment="Top" Width="147" IsInactiveSelectionHighlightEnabled="True" MaxLines="1" MaxLength="24" VerticalContentAlignment="Center" TabIndex="4"/>
         <TextBox x:Name="txtAddAge" HorizontalAlignment="Left" Height="26" Margin="685,172,0,0" VerticalAlignment="Top" Width="36" IsInactiveSelectionHighlightEnabled="True" MaxLines="1" MaxLength="3" VerticalContentAlignment="Center" TabIndex="5"/>
         <TextBox x:Name="txtAddCountry" HorizontalAlignment="Left" Height="26" Margin="685,202,0,0" VerticalAlignment="Top" Width="147" IsInactiveSelectionHighlightEnabled="True" MaxLines="1" MaxLength="24" VerticalContentAlignment="Center" TabIndex="6"/>
         <TextBox x:Name="txtAddState" HorizontalAlignment="Left" Height="26" Margin="685,232,0,0" VerticalAlignment="Top" Width="147" IsInactiveSelectionHighlightEnabled="True" MaxLines="1" MaxLength="24" VerticalContentAlignment="Center" TabIndex="7"/>
