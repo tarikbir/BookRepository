@@ -7,6 +7,12 @@
         mc:Ignorable="d"
         Title="BookListPanel" Height="450" Width="850">
     <Grid>
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="#FF578BBF" Offset="0"/>
+                <GradientStop Color="#FFB2D9FF" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
         <ListBox x:Name="lbxBook" HorizontalAlignment="Left" Height="420" VerticalAlignment="Top" Width="550"/>
         <Button x:Name="btnBookList" Content="List Books" HorizontalAlignment="Left" Height="26" Margin="660,28,0,0" VerticalAlignment="Top" Width="100" TabIndex="1" Click="btnBookList_Click"/>
         <Button x:Name="btnBookAdd" Content="Add a Book" HorizontalAlignment="Left" Height="26" Margin="660,58,0,0" VerticalAlignment="Top" Width="100" TabIndex="2" Click="btnBookAdd_Click" />

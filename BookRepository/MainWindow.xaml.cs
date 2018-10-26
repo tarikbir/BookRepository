@@ -69,7 +69,7 @@ namespace BookRepository
             {
                 foreach (string item in list)
                 {
-                    Book book = SqlHandler.GetBook(item).Book;
+                    Book book = SqlHandler.GetBook(item).Content;
                     if (book != null)
                         wrapNews.Children.Add(new BookFrame(book, currentUser));
                 }
@@ -79,7 +79,7 @@ namespace BookRepository
         private void bgwPopular_DoWork(object sender, DoWorkEventArgs e)
         {
             //SQL Books with most distinct ratings
-            List<Book> list = SqlHandler.GetPopularList().Books;
+            List<Book> list = SqlHandler.GetPopularList().Content;
             this.Dispatcher.Invoke(() =>
             {
                 if (!(list.Count>0))
@@ -98,7 +98,7 @@ namespace BookRepository
         private void bgwHighRated_DoWork(object sender, DoWorkEventArgs e)
         {
             //SQL Books with highest rating
-            List<Book> list = SqlHandler.GetHighRatedList().Books;
+            List<Book> list = SqlHandler.GetHighRatedList().Content;
             this.Dispatcher.Invoke(() =>
             {
                 if (!(list.Count > 0))
@@ -122,7 +122,7 @@ namespace BookRepository
             {
                 foreach (string item in list)
                 {
-                    Book book = SqlHandler.GetBook(item).Book;
+                    Book book = SqlHandler.GetBook(item).Content;
                     if (book != null)
                         wrapRecommended.Children.Add(new BookFrame(book, currentUser));
                 }
