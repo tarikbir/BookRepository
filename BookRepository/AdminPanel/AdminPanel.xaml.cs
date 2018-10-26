@@ -14,9 +14,6 @@ using System.Windows.Shapes;
 
 namespace BookRepository.AdminPanel
 {
-    /// <summary>
-    /// AdminPanel.xaml etkileşim mantığı
-    /// </summary>
     public partial class AdminPanel : Window
     {
         public AdminPanel()

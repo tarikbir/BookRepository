@@ -7,12 +7,14 @@
         mc:Ignorable="d"
         Title="AdminPanel" Height="300" Width="400">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="127*"/>
-            <ColumnDefinition Width="4*"/>
-        </Grid.ColumnDefinitions>
-        <Button x:Name="btnUserInfo" Content="Users" HorizontalAlignment="Center" Height="26" VerticalAlignment="Center" Width="100" TabIndex="1" Margin="147,122,134.2,122.4" Click="btnUserInfo_Click"/>
-        <Button x:Name="btnBooks" Content="Books" HorizontalAlignment="Center" Height="26" Margin="147,77,134.2,167.4" VerticalAlignment="Center" Width="100" TabIndex="2" Click="btnBooks_Click"/>
-        <Button x:Name="btnExit" Content="Exit" HorizontalAlignment="Center" Height="26" Margin="147,167,134.2,77.4" VerticalAlignment="Center" Width="100" TabIndex="3" Click="btnExit_Click"/>
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="#FF578BBF" Offset="0"/>
+                <GradientStop Color="#FFB2D9FF" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+        <Button x:Name="btnUserInfo" Content="Users" HorizontalAlignment="Center" Height="26" VerticalAlignment="Center" Width="100" TabIndex="1" Click="btnUserInfo_Click"/>
+        <Button x:Name="btnBooks" Content="Books" HorizontalAlignment="Center" Height="26" Margin="0,-100,0,0" VerticalAlignment="Center" Width="100" TabIndex="2" Click="btnBooks_Click"/>
+        <Button x:Name="btnExit" Content="Exit" HorizontalAlignment="Center" Height="26" Margin="0,100,0,0" VerticalAlignment="Center" Width="100" TabIndex="3" Click="btnExit_Click"/>
     </Grid>
 </Window>

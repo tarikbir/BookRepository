@@ -50,9 +50,9 @@ namespace BookRepository
         #endregion
 
         #region SQL Responses
-        public static Response.BookListResponse GetPopularList()
+        public static Response.GenericResponse<List<Book>> GetPopularList()
         {
-            Response.BookListResponse bookListResponse = new Response.BookListResponse();
+            Response.GenericResponse<List<Book>> bookListResponse = new Response.GenericResponse<List<Book>>();
             string query = "SELECT * FROM `bx-books` AS B INNER JOIN (SELECT `ISBN`, COUNT(`ISBN`) AS NumberRating FROM `bx-book-ratings` GROUP BY `ISBN`) AS F ON B.`ISBN` = F.`ISBN` ORDER BY F.NumberRating DESC LIMIT 10";
 
             using (MySqlConnection conn = new MySqlConnection(connectionString))
@@ -69,7 +69,7 @@ namespace BookRepository
                     {
                         try
                         {
-                            bookListResponse.Books.Add(GetBookFromReader(reader));
+                            bookListResponse.Content.Add(GetBookFromReader(reader));
                         }
                         catch (Exception e)
                         {
@@ -87,9 +87,9 @@ namespace BookRepository
             return bookListResponse;
         }
 
-        public static Response.BookListResponse GetHighRatedList()
+        public static Response.GenericResponse<List<Book>> GetHighRatedList()
         {
-            Response.BookListResponse bookListResponse = new Response.BookListResponse();
+            Response.GenericResponse<List<Book>> bookListResponse = new Response.GenericResponse<List<Book>>();
             string query = "SELECT * FROM `bx-books` AS B INNER JOIN (SELECT DISTINCT `ISBN`, Weight FROM `bx-book-ratings` ORDER BY Weight DESC LIMIT 10) AS F ON B.`ISBN` = F.`ISBN`";
 
             using (MySqlConnection conn = new MySqlConnection(connectionString))
@@ -106,7 +106,7 @@ namespace BookRepository
                     {
                         try
                         {
-                            bookListResponse.Books.Add(GetBookFromReader(reader));
+                            bookListResponse.Content.Add(GetBookFromReader(reader));
                         }
                         catch (Exception e)
                         {
@@ -124,10 +124,10 @@ namespace BookRepository
             return bookListResponse;
         }
 
-        public static Response.LoginResponse UserEntry(string username, string password)
+        public static Response.GenericResponse<User> UserEntry(string username, string password)
         {
             string queryLogin = "SELECT * FROM `bx-users` WHERE username = @username AND password = @password";
-            Response.LoginResponse loginEntry = new Response.LoginResponse();
+            Response.GenericResponse<User> loginEntry = new Response.GenericResponse<User>();
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
                 MySqlCommand mySqlCommandLogin = new MySqlCommand(queryLogin, conn);
@@ -140,8 +140,7 @@ namespace BookRepository
 
                     if (reader.Read())
                     {
-                        //Full texts UserID Username Password Location Age
-                        loginEntry.User = new User()
+                        loginEntry.Content = new User()
                         {
                             UserID = reader.GetFieldValue<UInt32>(0),
                             Username = reader.GetFieldValue<string>(1),
@@ -164,9 +163,9 @@ namespace BookRepository
             }
         }
 
-        public static Response.GetBookResponse GetBook(string ISBN)
+        public static Response.GenericResponse<Book> GetBook(string ISBN)
         {
-            Response.GetBookResponse bookResponse = new Response.GetBookResponse();
+            Response.GenericResponse<Book> bookResponse = new Response.GenericResponse<Book>();
             string query = "SELECT * FROM `bx-books` WHERE ISBN = @ISBN";
 
             using (MySqlConnection conn = new MySqlConnection(connectionString))
@@ -187,8 +186,7 @@ namespace BookRepository
                     {
                         throw new Exception("Could not find a book with ISBN no: '" + ISBN + "'.");
                     }
-
-                    bookResponse.Book = Book;
+                    bookResponse.Content = Book;
                     bookResponse.Success = true;
                 }
                 catch (Exception e)
@@ -297,8 +295,9 @@ namespace BookRepository
                 try
                 {
                     conn.Open();
-                    getallusers.Success = true;
 
+
+                    getallusers.Success = true;
                 }
                 catch(Exception e)
                 {
@@ -308,9 +307,9 @@ namespace BookRepository
             }
         }
 
-        public static Response.GetBookResponse AddNewBook(string ISBN,string BookTitle,string BookAuthor,int YearOfPublication,string Publisher)
+        public static Response.BaseResponse AddBook(string ISBN,string BookTitle,string BookAuthor,int YearOfPublication,string Publisher)
         {
-            Response.GetBookResponse getbookResponse = new Response.GetBookResponse();
+            Response.BaseResponse response = new Response.BaseResponse();
             string queryAddNewBook = "INSERT INTO `bx-books`(ISBN , Title , Author , Year , Publisher) VALUES (@ISBN,@Title,@Author,@Year,@Publisher)";
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
@@ -322,13 +321,13 @@ namespace BookRepository
                 mySqlCommandAddBook.Parameters.AddWithValue("@Publisher", Publisher);
             }
 
-                return getbookResponse;
+                return response;
         }
 
-        public static Response.BaseResponse RemoveBook(string ISBN, string BookTitle,string BookAuthor, int YearOfPublication, string Publisher)
+        public static Response.BaseResponse RemoveBook(string ISBN)
         {
-            string queryRemoveBook = ("DELETE FROM `bx-books` WHERE ISBN=@ISBN");
-            Response.BaseResponse removebook = new Response.BaseResponse();
+            string queryRemoveBook = ("DELETE FROM `bx-books` WHERE ISBN = @ISBN");
+            Response.BaseResponse removeBook = new Response.BaseResponse();
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
                 MySqlCommand mySqlCommandRemoveBook = new MySqlCommand(queryRemoveBook,conn);
@@ -336,13 +335,13 @@ namespace BookRepository
                 {
                     conn.Open();
                     mySqlCommandRemoveBook.ExecuteNonQuery();
-                    removebook.Success = true;
+                    removeBook.Success = true;
                 }
                 catch(Exception e)
                 {
-                    removebook.ErrorText = e.Message;
+                    removeBook.ErrorText = e.Message;
                 }
-                return removebook;
+                return removeBook;
             }
         }
 

@@ -11,12 +11,12 @@ using System.Windows.Media.Imaging;
 
 namespace BookRepository
 {
-    public partial class BookObject : Button
+    public partial class BookFrame : Button
     {
         public Book Book { get; private set; }
         public User User;
 
-        public BookObject(Book book, User user)
+        public BookFrame(Book book, User user)
         {
             Book = book;
             User = user;

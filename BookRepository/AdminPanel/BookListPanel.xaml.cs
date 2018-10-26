@@ -14,9 +14,6 @@ using System.Windows.Shapes;
 
 namespace BookRepository.AdminPanel
 {
-    /// <summary>
-    /// BookListPanel.xaml etkileşim mantığı
-    /// </summary>
     public partial class BookListPanel : Window
     {
         public BookListPanel()
@@ -24,17 +21,17 @@ namespace BookRepository.AdminPanel
             InitializeComponent();
         }
 
-        private void btnAddBook_Click(object sender, RoutedEventArgs e)
-        {
-            
-        }
-
-        private void btnRemoveBook_Click(object sender, RoutedEventArgs e)
+        private void btnBookList_Click(object sender, RoutedEventArgs e)
         {
 
         }
 
-        private void btnListBooks_Click(object sender, RoutedEventArgs e)
+        private void btnBookAdd_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnBookRemove_Click(object sender, RoutedEventArgs e)
         {
 
         }

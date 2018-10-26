@@ -31,11 +31,11 @@ namespace BookRepository
             if(loginResponse.Success)
             {
                 string extraText = String.Empty;
-                if (loginResponse.User.IsAdmin) extraText = " as an admin";
+                if (loginResponse.Content.IsAdmin) extraText = " as an admin";
                 MessageBox.Show("You have successfully logged in" + extraText + "."
                     , "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 LoggedIn = true;
-                User = loginResponse.User;
+                User = loginResponse.Content;
                 this.Close();
             }
             else
@@ -57,7 +57,7 @@ namespace BookRepository
             {
                 UserID = 1,
                 Username = "admin",
-                Age = 20
+                IsAdmin = true
             };
             LoggedIn = true;
             this.Close();

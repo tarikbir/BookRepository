@@ -14,6 +14,46 @@
                     <GradientStop Color="#FFB2D9FF" Offset="1"/>
                 </LinearGradientBrush>
             </Grid.Background>
+            <Rectangle HorizontalAlignment="Center" Height="10" Margin="0,50,0,0" VerticalAlignment="Top" Width="1310">
+                <Rectangle.Fill>
+                    <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                        <GradientStop Color="Black" Offset="0.602"/>
+                        <GradientStop Color="#FFB2D9FF"/>
+                        <GradientStop Color="#FE92A9F9" Offset="0.165"/>
+                    </LinearGradientBrush>
+                </Rectangle.Fill>
+            </Rectangle>
+            <Rectangle HorizontalAlignment="Center" Height="10" Margin="0,270,0,0" VerticalAlignment="Top" Width="1310">
+                <Rectangle.Fill>
+                    <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                        <GradientStop Color="Black" Offset="0.602"/>
+                        <GradientStop Color="#FFB2D9FF"/>
+                        <GradientStop Color="#FE92A9F9" Offset="0.165"/>
+                    </LinearGradientBrush>
+                </Rectangle.Fill>
+            </Rectangle>
+            <Rectangle HorizontalAlignment="Center" Height="10" Margin="0,490,0,0" VerticalAlignment="Top" Width="1310">
+                <Rectangle.Fill>
+                    <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                        <GradientStop Color="Black" Offset="0.602"/>
+                        <GradientStop Color="#FFB2D9FF"/>
+                        <GradientStop Color="#FE92A9F9" Offset="0.165"/>
+                    </LinearGradientBrush>
+                </Rectangle.Fill>
+            </Rectangle>
+            <Rectangle HorizontalAlignment="Center" Height="10" Margin="0,710,0,0" VerticalAlignment="Top" Width="1310">
+                <Rectangle.Fill>
+                    <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                        <GradientStop Color="Black" Offset="0.602"/>
+                        <GradientStop Color="#FFB2D9FF"/>
+                        <GradientStop Color="#FE92A9F9" Offset="0.165"/>
+                    </LinearGradientBrush>
+                </Rectangle.Fill>
+            </Rectangle>
+            <WrapPanel x:Name="wrapNews" HorizontalAlignment="Left" Height="160" Margin="25,60,0,0" VerticalAlignment="Top" Width="1310" Grid.RowSpan="10"/>
+            <WrapPanel x:Name="wrapPopular" HorizontalAlignment="Left" Height="160" Margin="25,280,0,0" VerticalAlignment="Top" Width="1310" Grid.RowSpan="10"/>
+            <WrapPanel x:Name="wrapHighRated" HorizontalAlignment="Left" Height="160" Margin="25,500,0,0" VerticalAlignment="Top" Width="1310" Grid.RowSpan="10"/>
+            <WrapPanel x:Name="wrapRecommended" HorizontalAlignment="Left" Height="160" Margin="25,720,0,0" VerticalAlignment="Top" Width="1310" Grid.RowSpan="10"/>
             <Label x:Name="lblGreeting" Content="Welcome Guest," HorizontalAlignment="Right" VerticalAlignment="Top" FontFamily="MS Gothic" FontSize="32" Margin="0,12,60,0">
                 <Label.Effect>
                     <DropShadowEffect Opacity="0.6" ShadowDepth="0"/>
@@ -24,61 +64,21 @@
                     <DropShadowEffect Opacity="0.6" ShadowDepth="0"/>
                 </Label.Effect>
             </Label>
-            <Rectangle HorizontalAlignment="Left" Height="10" Margin="25,50,0,0" VerticalAlignment="Top" Width="1310">
-                <Rectangle.Fill>
-                    <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
-                        <GradientStop Color="Black" Offset="0.602"/>
-                        <GradientStop Color="#FFB2D9FF"/>
-                        <GradientStop Color="#FE92A9F9" Offset="0.165"/>
-                    </LinearGradientBrush>
-                </Rectangle.Fill>
-            </Rectangle>
-            <WrapPanel x:Name="wrapNews" HorizontalAlignment="Left" Height="160" Margin="25,60,0,0" VerticalAlignment="Top" Width="1310" Grid.RowSpan="10"/>
             <Label x:Name="lblPopular" Content="Popular Books" HorizontalAlignment="Left" Margin="25,236,0,0" VerticalAlignment="Top" FontFamily="MS Gothic" FontSize="32">
                 <Label.Effect>
                     <DropShadowEffect Opacity="0.6" ShadowDepth="0"/>
                 </Label.Effect>
             </Label>
-            <Rectangle HorizontalAlignment="Left" Height="10" Margin="25,270,0,0" VerticalAlignment="Top" Width="1310">
-                <Rectangle.Fill>
-                    <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
-                        <GradientStop Color="Black" Offset="0.602"/>
-                        <GradientStop Color="#FFB2D9FF"/>
-                        <GradientStop Color="#FE92A9F9" Offset="0.165"/>
-                    </LinearGradientBrush>
-                </Rectangle.Fill>
-            </Rectangle>
-            <WrapPanel x:Name="wrapPopular" HorizontalAlignment="Left" Height="160" Margin="25,280,0,0" VerticalAlignment="Top" Width="1310" Grid.RowSpan="10"/>
             <Label x:Name="lblHighRated" Content="High Rated" HorizontalAlignment="Left" Margin="25,456,0,0" VerticalAlignment="Top" FontFamily="MS Gothic" FontSize="32">
                 <Label.Effect>
                     <DropShadowEffect Opacity="0.6" ShadowDepth="0"/>
                 </Label.Effect>
             </Label>
-            <Rectangle HorizontalAlignment="Left" Height="10" Margin="25,490,0,0" VerticalAlignment="Top" Width="1310">
-                <Rectangle.Fill>
-                    <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
-                        <GradientStop Color="Black" Offset="0.602"/>
-                        <GradientStop Color="#FFB2D9FF"/>
-                        <GradientStop Color="#FE92A9F9" Offset="0.165"/>
-                    </LinearGradientBrush>
-                </Rectangle.Fill>
-            </Rectangle>
-            <WrapPanel x:Name="wrapHighRated" HorizontalAlignment="Left" Height="160" Margin="25,500,0,0" VerticalAlignment="Top" Width="1310" Grid.RowSpan="10"/>
             <Label x:Name="lblRecommended" Content="Recommended Books" HorizontalAlignment="Left" Margin="25,676,0,0" VerticalAlignment="Top" FontFamily="MS Gothic" FontSize="32">
                 <Label.Effect>
                     <DropShadowEffect Opacity="0.6" ShadowDepth="0"/>
                 </Label.Effect>
             </Label>
-            <Rectangle HorizontalAlignment="Left" Height="10" Margin="25,710,0,0" VerticalAlignment="Top" Width="1310">
-                <Rectangle.Fill>
-                    <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
-                        <GradientStop Color="Black" Offset="0.602"/>
-                        <GradientStop Color="#FFB2D9FF"/>
-                        <GradientStop Color="#FE92A9F9" Offset="0.165"/>
-                    </LinearGradientBrush>
-                </Rectangle.Fill>
-            </Rectangle>
-            <WrapPanel x:Name="wrapRecommended" HorizontalAlignment="Left" Height="160" Margin="25,720,0,0" VerticalAlignment="Top" Width="1310" Grid.RowSpan="10"/>
         </Grid>
     </ScrollViewer>
 </Window>

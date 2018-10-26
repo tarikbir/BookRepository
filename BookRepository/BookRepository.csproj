@@ -72,13 +72,10 @@
     <Compile Include="FullBookListWindow.xaml.cs">
       <DependentUpon>FullBookListWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Objects\BookObject.cs" />
+    <Compile Include="Objects\BookFrame.cs" />
     <Compile Include="Handlers\SqlHandler.cs" />
     <Compile Include="Objects\User.cs" />
-    <Compile Include="Response\BookListResponse.cs" />
-    <Compile Include="Response\GetBookResponse.cs" />
     <Compile Include="Response\GenericResponse.cs" />
-    <Compile Include="Response\LoginResponse.cs" />
     <Compile Include="Response\BaseResponse.cs" />
     <Page Include="AdminPanel\AdminPanel.xaml">
       <Generator>MSBuild:Compile</Generator>

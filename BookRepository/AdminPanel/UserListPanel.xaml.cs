@@ -14,9 +14,6 @@ using System.Windows.Shapes;
 
 namespace BookRepository.AdminPanel
 {
-    /// <summary>
-    /// UserListPanel.xaml etkileşim mantığı
-    /// </summary>
     public partial class UserListPanel : Window
     {
         public UserListPanel()
@@ -24,33 +21,32 @@ namespace BookRepository.AdminPanel
             InitializeComponent();
         }
 
-        private void AddUserButton(object sender, RoutedEventArgs e)
+        private void btnUserList_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnUserAdd_Click(object sender, RoutedEventArgs e)
         {
             if (String.IsNullOrWhiteSpace(txtAddUser.Text))
             {
                 MessageBox.Show("Please enter a Username");
             }
             else
-            {     
-                    ListBoxUser.Items.Add(txtAddUser.Text);
-                    ListBoxUser.Items.Add(Int32.Parse(txtAddAge.Text));
-                    ListBoxUser.Items.Add(txtAddCountry.Text);
-                    ListBoxUser.Items.Add(txtAddState.Text);
-                    ListBoxUser.Items.Add(txtAddCity.Text);
-                    ListBoxUser.Items.Add(txtAddPass.Password);
-                    var adduser = SqlHandler.AddUser(txtAddUser.Text, Int32.Parse(txtAddAge.Text), txtAddCountry.Text, txtAddState.Text, txtAddCity.Text, txtAddPass.Password);
-                }
+            {
+                lbxUser.Items.Add(txtAddUser.Text);
+                lbxUser.Items.Add(Int32.Parse(txtAddAge.Text));
+                lbxUser.Items.Add(txtAddCountry.Text);
+                lbxUser.Items.Add(txtAddState.Text);
+                lbxUser.Items.Add(txtAddCity.Text);
+                lbxUser.Items.Add(txtAddPass.Password);
+                var adduser = SqlHandler.AddUser(txtAddUser.Text, Int32.Parse(txtAddAge.Text), txtAddCountry.Text, txtAddState.Text, txtAddCity.Text, txtAddPass.Password);
+            }
         }
 
-        private void RemoveUserButton_Click(object sender, RoutedEventArgs e)
+        private void btnUserRemove_Click(object sender, RoutedEventArgs e)
         {
-            ListBoxUser.Items.Remove(ListBoxUser.SelectedItem);
+            lbxUser.Items.Remove(lbxUser.SelectedItem);
         }
-
-        private void UserListButton_Click(object sender, RoutedEventArgs e)
-        {
-            
-        }
-
     }
 }

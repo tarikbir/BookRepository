@@ -71,7 +71,7 @@ namespace BookRepository
                 {
                     Book book = SqlHandler.GetBook(item).Book;
                     if (book != null)
-                        wrapNews.Children.Add(new BookObject(book, currentUser));
+                        wrapNews.Children.Add(new BookFrame(book, currentUser));
                 }
             });
         }
@@ -90,7 +90,7 @@ namespace BookRepository
                 foreach (Book book in list)
                 {
                     if (book != null)
-                        wrapPopular.Children.Add(new BookObject(book, currentUser));
+                        wrapPopular.Children.Add(new BookFrame(book, currentUser));
                 }
             });
         }
@@ -109,7 +109,7 @@ namespace BookRepository
                     foreach (Book book in list)
                     {
                         if (book != null)
-                            wrapHighRated.Children.Add(new BookObject(book, currentUser));
+                            wrapHighRated.Children.Add(new BookFrame(book, currentUser));
                     }
             });
         }
@@ -124,7 +124,7 @@ namespace BookRepository
                 {
                     Book book = SqlHandler.GetBook(item).Book;
                     if (book != null)
-                        wrapRecommended.Children.Add(new BookObject(book, currentUser));
+                        wrapRecommended.Children.Add(new BookFrame(book, currentUser));
                 }
             });
         }
