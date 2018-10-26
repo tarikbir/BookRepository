@@ -287,28 +287,28 @@ namespace BookRepository
 
         public static Response.BaseResponse GetAllUsers()
         {
-            string queryShowAll = "SELECT * FROM `bx-users`";
-            Response.BaseResponse showall = new Response.BaseResponse();
+            string queryGetBooks = "SELECT * FROM `bx-users`";
+            Response.BaseResponse getallusers = new Response.BaseResponse();
             Response.GenericResponse<List<User>> user; 
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
-                MySqlCommand mySqlCommandshowall = new MySqlCommand(queryShowAll, conn);
+                MySqlCommand mySqlCommandgetallusers = new MySqlCommand(queryGetBooks, conn);
 
                 try
                 {
                     conn.Open();
-                    showall.Success = true;
+                    getallusers.Success = true;
 
                 }
                 catch(Exception e)
                 {
-                    showall.ErrorText = e.Message;
+                    getallusers.ErrorText = e.Message;
                 }
-                return showall;
+                return getallusers;
             }
         }
 
-        public static Response.GetBookResponse AddNewBook(string ISBN,string Title,string Author,int Year,string Publisher)
+        public static Response.GetBookResponse AddNewBook(string ISBN,string BookTitle,string BookAuthor,int YearOfPublication,string Publisher)
         {
             Response.GetBookResponse getbookResponse = new Response.GetBookResponse();
             string queryAddNewBook = "INSERT INTO `bx-books`(ISBN , Title , Author , Year , Publisher) VALUES (@ISBN,@Title,@Author,@Year,@Publisher)";
@@ -316,15 +316,54 @@ namespace BookRepository
             {
                 MySqlCommand mySqlCommandAddBook = new MySqlCommand(queryAddNewBook,conn);
                 mySqlCommandAddBook.Parameters.AddWithValue("@ISBN ", ISBN);
-                mySqlCommandAddBook.Parameters.AddWithValue("@Title ", Title);
-                mySqlCommandAddBook.Parameters.AddWithValue("@Author ", Author);
-                mySqlCommandAddBook.Parameters.AddWithValue("@Year" , Year);
+                mySqlCommandAddBook.Parameters.AddWithValue("@Title ", BookTitle);
+                mySqlCommandAddBook.Parameters.AddWithValue("@Author ", BookAuthor);
+                mySqlCommandAddBook.Parameters.AddWithValue("@Year" , YearOfPublication);
                 mySqlCommandAddBook.Parameters.AddWithValue("@Publisher", Publisher);
-
-
             }
 
                 return getbookResponse;
+        }
+
+        public static Response.BaseResponse RemoveBook(string ISBN, string BookTitle,string BookAuthor, int YearOfPublication, string Publisher)
+        {
+            string queryRemoveBook = ("DELETE FROM `bx-books` WHERE ISBN=@ISBN");
+            Response.BaseResponse removebook = new Response.BaseResponse();
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                MySqlCommand mySqlCommandRemoveBook = new MySqlCommand(queryRemoveBook,conn);
+                try
+                {
+                    conn.Open();
+                    mySqlCommandRemoveBook.ExecuteNonQuery();
+                    removebook.Success = true;
+                }
+                catch(Exception e)
+                {
+                    removebook.ErrorText = e.Message;
+                }
+                return removebook;
+            }
+        }
+
+        public static Response.BaseResponse GetAllBooks()
+        {
+            string queryGetBooks = ("SELECT * FROM `bx-books`");
+            Response.BaseResponse getallbooks = new Response.BaseResponse();
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                MySqlCommand mySqlCommandgetallbooks = new MySqlCommand();
+                try
+                {
+                    conn.Open();
+                    getallbooks.Success = true;
+                }
+                catch (Exception e)
+                {
+                    getallbooks.ErrorText = e.Message;
+                }
+                return getallbooks;
+            }
         }
 
         public static Response.BaseResponse Register(string username, int age, string country, string county, string city, string password, bool isAdmin)

@@ -5,12 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BookRepository.AdminPanel"
         mc:Ignorable="d"
-        Title="UserListPanel" Height="450" Width="800">
+        Title="UserListPanel" Height="450" Width="850">
     <Grid>
         <ListBox x:Name="ListBoxUser" HorizontalAlignment="Left" Height="420" VerticalAlignment="Top" Width="551"/>
-        <Button x:Name="btnUserList" Content="List Users" HorizontalAlignment="Left" Height="26" Margin="657,26,0,0" VerticalAlignment="Top" Width="100"  TabIndex="4"/>
-        <Button x:Name="btnRemoveUser" Content="Remove a User" HorizontalAlignment="Left" Height="26" Margin="657,88,0,0" VerticalAlignment="Top" Width="100" TabIndex="4"/>
-        <Button x:Name="btnAddUser" Content="Add a User" HorizontalAlignment="Left" Height="26" Margin="657,57,0,0" VerticalAlignment="Top" Width="100"  TabIndex="4" Click="btnUserList_Copy_Click"/>
+        <Button x:Name="UserListButton" Content="List Users" HorizontalAlignment="Left" Height="26" Margin="657,26,0,0" VerticalAlignment="Top" Width="100"  TabIndex="4" Click="AddUserButton_Click"/>
+        <Button x:Name="RemoveUserButton" Content="Remove a User" HorizontalAlignment="Left" Height="26" Margin="657,88,0,0" VerticalAlignment="Top" Width="100" TabIndex="4" Click="RemoveUserButton_Click"/>
+        <Button x:Name="AddUserButton" Content="Add a User" HorizontalAlignment="Left" Height="26" Margin="657,57,0,0" VerticalAlignment="Top" Width="100"  TabIndex="4" Click="UserListButton"/>
         <Label x:Name="lblUser" Content="Username" Margin="570,142,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         <Label x:Name="lblAge" Content="Age" Margin="570,172,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         <Label x:Name="lblCountry" Content="Country" Margin="570,202,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
