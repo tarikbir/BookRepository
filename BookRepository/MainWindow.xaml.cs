@@ -38,6 +38,11 @@ namespace BookRepository
             loginWindow.ShowDialog();
             if (loginWindow.LoggedIn)
             {
+                if (loginWindow.User.IsAdmin)
+                {
+                    AdminPanel.AdminPanel adminPanel = new AdminPanel.AdminPanel();
+                    adminPanel.Show();
+                }
                 currentUser = loginWindow.User;
                 lblGreeting.Content = $"Welcome {loginWindow.User.Username},";
                 bgwNews.RunWorkerAsync();

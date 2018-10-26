@@ -30,7 +30,10 @@ namespace BookRepository
             var loginResponse = SqlHandler.UserEntry(txtUser.Text, txtPass.Password);
             if(loginResponse.Success)
             {
-                MessageBox.Show("You have successfully logged in.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                string extraText = String.Empty;
+                if (loginResponse.User.IsAdmin) extraText = " as an admin";
+                MessageBox.Show("You have successfully logged in" + extraText + "."
+                    , "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 LoggedIn = true;
                 User = loginResponse.User;
                 this.Close();

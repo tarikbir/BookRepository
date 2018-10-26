@@ -23,5 +23,22 @@ namespace BookRepository.AdminPanel
         {
             InitializeComponent();
         }
+
+        private void btnBooks_Click(object sender, RoutedEventArgs e)
+        {
+            BookListPanel BookPanel = new BookListPanel();
+            BookPanel.ShowDialog();
+        }
+
+        private void btnUserInfo_Click(object sender, RoutedEventArgs e)
+        {
+            UserListPanel UserPanel = new UserListPanel();
+            UserPanel.ShowDialog();
+        }
+
+        private void btnExit_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
     }
 }

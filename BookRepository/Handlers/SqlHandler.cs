@@ -34,7 +34,8 @@ namespace BookRepository
         public static Book GetBookFromReader(MySqlDataReader reader)
         {
             Int32.TryParse(reader.GetFieldValue<string>(3), out int year);
-            Book Book = new Book() {
+            Book Book = new Book()
+            {
                 ISBN = reader.GetFieldValue<string>(0),
                 BookTitle = reader.GetFieldValue<string>(1),
                 BookAuthor = reader.GetFieldValue<string>(2),
@@ -61,10 +62,10 @@ namespace BookRepository
                 try
                 {
                     conn.Open();
-                    
+
                     MySqlDataReader reader = mySqlCommand.ExecuteReader();
 
-                    while(reader.Read())
+                    while (reader.Read())
                     {
                         try
                         {
@@ -145,7 +146,8 @@ namespace BookRepository
                             UserID = reader.GetFieldValue<UInt32>(0),
                             Username = reader.GetFieldValue<string>(1),
                             Location = reader.GetFieldValue<string>(3) ?? String.Empty,
-                            Age = reader.IsDBNull(4)? 0 : reader.GetUInt32(4)
+                            Age = reader.IsDBNull(4) ? 0 : reader.GetUInt32(4),
+                            IsAdmin = reader.GetFieldValue<bool>(5)
                         };
                     }
                     else
@@ -154,7 +156,7 @@ namespace BookRepository
                     }
                     loginEntry.Success = true;
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     loginEntry.ErrorText = e.Message;
                 }
@@ -228,6 +230,101 @@ namespace BookRepository
                 }
             }
             return vote;
+        }
+
+        public static Response.BaseResponse AddUser(string username, int age, string country, string county, string city, string password)
+        {
+            string concat2 = string.Join(",", country, county, city);
+            string queryAddUser = "INSERT INTO `bx-users`(`Username`, `Password`, `Location`, `Age`) VALUES (@Username,@Password,@Concat2,@Age)";
+            Response.BaseResponse adduser = new Response.BaseResponse();
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                MySqlCommand mySqlCommandAddUser = new MySqlCommand(queryAddUser, conn);
+                mySqlCommandAddUser.Parameters.AddWithValue("@Username", username);
+                mySqlCommandAddUser.Parameters.AddWithValue("@Password", password);
+                mySqlCommandAddUser.Parameters.AddWithValue("@Concat2", concat2);
+                mySqlCommandAddUser.Parameters.AddWithValue("@Age", age);
+                try
+                {
+                    conn.Open();
+                    int AffectedRows = mySqlCommandAddUser.ExecuteNonQuery();
+                    if (AffectedRows != 1)
+                    {
+                        throw new Exception("The Error has occured while inserting into users table");
+                    }
+                    adduser.Success = true;
+                }
+                catch (Exception e)
+                {
+                    adduser.ErrorText = e.Message;
+                }
+                return adduser;
+            }
+        }
+
+        public static Response.BaseResponse RemoveUser(string username)
+        {
+
+            string queryRemoveUser = ("DELETE FROM `bx-users` WHERE Username=@username");
+            Response.BaseResponse removeuser = new Response.BaseResponse();
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                MySqlCommand mySqlCommandRemoveUser = new MySqlCommand(queryRemoveUser, conn);
+                try
+                {
+                    conn.Open();
+                    mySqlCommandRemoveUser.ExecuteNonQuery();
+                    removeuser.Success = true;
+                }
+                catch (Exception e)
+                {
+                    removeuser.ErrorText = e.Message;
+                }
+                return removeuser;
+
+            }
+        }
+
+        public static Response.BaseResponse GetAllUsers()
+        {
+            string queryShowAll = "SELECT * FROM `bx-users`";
+            Response.BaseResponse showall = new Response.BaseResponse();
+            Response.GenericResponse<List<User>> user; 
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                MySqlCommand mySqlCommandshowall = new MySqlCommand(queryShowAll, conn);
+
+                try
+                {
+                    conn.Open();
+                    showall.Success = true;
+
+                }
+                catch(Exception e)
+                {
+                    showall.ErrorText = e.Message;
+                }
+                return showall;
+            }
+        }
+
+        public static Response.GetBookResponse AddNewBook(string ISBN,string Title,string Author,int Year,string Publisher)
+        {
+            Response.GetBookResponse getbookResponse = new Response.GetBookResponse();
+            string queryAddNewBook = "INSERT INTO `bx-books`(ISBN , Title , Author , Year , Publisher) VALUES (@ISBN,@Title,@Author,@Year,@Publisher)";
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                MySqlCommand mySqlCommandAddBook = new MySqlCommand(queryAddNewBook,conn);
+                mySqlCommandAddBook.Parameters.AddWithValue("@ISBN ", ISBN);
+                mySqlCommandAddBook.Parameters.AddWithValue("@Title ", Title);
+                mySqlCommandAddBook.Parameters.AddWithValue("@Author ", Author);
+                mySqlCommandAddBook.Parameters.AddWithValue("@Year" , Year);
+                mySqlCommandAddBook.Parameters.AddWithValue("@Publisher", Publisher);
+
+
+            }
+
+                return getbookResponse;
         }
 
         public static Response.BaseResponse Register(string username, int age, string country, string county, string city, string password, bool isAdmin)

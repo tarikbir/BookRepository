@@ -7,9 +7,21 @@
         mc:Ignorable="d"
         Title="UserListPanel" Height="450" Width="800">
     <Grid>
-        <ListBox x:Name="ListBoxUser" HorizontalAlignment="Left" Height="420" VerticalAlignment="Top" Width="640"/>
+        <ListBox x:Name="ListBoxUser" HorizontalAlignment="Left" Height="420" VerticalAlignment="Top" Width="551"/>
         <Button x:Name="btnUserList" Content="List Users" HorizontalAlignment="Left" Height="26" Margin="657,26,0,0" VerticalAlignment="Top" Width="100"  TabIndex="4"/>
-        <Button x:Name="btnRemoveUser" Content="Remove User" HorizontalAlignment="Left" Height="26" Margin="657,57,0,0" VerticalAlignment="Top" Width="100" TabIndex="4"/>
-
+        <Button x:Name="btnRemoveUser" Content="Remove a User" HorizontalAlignment="Left" Height="26" Margin="657,88,0,0" VerticalAlignment="Top" Width="100" TabIndex="4"/>
+        <Button x:Name="btnAddUser" Content="Add a User" HorizontalAlignment="Left" Height="26" Margin="657,57,0,0" VerticalAlignment="Top" Width="100"  TabIndex="4" Click="btnUserList_Copy_Click"/>
+        <Label x:Name="lblUser" Content="Username" Margin="570,142,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Label x:Name="lblAge" Content="Age" Margin="570,172,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Label x:Name="lblCountry" Content="Country" Margin="570,202,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Label x:Name="lblState" Content="County/State" Margin="570,232,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Label x:Name="lblCity" Content="City" Margin="570,262,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Label x:Name="lblPassword" Content="Password" Margin="570,292,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <TextBox x:Name="txtAddUser" HorizontalAlignment="Left" Height="26" Margin="660,142,0,0" VerticalAlignment="Top" Width="124" IsInactiveSelectionHighlightEnabled="True" MaxLines="1" MaxLength="24" VerticalContentAlignment="Center" TabIndex="1"/>
+        <TextBox x:Name="txtAddAge" HorizontalAlignment="Left" Height="26" Margin="660,172,0,0" VerticalAlignment="Top" Width="36" IsInactiveSelectionHighlightEnabled="True" MaxLines="1" MaxLength="3" VerticalContentAlignment="Center" TabIndex="2"/>
+        <TextBox x:Name="txtAddCountry" HorizontalAlignment="Left" Height="26" Margin="660,201,0,0" VerticalAlignment="Top" Width="124" IsInactiveSelectionHighlightEnabled="True" MaxLines="1" MaxLength="24" VerticalContentAlignment="Center" TabIndex="3"/>
+        <TextBox x:Name="txtAddState" HorizontalAlignment="Left" Height="26" Margin="660,232,0,0" VerticalAlignment="Top" Width="124" IsInactiveSelectionHighlightEnabled="True" MaxLines="1" MaxLength="24" VerticalContentAlignment="Center" TabIndex="4"/>
+        <TextBox x:Name="txtAddCity" HorizontalAlignment="Left" Height="26" Margin="660,262,0,0" VerticalAlignment="Top" Width="124" IsInactiveSelectionHighlightEnabled="True" MaxLines="1" MaxLength="24" VerticalContentAlignment="Center" TabIndex="5"/>
+        <PasswordBox x:Name="txtAddPass" HorizontalAlignment="Left" Height="26" Margin="660,292,0,0" VerticalAlignment="Top" Width="124" VerticalContentAlignment="Center" TabIndex="6"/>
     </Grid>
 </Window>

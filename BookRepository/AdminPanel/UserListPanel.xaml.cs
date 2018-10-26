@@ -23,5 +23,25 @@ namespace BookRepository.AdminPanel
         {
             InitializeComponent();
         }
+
+        private void btnUserList_Copy_Click(object sender, RoutedEventArgs e)
+        {
+            if (String.IsNullOrWhiteSpace(txtAddUser.Text))
+            {
+                MessageBox.Show("Please enter a Username");
+            }
+            else
+            {
+                ListBoxUser.Items.Add(txtAddUser.Text);
+                ListBoxUser.Items.Add(Int32.Parse(txtAddAge.Text));
+                ListBoxUser.Items.Add(txtAddCountry.Text);
+                ListBoxUser.Items.Add(txtAddState.Text);
+                ListBoxUser.Items.Add(txtAddCity.Text);
+                ListBoxUser.Items.Add(txtAddPass.Password);
+                var adduser = SqlHandler.AddUser(txtAddUser.Text, Int32.Parse(txtAddAge.Text), txtAddCountry.Text, txtAddState.Text,txtAddCity.Text,txtAddPass.Password);
+            }
+               
+
+        }
     }
 }

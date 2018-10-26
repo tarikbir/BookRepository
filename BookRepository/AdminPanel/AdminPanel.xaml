@@ -5,10 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BookRepository.AdminPanel"
         mc:Ignorable="d"
-        Title="AdminPanel" Height="316.148" Width="433.408">
-    <Grid Margin="104,61,68.8,37.2" RenderTransformOrigin="0.687,0.564">
-        <Button x:Name="btnUserInfo" Content="Users" HorizontalAlignment="Left" Height="26" Margin="66,76,0,0" VerticalAlignment="Top" Width="100" IsDefault="True" TabIndex="3"/>
-        <Button x:Name="btnBooks" Content="Books" HorizontalAlignment="Left" Height="26" Margin="66,45,0,0" VerticalAlignment="Top" Width="100" IsDefault="True" TabIndex="3" RenderTransformOrigin="-0.999,-1.08"/>
-        <Button x:Name="btnExit" Content="Exit" HorizontalAlignment="Left" Height="26" Margin="66,107,0,0" VerticalAlignment="Top" Width="100" IsDefault="True" TabIndex="3"/>
+        Title="AdminPanel" Height="300" Width="400">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="127*"/>
+            <ColumnDefinition Width="4*"/>
+        </Grid.ColumnDefinitions>
+        <Button x:Name="btnUserInfo" Content="Users" HorizontalAlignment="Center" Height="26" VerticalAlignment="Center" Width="100" TabIndex="1" Margin="147,122,134.2,122.4" Click="btnUserInfo_Click"/>
+        <Button x:Name="btnBooks" Content="Books" HorizontalAlignment="Center" Height="26" Margin="147,77,134.2,167.4" VerticalAlignment="Center" Width="100" TabIndex="2" Click="btnBooks_Click"/>
+        <Button x:Name="btnExit" Content="Exit" HorizontalAlignment="Center" Height="26" Margin="147,167,134.2,77.4" VerticalAlignment="Center" Width="100" TabIndex="3" Click="btnExit_Click"/>
     </Grid>
 </Window>

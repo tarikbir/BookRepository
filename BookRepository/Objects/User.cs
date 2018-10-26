@@ -12,5 +12,6 @@ namespace BookRepository
         public string Username { get; set; }
         public string Location { get; set; }
         public UInt32? Age { get; set; }
+        public bool IsAdmin { get; set; }
     }
 }
