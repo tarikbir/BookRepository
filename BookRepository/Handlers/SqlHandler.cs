@@ -241,7 +241,7 @@ namespace BookRepository
         public static Response.BaseResponse AddUser(User user, string password)
         {
             string queryAddUser = "INSERT INTO `bx-users`(`Username`, `Password`, `Location`, `Age`) VALUES (@Username,@Password,@Location,@Age)";
-            Response.BaseResponse addUserResponse = new Response.BaseResponse();
+            Response.BaseResponse response = new Response.BaseResponse();
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
                 MySqlCommand mySqlCommandAddUser = new MySqlCommand(queryAddUser, conn);
@@ -249,42 +249,49 @@ namespace BookRepository
                 mySqlCommandAddUser.Parameters.AddWithValue("@Password", password);
                 mySqlCommandAddUser.Parameters.AddWithValue("@Location", user.Location);
                 mySqlCommandAddUser.Parameters.AddWithValue("@Age", user.Age);
+
                 try
                 {
                     conn.Open();
-                    int affectedRows = mySqlCommandAddUser.ExecuteNonQuery();
-                    if (affectedRows != 1)
+                    int rowsAffected = mySqlCommandAddUser.ExecuteNonQuery();
+                    if (rowsAffected != 1)
                     {
-                        throw new Exception("The Error has occured while inserting into users table");
+                        throw new Exception("Error inserting into users table. Rows affected: " + rowsAffected);
                     }
-                    addUserResponse.Success = true;
+                    response.Success = true;
                 }
                 catch (Exception e)
                 {
-                    addUserResponse.ErrorText = e.Message;
+                    response.ErrorText = e.Message;
                 }
-                return addUserResponse;
+                return response;
             }
         }
 
         public static Response.BaseResponse RemoveUser(User user)
         {
             string queryRemoveUser = ("DELETE FROM `bx-users` WHERE Username=@username");
-            Response.BaseResponse removeUserResponse = new Response.BaseResponse();
+            Response.BaseResponse response = new Response.BaseResponse();
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
                 MySqlCommand mySqlCommandRemoveUser = new MySqlCommand(queryRemoveUser, conn);
+                mySqlCommandRemoveUser.Parameters.AddWithValue("@username", user.Username);
+
                 try
                 {
                     conn.Open();
-                    mySqlCommandRemoveUser.ExecuteNonQuery();
-                    removeUserResponse.Success = true;
+                    int rowsAffected = mySqlCommandRemoveUser.ExecuteNonQuery();
+                    if (rowsAffected != 1)
+                    {
+                        throw new Exception("Error removing from users table. Rows affected: " + rowsAffected);
+                    }
+                    response.Success = true;
                 }
                 catch (Exception e)
                 {
-                    removeUserResponse.ErrorText = e.Message;
+                    response.ErrorText = e.Message;
                 }
-                return removeUserResponse;
+                return response;
             }
         }
 
@@ -327,7 +334,7 @@ namespace BookRepository
 
         public static Response.BaseResponse AddBook(Book book)
         {
-            Response.BaseResponse Response = new Response.BaseResponse();
+            Response.BaseResponse response = new Response.BaseResponse();
             string queryAddNewBook = "INSERT INTO `bx-books`(ISBN,BookTitle,BookAuthor,YearOfPublication,Publisher,ImageURI_S,ImageURI_M,ImageURI_L) VALUES (@ISBN,@BookTitle,@BookAuthor,@YearOfPublication,@Publisher,@ImageURI_S,ImageURI_M,ImageURI_L)";
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
@@ -340,29 +347,49 @@ namespace BookRepository
                 mySqlCommandAddBook.Parameters.AddWithValue("@ImageURI_S", book.ImageURI_S);
                 mySqlCommandAddBook.Parameters.AddWithValue("@ImageURI_M", book.ImageURI_M);
                 mySqlCommandAddBook.Parameters.AddWithValue("@ImageURI_L", book.ImageURI_L);
+
+                try
+                {
+                    conn.Open();
+                    int rowsAffected = mySqlCommandAddBook.ExecuteNonQuery();
+                    if (rowsAffected != 1)
+                    {
+                        throw new Exception("Error inserting into books table. Rows affected: " + rowsAffected);
+                    }
+                    response.Success = true;
+                }
+                catch (Exception e)
+                {
+                    response.ErrorText = e.Message;
+                }
             }
-                return Response;
+                return response;
         }
 
         public static Response.BaseResponse RemoveBook(Book book)
         {
             string queryRemoveBook = ("DELETE FROM `bx-books` WHERE ISBN = @ISBN");
-            Response.BaseResponse removeBook = new Response.BaseResponse();
+            Response.BaseResponse response = new Response.BaseResponse();
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
                 MySqlCommand mySqlCommandRemoveBook = new MySqlCommand(queryRemoveBook,conn);
+                mySqlCommandRemoveBook.Parameters.AddWithValue("@ISBN", book.ISBN);
                 try
                 {
                     conn.Open();
-                    mySqlCommandRemoveBook.ExecuteNonQuery();
-                    removeBook.Success = true;
+                    int rowsAffected = mySqlCommandRemoveBook.ExecuteNonQuery();
+                    if (rowsAffected != 1)
+                    {
+                        throw new Exception("Error removing from books table. Rows affected: " + rowsAffected);
+                    }
+                    response.Success = true;
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
-                    removeBook.ErrorText = e.Message;
+                    response.ErrorText = e.Message;
                 }
-                return removeBook;
             }
+            return response;
         }
 
         public static Response.GenericResponse<List<Book>> GetAllBooks()

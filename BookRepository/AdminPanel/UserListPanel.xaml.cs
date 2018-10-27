@@ -25,10 +25,13 @@ namespace BookRepository.AdminPanel
         {
             var allUserResponse = SqlHandler.GetAllUsers();
             lbxUser.Items.Clear();
-            foreach (var item in allUserResponse.Content)
+            Dispatcher.Invoke(() =>
             {
-                lbxUser.Items.Add(item);
-            }
+                foreach (var item in allUserResponse.Content)
+                {
+                    lbxUser.Items.Add(item);
+                }
+            });
         }
 
         private void btnUserAdd_Click(object sender, RoutedEventArgs e)
@@ -46,8 +49,14 @@ namespace BookRepository.AdminPanel
                     Location = String.Join(",", txtAddCountry.Text, txtAddState.Text, txtAddCity.Text),
                     IsAdmin = false
                 };
-                lbxUser.Items.Add(user);
-                var AddUser = SqlHandler.AddUser(user, txtAddPass.Password);
+                var addUserResponse = SqlHandler.AddUser(user, txtAddPass.Password);
+                if (addUserResponse.Success)
+                {
+                    MessageBox.Show("Successfully added " + user.Username + ".", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                    lbxUser.Items.Add(user);
+                }
+                else
+                    MessageBox.Show("Error adding " + user.Username + ".\n\n" + addUserResponse.ErrorText, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -56,8 +65,14 @@ namespace BookRepository.AdminPanel
             if (lbxUser.SelectedIndex > -1)
             {
                 User user = (User)lbxUser.SelectedItem;
-                lbxUser.Items.Remove(lbxUser.SelectedItem);
-                var RemoveUser = SqlHandler.RemoveUser(user);
+                var removeUserResponse = SqlHandler.RemoveUser(user);
+                if (removeUserResponse.Success)
+                {
+                    MessageBox.Show("Successfully removed " + user.Username + ".", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                    lbxUser.Items.Remove(lbxUser.SelectedItem);
+                }
+                else
+                    MessageBox.Show("Error removing " + user.Username + ".\n\n" + removeUserResponse.ErrorText, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

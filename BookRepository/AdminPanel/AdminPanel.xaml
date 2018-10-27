@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BookRepository.AdminPanel"
         mc:Ignorable="d"
-        Title="AdminPanel" Height="300" Width="400">
+        Title="Admin Control Panel" Height="200" Width="300">
     <Grid>
         <Grid.Background>
             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -13,8 +13,8 @@
                 <GradientStop Color="#FFB2D9FF" Offset="1"/>
             </LinearGradientBrush>
         </Grid.Background>
-        <Button x:Name="btnUserInfo" Content="Users" HorizontalAlignment="Center" Height="26" VerticalAlignment="Center" Width="100" TabIndex="1" Click="btnUserInfo_Click"/>
-        <Button x:Name="btnBooks" Content="Books" HorizontalAlignment="Center" Height="26" Margin="0,-100,0,0" VerticalAlignment="Center" Width="100" TabIndex="2" Click="btnBooks_Click"/>
-        <Button x:Name="btnExit" Content="Exit" HorizontalAlignment="Center" Height="26" Margin="0,100,0,0" VerticalAlignment="Center" Width="100" TabIndex="3" Click="btnExit_Click"/>
+        <Button x:Name="btnUserInfo" Content="User Control" HorizontalAlignment="Center" Height="26" VerticalAlignment="Center" Width="120" TabIndex="1" Click="btnUserInfo_Click"/>
+        <Button x:Name="btnBooks" Content="Book Control" HorizontalAlignment="Center" Height="26" Margin="0,-100,0,0" VerticalAlignment="Center" Width="120" TabIndex="2" Click="btnBooks_Click"/>
+        <Button x:Name="btnExit" Content="Close Admin Panel" HorizontalAlignment="Center" Height="26" Margin="0,100,0,0" VerticalAlignment="Center" Width="120" TabIndex="3" Click="btnExit_Click" Background="#FFAA0000"/>
     </Grid>
 </Window>

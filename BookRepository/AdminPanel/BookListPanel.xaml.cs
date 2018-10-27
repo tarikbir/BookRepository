@@ -26,41 +26,61 @@ namespace BookRepository.AdminPanel
             var allBookResponse = SqlHandler.GetAllBooks();
             allBookResponse.Content.Sort();
             lbxBook.Items.Clear();
-            foreach (var item in allBookResponse.Content)
+
+            Dispatcher.Invoke(() =>
             {
-                lbxBook.Items.Add(item);
-            }
+                foreach (var item in allBookResponse.Content)
+                {
+                    lbxBook.Items.Add(item);
+                }
+            });
         }
 
         private void btnBookAdd_Click(object sender, RoutedEventArgs e)
         {
-            if(String.IsNullOrWhiteSpace(txtISBN.Text))
+            if(String.IsNullOrWhiteSpace(txtISBN.Text) || String.IsNullOrWhiteSpace(txtBookTitle.Text) || String.IsNullOrWhiteSpace(txtBookAuthor.Text)
+                || String.IsNullOrWhiteSpace(txtPublisher.Text) || String.IsNullOrWhiteSpace(txtYearOfPublication.Text) || String.IsNullOrWhiteSpace(txtURIL.Text)
+                || String.IsNullOrWhiteSpace(txtURIM.Text) || String.IsNullOrWhiteSpace(txtURIS.Text))
             {
-                MessageBox.Show("Please enter a valid ISBN Code!","Error",MessageBoxButton.OK,MessageBoxImage.Error);
+                MessageBox.Show("Information cannot be empty!","Error",MessageBoxButton.OK,MessageBoxImage.Error);
             }
             else
             {
-                Book book = new Book();
+                Book book = new Book()
                 {
-                    book.ISBN = txtISBN.Text;
-                    book.BookTitle = txtBookTitle.Text;
-                    book.BookAuthor = txtBookAuthor.Text;
-                    book.Publisher = txtPublisher.Text;
-                    book.ImageURI_L = txtURIL.Text;
-                    book.ImageURI_M = txtURIM.Text;
-                    book.ImageURI_S = txtURIS.Text;
-                } 
-                lbxBook.Items.Add(book);
-                var AddBook = SqlHandler.AddBook(book);
+                    ISBN = txtISBN.Text,
+                    BookTitle = txtBookTitle.Text,
+                    BookAuthor = txtBookAuthor.Text,
+                    Publisher = txtPublisher.Text,
+                    ImageURI_L = txtURIL.Text,
+                    ImageURI_M = txtURIM.Text,
+                    ImageURI_S = txtURIS.Text
+                };
+                var addBookResponse = SqlHandler.AddBook(book);
+                if (addBookResponse.Success)
+                {
+                    MessageBox.Show("Successfully added " + book.BookTitle + ".", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                    lbxBook.Items.Add(book);
+                }
+                else
+                    MessageBox.Show("Error adding " + book.BookTitle + ".\n\n" + addBookResponse.ErrorText, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+
             }
         }
+
         private void btnBookRemove_Click(object sender, RoutedEventArgs e)
         {
             if(lbxBook.SelectedIndex > -1)
             {
                 Book book = (Book)lbxBook.SelectedItem;
-                lbxBook.Items.Remove(lbxBook.SelectedItem);
-                var RemoveBook = SqlHandler.RemoveBook(book);
+                var removeBookResponse = SqlHandler.RemoveBook(book);
+                if (removeBookResponse.Success)
+                {
+                    MessageBox.Show("Successfully removed " + book.BookTitle + ".", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                    lbxBook.Items.RemoveAt(lbxBook.SelectedIndex);
+                }
+                else
+                    MessageBox.Show("Error removing " + book.BookTitle + ".\n\n" + removeBookResponse.ErrorText, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -73,6 +93,8 @@ namespace BookRepository.AdminPanel
                 txtBookTitle.Text = book.BookTitle;
                 txtBookAuthor.Text = book.BookAuthor;
                 txtPublisher.Text = book.Publisher;
+                txtYearOfPublication.Text = book.YearOfPublication.ToString();
+                txtURIL.Text = book.ImageURI_L;
                 txtURIM.Text = book.ImageURI_M;
                 txtURIS.Text = book.ImageURI_S;
             }
