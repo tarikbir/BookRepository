@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BookRepository.AdminPanel"
         mc:Ignorable="d"
-        Title="Admin Control Panel" Height="200" Width="300">
+        Title="Admin Control Panel" Height="200" Width="300" ResizeMode="CanMinimize" Icon="pack://siteoforigin:,,,/Resources/bookrepoicon.png" Topmost="True">
     <Grid>
         <Grid.Background>
             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">

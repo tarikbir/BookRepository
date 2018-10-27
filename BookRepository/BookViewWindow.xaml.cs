@@ -20,32 +20,35 @@ namespace BookRepository
     {
         private Book Book;
         private User User;
+        private int Vote;
 
         public BookViewWindow(Book book, User user)
         {
             InitializeComponent();
             Book = book;
             User = user;
-
-            InitUser();
+            InitVotes();
         }
 
-        private void InitUser()
+        private void InitVotes()
         {
             var voteResponse = SqlHandler.GetVote(User.UserID.ToString(), Book.ISBN);
-
-            if (voteResponse.Success)
+            int vote = 0;
+            for (int i = 0; i <= 10; i++)
             {
-                string votedBox = "Vote"+voteResponse.Content.ToString();
-                foreach (var item in Grid.Children.OfType<RadioButton>())
+                RadioButton rbVote = new RadioButton()
                 {
-                    if (item.Name == votedBox)
-                    {
-                        item.IsChecked = true;
-                        break;
-                    }
-                }
+                    Name = "Vote" + i,
+                    Content = i.ToString(),
+                    IsTabStop = false,
+                    Focusable = false,
+                    FontSize = 9
+                };
+                rbVote.Checked += new RoutedEventHandler(RadioButtonVote);
+                if (voteResponse.Success) if (voteResponse.Content == i) { rbVote.IsChecked = true; vote = i; }
+                CheckBoxesGrid.Children.Add(rbVote);
             }
+            Vote = vote;
         }
 
         private void btnReadBook_Click(object sender, RoutedEventArgs e)
@@ -61,6 +64,11 @@ namespace BookRepository
             {
                 MessageBox.Show("Could not open a PDF File\n\n" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+        private void btnApplyVote_Click(object sender, RoutedEventArgs e)
+        {
+            SqlHandler.CastVote(User.UserID.ToString(), Book.ISBN, Vote);
         }
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
@@ -86,6 +94,11 @@ namespace BookRepository
                 this.Title = "Could Not Find Book";
                 btnReadBook.IsEnabled = false;
             }
+        }
+
+        private void RadioButtonVote(object sender, RoutedEventArgs e)
+        {
+            Int32.TryParse(((RadioButton)sender).Content.ToString(), out Vote);
         }
 
         private int HashBookName (string ISBN)

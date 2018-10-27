@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BookRepository"
         mc:Ignorable="d"
-        Title="Book Repository" Height="768" Width="1390" Background="#FFBBBBBB" ResizeMode="CanMinimize" Icon="pack://siteoforigin:,,,/images/resources/bookrepoicon.png" WindowStartupLocation="CenterScreen">
+        Title="Full Book List" Height="768" Width="1390" Background="#FFBBBBBB" ResizeMode="CanMinimize" Icon="pack://siteoforigin:,,,/images/resources/bookrepoicon.png" WindowStartupLocation="CenterScreen" Topmost="True">
     <ScrollViewer x:Name="mainScrollBar" CanContentScroll="True" VerticalScrollBarVisibility="Visible">
         <Grid>
             <Grid.Background>

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BookRepository"
         mc:Ignorable="d"
-        Title="Login" Height="186" Width="380" ResizeMode="CanMinimize" ShowInTaskbar="False" WindowStartupLocation="CenterOwner">
+        Title="Login to Book Repository" Height="186" Width="380" ResizeMode="CanMinimize" WindowStartupLocation="CenterOwner" Icon="pack://siteoforigin:,,,/Resources/bookrepoicon.png" Topmost="True">
     <Grid>
         <Grid.Background>
             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">

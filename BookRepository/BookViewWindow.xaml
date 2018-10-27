@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BookRepository"
         mc:Ignorable="d"
-        Title="Viewing Book" Height="330" Width="500" ResizeMode="CanMinimize" ShowInTaskbar="False" WindowStartupLocation="CenterOwner" Loaded="Window_Loaded" >
+        Title="Viewing Book" Height="330" Width="500" ResizeMode="CanMinimize" WindowStartupLocation="CenterOwner" Loaded="Window_Loaded" Icon="pack://siteoforigin:,,,/Resources/bookrepoicon.png" Topmost="True" >
     <Grid x:Name="Grid">
         <Grid.Background>
             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -17,20 +17,9 @@
         <TextBlock x:Name="txtName" Text="Name" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="MS Gothic" FontSize="16" Margin="188,25,0,0" Height="32" Width="296" TextWrapping="Wrap"/>
         <TextBlock x:Name="txtAuthor" Text="Author" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="MS Gothic" FontSize="13" Margin="188,62,0,0" Height="26" FontStyle="Italic" Width="296" TextWrapping="Wrap"/>
         <TextBlock x:Name="txtPublishDate" Text="Year" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="MS Gothic" FontSize="10" Margin="188,93,0,0" Height="20" TextWrapping="Wrap"/>
-        <Button x:Name="btnReadBook" Content="Read Book" HorizontalAlignment="Right" Height="22" Margin="0,0,130,25" VerticalAlignment="Bottom" Width="100" TabIndex="1" Click="btnReadBook_Click"/>
-        <Button x:Name="btnClose" Content="Go Back" HorizontalAlignment="Right" Height="22" Margin="0,0,25,25" VerticalAlignment="Bottom" Width="100" TabIndex="2" Click="btnClose_Click"/>
-        <UniformGrid HorizontalAlignment="Left" Margin="188,118,0,0" VerticalAlignment="Top" Columns="11" Rows="1" Width="290">
-            <RadioButton x:Name="Vote0" Content="0" IsTabStop="False" Focusable="False" GroupName="Vote" FontSize="9"/>
-            <RadioButton x:Name="Vote1" Content="1" IsTabStop="False" Focusable="False" GroupName="Vote" FontSize="9"/>
-            <RadioButton x:Name="Vote2" Content="2" IsTabStop="False" Focusable="False" GroupName="Vote" FontSize="9"/>
-            <RadioButton x:Name="Vote3" Content="3" IsTabStop="False" Focusable="False" GroupName="Vote" FontSize="9"/>
-            <RadioButton x:Name="Vote4" Content="4" IsTabStop="False" Focusable="False" GroupName="Vote" FontSize="9"/>
-            <RadioButton x:Name="Vote5" Content="5" IsTabStop="False" Focusable="False" GroupName="Vote" FontSize="9"/>
-            <RadioButton x:Name="Vote6" Content="6" IsTabStop="False" Focusable="False" GroupName="Vote" FontSize="9"/>
-            <RadioButton x:Name="Vote7" Content="7" IsTabStop="False" Focusable="False" GroupName="Vote" FontSize="9"/>
-            <RadioButton x:Name="Vote8" Content="8" IsTabStop="False" Focusable="False" GroupName="Vote" FontSize="9"/>
-            <RadioButton x:Name="Vote9" Content="9" IsTabStop="False" Focusable="False" GroupName="Vote" FontSize="9"/>
-            <RadioButton x:Name="Vote10" Content="10" IsTabStop="False" Focusable="False" GroupName="Vote" FontSize="9"/>
-        </UniformGrid>
+        <Button x:Name="btnReadBook" Content="Read Book" HorizontalAlignment="Right" Height="22" Margin="0,0,130,52" VerticalAlignment="Bottom" Width="100" TabIndex="1" Click="btnReadBook_Click"/>
+        <Button x:Name="btnApplyVote" Content="Apply Vote" HorizontalAlignment="Right" Height="22" Margin="0,0,25,52" VerticalAlignment="Bottom" Width="100" TabIndex="2" Click="btnApplyVote_Click"/>
+        <Button x:Name="btnClose" Content="Go Back" HorizontalAlignment="Right" Height="22" Margin="0,0,25,25" VerticalAlignment="Bottom" Width="100" TabIndex="3" Click="btnClose_Click" Background="#FFAA0000"/>
+        <UniformGrid x:Name="CheckBoxesGrid"  HorizontalAlignment="Left" Margin="188,118,0,0" VerticalAlignment="Top" Columns="11" Rows="1" Width="290"/>
     </Grid>
 </Window>
