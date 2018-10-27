@@ -34,12 +34,48 @@ namespace BookRepository.AdminPanel
 
         private void btnBookAdd_Click(object sender, RoutedEventArgs e)
         {
-
+            if(String.IsNullOrWhiteSpace(txtISBN.Text))
+            {
+                MessageBox.Show("Please enter a valid ISBN Code!","Error",MessageBoxButton.OK,MessageBoxImage.Error);
+            }
+            else
+            {
+                Book book = new Book();
+                {
+                    book.ISBN = txtISBN.Text;
+                    book.BookTitle = txtBookTitle.Text;
+                    book.BookAuthor = txtBookAuthor.Text;
+                    book.Publisher = txtPublisher.Text;
+                    book.ImageURI_L = txtURIL.Text;
+                    book.ImageURI_M = txtURIM.Text;
+                    book.ImageURI_S = txtURIS.Text;
+                } 
+                lbxBook.Items.Add(book);
+                var AddBook = SqlHandler.AddBook(book);
+            }
         }
-
         private void btnBookRemove_Click(object sender, RoutedEventArgs e)
         {
+            if(lbxBook.SelectedIndex > -1)
+            {
+                Book book = (Book)lbxBook.SelectedItem;
+                lbxBook.Items.Remove(lbxBook.SelectedItem);
+                var RemoveBook = SqlHandler.RemoveBook(book);
+            }
+        }
 
+        private void lbxBook_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(lbxBook.SelectedIndex > -1)
+            {
+                Book book = (Book)lbxBook.SelectedItem;
+                txtISBN.Text = book.ISBN;
+                txtBookTitle.Text = book.BookTitle;
+                txtBookAuthor.Text = book.BookAuthor;
+                txtPublisher.Text = book.Publisher;
+                txtURIM.Text = book.ImageURI_M;
+                txtURIS.Text = book.ImageURI_S;
+            }
         }
     }
 }

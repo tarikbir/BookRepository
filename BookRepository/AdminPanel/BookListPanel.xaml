@@ -13,7 +13,7 @@
                 <GradientStop Color="#FFB2D9FF" Offset="1"/>
             </LinearGradientBrush>
         </Grid.Background>
-        <ListBox x:Name="lbxBook" HorizontalAlignment="Left" Height="420" VerticalAlignment="Top" Width="550"/>
+        <ListBox x:Name="lbxBook" HorizontalAlignment="Left" Height="420" VerticalAlignment="Top" Width="550" SelectionChanged="lbxBook_SelectionChanged"/>
         <Button x:Name="btnBookList" Content="List Books" HorizontalAlignment="Left" Height="26" Margin="660,28,0,0" VerticalAlignment="Top" Width="100" TabIndex="1" Click="btnBookList_Click"/>
         <Button x:Name="btnBookAdd" Content="Add a Book" HorizontalAlignment="Left" Height="26" Margin="660,58,0,0" VerticalAlignment="Top" Width="100" TabIndex="2" Click="btnBookAdd_Click" />
         <Button x:Name="btnBookRemove" Content="Remove a Book" HorizontalAlignment="Left" Height="26" Margin="660,88,0,0" VerticalAlignment="Top" Width="100" TabIndex="3" Click="btnBookRemove_Click"/>
@@ -22,10 +22,16 @@
         <Label x:Name="lblBookTitle" Content="Book Title" Margin="570,202,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         <Label x:Name="lblBookAuthor" Content="BookAuthor" Margin="570,232,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         <Label x:Name="lblPublisher" Content="Publisher" Margin="570,262,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <TextBox x:Name="txtAddUser" HorizontalAlignment="Left" Height="26" Margin="685,142,0,0" VerticalAlignment="Top" Width="147" IsInactiveSelectionHighlightEnabled="True" MaxLines="1" MaxLength="24" VerticalContentAlignment="Center" TabIndex="4"/>
-        <TextBox x:Name="txtAddAge" HorizontalAlignment="Left" Height="26" Margin="685,172,0,0" VerticalAlignment="Top" Width="147" IsInactiveSelectionHighlightEnabled="True" MaxLines="1" MaxLength="3" VerticalContentAlignment="Center" TabIndex="5"/>
-        <TextBox x:Name="txtAddCountry" HorizontalAlignment="Left" Height="26" Margin="685,202,0,0" VerticalAlignment="Top" Width="147" IsInactiveSelectionHighlightEnabled="True" MaxLines="1" MaxLength="24" VerticalContentAlignment="Center" TabIndex="6"/>
-        <TextBox x:Name="txtAddState" HorizontalAlignment="Left" Height="26" Margin="685,232,0,0" VerticalAlignment="Top" Width="147" IsInactiveSelectionHighlightEnabled="True" MaxLines="1" MaxLength="24" VerticalContentAlignment="Center" TabIndex="7"/>
-        <TextBox x:Name="txtAddCity" HorizontalAlignment="Left" Height="26" Margin="685,262,0,0" VerticalAlignment="Top" Width="147" IsInactiveSelectionHighlightEnabled="True" MaxLines="1" MaxLength="24" VerticalContentAlignment="Center" TabIndex="8"/>
+        <Label x:Name="lblURILarge" Content="URLIarge" Margin="570,292,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Label x:Name="lblURIMedium" Content="URIMedium" Margin="570,322,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Label x:Name="lblURISmall" Content="URISmall" Margin="570,352,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <TextBox x:Name="txtISBN" HorizontalAlignment="Left" Height="26" Margin="685,142,0,0" VerticalAlignment="Top" Width="147" IsInactiveSelectionHighlightEnabled="True" MaxLines="1" MaxLength="24" VerticalContentAlignment="Center" TabIndex="4"/>
+        <TextBox x:Name="txtYearOfPublication" HorizontalAlignment="Left" Height="26" Margin="685,172,0,0" VerticalAlignment="Top" Width="147" IsInactiveSelectionHighlightEnabled="True" MaxLines="1" MaxLength="3" VerticalContentAlignment="Center" TabIndex="5"/>
+        <TextBox x:Name="txtBookTitle" HorizontalAlignment="Left" Height="26" Margin="685,202,0,0" VerticalAlignment="Top" Width="147" IsInactiveSelectionHighlightEnabled="True" MaxLines="1" MaxLength="24" VerticalContentAlignment="Center" TabIndex="6"/>
+        <TextBox x:Name="txtBookAuthor" HorizontalAlignment="Left" Height="26" Margin="685,232,0,0" VerticalAlignment="Top" Width="147" IsInactiveSelectionHighlightEnabled="True" MaxLines="1" MaxLength="24" VerticalContentAlignment="Center" TabIndex="7"/>
+        <TextBox x:Name="txtPublisher" HorizontalAlignment="Left" Height="26" Margin="685,262,0,0" VerticalAlignment="Top" Width="147" IsInactiveSelectionHighlightEnabled="True" MaxLines="1" MaxLength="24" VerticalContentAlignment="Center" TabIndex="8"/>
+        <TextBox x:Name="txtURIL" HorizontalAlignment="Left" Height="26" Margin="685,292,0,0" VerticalAlignment="Top" Width="147" IsInactiveSelectionHighlightEnabled="True" MaxLines="1" MaxLength="24" VerticalContentAlignment="Center" TabIndex="9"/>
+        <TextBox x:Name="txtURIM" HorizontalAlignment="Left" Height="26" Margin="685,322,0,0" VerticalAlignment="Top" Width="147" IsInactiveSelectionHighlightEnabled="True" MaxLines="1" MaxLength="24" VerticalContentAlignment="Center" TabIndex="10"/>
+        <TextBox x:Name="txtURIS" HorizontalAlignment="Left" Height="26" Margin="685,352,0,0" VerticalAlignment="Top" Width="147" IsInactiveSelectionHighlightEnabled="True" MaxLines="1" MaxLength="24" VerticalContentAlignment="Center" TabIndex="11"/>
     </Grid>
 </Window>

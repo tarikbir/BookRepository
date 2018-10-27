@@ -46,9 +46,8 @@ namespace BookRepository.AdminPanel
                     Location = String.Join(",", txtAddCountry.Text, txtAddState.Text, txtAddCity.Text),
                     IsAdmin = false
                 };
-                //var adduser = SqlHandler.AddUser(user, txtAddPass.Password);
-
                 lbxUser.Items.Add(user);
+                var AddUser = SqlHandler.AddUser(user, txtAddPass.Password);
             }
         }
 
@@ -57,8 +56,8 @@ namespace BookRepository.AdminPanel
             if (lbxUser.SelectedIndex > -1)
             {
                 User user = (User)lbxUser.SelectedItem;
-                //SqlHandler.RemoveUser(user);
                 lbxUser.Items.Remove(lbxUser.SelectedItem);
+                var RemoveUser = SqlHandler.RemoveUser(user);
             }
         }
 

@@ -325,24 +325,26 @@ namespace BookRepository
             }
         }
 
-        public static Response.BaseResponse AddBook(string ISBN,string BookTitle,string BookAuthor,int YearOfPublication,string Publisher)
+        public static Response.BaseResponse AddBook(Book book)
         {
-            Response.BaseResponse response = new Response.BaseResponse();
-            string queryAddNewBook = "INSERT INTO `bx-books`(ISBN , Title , Author , Year , Publisher) VALUES (@ISBN,@Title,@Author,@Year,@Publisher)";
+            Response.BaseResponse Response = new Response.BaseResponse();
+            string queryAddNewBook = "INSERT INTO `bx-books`(ISBN,BookTitle,BookAuthor,YearOfPublication,Publisher,ImageURI_S,ImageURI_M,ImageURI_L) VALUES (@ISBN,@BookTitle,@BookAuthor,@YearOfPublication,@Publisher,@ImageURI_S,ImageURI_M,ImageURI_L)";
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
                 MySqlCommand mySqlCommandAddBook = new MySqlCommand(queryAddNewBook,conn);
-                mySqlCommandAddBook.Parameters.AddWithValue("@ISBN ", ISBN);
-                mySqlCommandAddBook.Parameters.AddWithValue("@Title ", BookTitle);
-                mySqlCommandAddBook.Parameters.AddWithValue("@Author ", BookAuthor);
-                mySqlCommandAddBook.Parameters.AddWithValue("@Year" , YearOfPublication);
-                mySqlCommandAddBook.Parameters.AddWithValue("@Publisher", Publisher);
+                mySqlCommandAddBook.Parameters.AddWithValue("@ISBN ",book.ISBN);
+                mySqlCommandAddBook.Parameters.AddWithValue("@BookTitle ", book.BookTitle);
+                mySqlCommandAddBook.Parameters.AddWithValue("@BookAuthor ", book.BookAuthor);
+                mySqlCommandAddBook.Parameters.AddWithValue("@YearOfPublication" , book.YearOfPublication);
+                mySqlCommandAddBook.Parameters.AddWithValue("@Publisher",book.Publisher);
+                mySqlCommandAddBook.Parameters.AddWithValue("@ImageURI_S", book.ImageURI_S);
+                mySqlCommandAddBook.Parameters.AddWithValue("@ImageURI_M", book.ImageURI_M);
+                mySqlCommandAddBook.Parameters.AddWithValue("@ImageURI_L", book.ImageURI_L);
             }
-
-                return response;
+                return Response;
         }
 
-        public static Response.BaseResponse RemoveBook(string ISBN)
+        public static Response.BaseResponse RemoveBook(Book book)
         {
             string queryRemoveBook = ("DELETE FROM `bx-books` WHERE ISBN = @ISBN");
             Response.BaseResponse removeBook = new Response.BaseResponse();
@@ -398,10 +400,10 @@ namespace BookRepository
             }
         }
 
-        public static Response.BaseResponse Register(string username, int age, string country, string county, string city, string password, bool isAdmin)
+        public static Response.BaseResponse Register(string username,int age,string password,string country,string county,string city,bool IsAdmin)
         {
             string Concat = string.Join(",", country, county, city);
-            string queryUser = "INSERT INTO `bx-users`(`Username`, `Password`, `Location`, `Age`, `IsAdmin`) VALUES (@Username,@Password,@Concat,@Age,@IsAdmin)";
+            string queryUser = "INSERT INTO `bx-users`(`Username`, `Password`, `Location`, `Age`, `IsAdmin`) VALUES (@Username,@Password,@Location,@Age,@IsAdmin)";
             Response.BaseResponse register = new Response.BaseResponse();
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
@@ -410,7 +412,7 @@ namespace BookRepository
                 mySqlCommandUser.Parameters.AddWithValue("@Concat", Concat);
                 mySqlCommandUser.Parameters.AddWithValue("@Username", username);
                 mySqlCommandUser.Parameters.AddWithValue("@Password", password);
-                mySqlCommandUser.Parameters.AddWithValue("@IsAdmin", isAdmin);
+                mySqlCommandUser.Parameters.AddWithValue("@IsAdmin", IsAdmin);
                 try
                 {
                     conn.Open();
