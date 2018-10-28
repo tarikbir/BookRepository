@@ -19,7 +19,8 @@ namespace BookRepository
     public partial class BookViewWindow : Window
     {
         private Book Book;
-        private int Vote;
+        private int Vote = -1;
+        private int PreviousVote = -1;
 
         public BookViewWindow(Book book)
         {
@@ -31,7 +32,6 @@ namespace BookRepository
         private void InitVotes()
         {
             var voteResponse = SqlHandler.GetVote(CommonLibrary.LoggedInUser.UserID.ToString(), Book.ISBN);
-            int vote = 0;
             for (int i = 0; i <= 10; i++)
             {
                 RadioButton rbVote = new RadioButton()
@@ -42,11 +42,11 @@ namespace BookRepository
                     Focusable = false,
                     FontSize = 9
                 };
-                rbVote.Checked += new RoutedEventHandler(RadioButtonVote);
-                if (voteResponse.Success) if (voteResponse.Content == i) { rbVote.IsChecked = true; vote = i; }
+                rbVote.Checked += new RoutedEventHandler(RadioButtonSetVote);
+                if (voteResponse.Success) if (voteResponse.Content == i) { rbVote.IsChecked = true; PreviousVote = i; }
                 CheckBoxesGrid.Children.Add(rbVote);
             }
-            Vote = vote;
+            Vote = PreviousVote;
         }
 
         private void btnReadBook_Click(object sender, RoutedEventArgs e)
@@ -66,7 +66,24 @@ namespace BookRepository
 
         private void btnApplyVote_Click(object sender, RoutedEventArgs e)
         {
-            SqlHandler.CastVote(CommonLibrary.LoggedInUser.UserID.ToString(), Book.ISBN, Vote);
+            Response.BaseResponse response;
+            if (PreviousVote == Vote) return;
+            if (PreviousVote == -1)
+            {
+                response = SqlHandler.AddVote(CommonLibrary.LoggedInUser.UserID.ToString(), Book.ISBN, Vote);
+            }
+            else
+            {
+                response = SqlHandler.UpdateVote(CommonLibrary.LoggedInUser.UserID.ToString(), Book.ISBN, Vote);
+            }
+            if (response.Success)
+            {
+                MessageBox.Show("Successfully added the vote.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show("Unknown error occured while adding the vote.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
@@ -94,7 +111,7 @@ namespace BookRepository
             }
         }
 
-        private void RadioButtonVote(object sender, RoutedEventArgs e)
+        private void RadioButtonSetVote(object sender, RoutedEventArgs e)
         {
             Int32.TryParse(((RadioButton)sender).Content.ToString(), out Vote);
         }

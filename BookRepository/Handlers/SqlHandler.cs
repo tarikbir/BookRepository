@@ -72,250 +72,6 @@ namespace BookRepository
         #endregion
 
         #region SQL Responses
-        public static Response.GenericResponse<List<Book>> GetPopularList()
-        {
-            Response.GenericResponse<List<Book>> response = new Response.GenericResponse<List<Book>>();
-            response.Content = new List<Book>();
-            string query = "SELECT * FROM `bx-books` AS B INNER JOIN (SELECT `ISBN`, COUNT(`ISBN`) AS NumberRating FROM `bx-book-ratings` GROUP BY `ISBN`) AS F ON B.`ISBN` = F.`ISBN` ORDER BY F.NumberRating DESC LIMIT 10";
-
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
-            {
-                MySqlCommand mySqlCommand = new MySqlCommand(query, conn);
-
-                try
-                {
-                    conn.Open();
-
-                    MySqlDataReader reader = mySqlCommand.ExecuteReader();
-
-                    while (reader.Read())
-                    {
-                        try
-                        {
-                            response.Content.Add(GetBookFromReader(reader));
-                        }
-                        catch (Exception e)
-                        {
-                            response.ErrorText += e.Message + "\n";
-                            continue;
-                        }
-                    }
-                    response.Success = true;
-                }
-                catch (Exception e)
-                {
-                    response.ErrorText = e.Message;
-                }
-            }
-            return response;
-        }
-
-        public static Response.GenericResponse<List<Book>> GetHighRatedList()
-        {
-            Response.GenericResponse<List<Book>> response = new Response.GenericResponse<List<Book>>();
-            response.Content = new List<Book>();
-            string query = "SELECT * FROM `bx-books` ORDER BY RatingWeight DESC LIMIT 10";
-
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
-            {
-                MySqlCommand mySqlCommand = new MySqlCommand(query, conn);
-
-                try
-                {
-                    conn.Open();
-
-                    MySqlDataReader reader = mySqlCommand.ExecuteReader();
-
-                    while (reader.Read())
-                    {
-                        try
-                        {
-                            response.Content.Add(GetBookFromReader(reader));
-                        }
-                        catch (Exception e)
-                        {
-                            response.ErrorText += e.Message + "\n";
-                            continue;
-                        }
-                    }
-                    response.Success = true;
-                }
-                catch (Exception e)
-                {
-                    response.ErrorText = e.Message;
-                }
-            }
-            return response;
-        }
-
-        public static Response.GenericResponse<List<Book>> GetNewsList()
-        {
-            Response.GenericResponse<List<Book>> response = new Response.GenericResponse<List<Book>>();
-            response.Content = new List<Book>();
-            string query = "SELECT * FROM `bx-books` ORDER BY AddedDate DESC LIMIT 10";
-
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
-            {
-                MySqlCommand mySqlCommand = new MySqlCommand(query, conn);
-
-                try
-                {
-                    conn.Open();
-
-                    MySqlDataReader reader = mySqlCommand.ExecuteReader();
-
-                    while (reader.Read())
-                    {
-                        try
-                        {
-                            response.Content.Add(GetBookFromReader(reader));
-                        }
-                        catch (Exception e)
-                        {
-                            response.ErrorText += e.Message + "\n";
-                            continue;
-                        }
-                    }
-                    response.Success = true;
-                }
-                catch (Exception e)
-                {
-                    response.ErrorText = e.Message;
-                }
-            }
-            return response;
-        }
-
-        public static Response.GenericResponse<User> UserEntry(string username, string password)
-        {
-            string queryLogin = "SELECT * FROM `bx-users` WHERE username = @username AND password = @password";
-            Response.GenericResponse<User> response = new Response.GenericResponse<User>();
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
-            {
-                MySqlCommand mySqlCommandLogin = new MySqlCommand(queryLogin, conn);
-                mySqlCommandLogin.Parameters.AddWithValue("@username", username);
-                mySqlCommandLogin.Parameters.AddWithValue("@password", password);
-                try
-                {
-                    conn.Open();
-                    MySqlDataReader reader = mySqlCommandLogin.ExecuteReader();
-
-                    if (reader.Read())
-                    {
-                        response.Content = GetUserFromReader(reader);
-                    }
-                    else
-                    {
-                        throw new Exception("No matching username and password combination.");
-                    }
-                    response.Success = true;
-                }
-                catch (Exception e)
-                {
-                    response.ErrorText = e.Message;
-                }
-                return response;
-            }
-        }
-
-        public static Response.GenericResponse<Book> GetBook(string ISBN)
-        {
-            Response.GenericResponse<Book> response = new Response.GenericResponse<Book>();
-            string query = "SELECT * FROM `bx-books` WHERE ISBN = @ISBN";
-
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
-            {
-                MySqlCommand mySqlCommand = new MySqlCommand(query, conn);
-                mySqlCommand.Parameters.AddWithValue("@ISBN", ISBN);
-                try
-                {
-                    conn.Open();
-                    MySqlDataReader reader = mySqlCommand.ExecuteReader();
-                    Book Book;
-
-                    if (reader.Read())
-                    {
-                        Book = GetBookFromReader(reader);
-                    }
-                    else
-                    {
-                        throw new Exception("Could not find a book with ISBN no: '" + ISBN + "'.");
-                    }
-                    response.Content = Book;
-                    response.Success = true;
-                }
-                catch (Exception e)
-                {
-                    response.ErrorText = e.Message;
-                }
-            }
-
-            return response;
-        }
-
-        public static Response.GenericResponse<int> GetVote(string userID, string bookISBN)
-        {
-            Response.GenericResponse<int> response = new Response.GenericResponse<int>();
-            string query = "SELECT `Book-Rating` FROM `bx-book-ratings` WHERE ISBN = @ISBN AND `User-ID` = @UserID";
-
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
-            {
-                MySqlCommand mySqlCommand = new MySqlCommand(query, conn);
-                mySqlCommand.Parameters.AddWithValue("@ISBN", bookISBN);
-                mySqlCommand.Parameters.AddWithValue("@UserID", userID);
-                try
-                {
-                    conn.Open();
-                    MySqlDataReader reader = mySqlCommand.ExecuteReader();
-
-                    if (reader.Read())
-                    {
-                        response.Content = GetSafeField<int>(reader, 0);
-                    }
-                    else
-                    {
-                        throw new Exception("No vote has been cast by user '" + userID + "' for the book '" + bookISBN + "'.");
-                    }
-                }
-                catch (Exception e)
-                {
-                    response.ErrorText = e.Message;
-                }
-            }
-            return response;
-        }
-
-        internal static Response.GenericResponse<double> GetTotalAverageVotes()
-        {
-            Response.GenericResponse<double> response = new Response.GenericResponse<double>();
-            string queryGetC = "SELECT AVG(`Book-Rating`) FROM `bx-book-ratings`";
-
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
-            {
-                try
-                {
-                    MySqlCommand commandGetC = new MySqlCommand(queryGetC, conn);
-                    MySqlDataReader reader = commandGetC.ExecuteReader();
-                    double C = 0.0;
-                    if (reader.Read())
-                    {
-                        C = GetSafeField<double>(reader, 0);
-                    }
-                    else
-                    {
-                        throw new Exception("Error getting mean value.");
-                    }
-                    response.Content = C;
-                    response.Success = true;
-                }
-                catch (Exception e)
-                {
-                    response.ErrorText = e.Message;
-                }
-                return response;
-            }
-        }
-
         internal static Response.BaseResponse UpdateAllWeights(BackgroundWorker bgw)
         {
             Response.BaseResponse response = new Response.BaseResponse();
@@ -405,43 +161,35 @@ namespace BookRepository
             return response;
         }
 
-        public static Response.BaseResponse CastVote(string userID, string bookISBN, int vote)
+        public static Response.GenericResponse<List<Book>> GetPopularList()
         {
-            Response.BaseResponse response = new Response.BaseResponse();
-            string queryGetVotesForBook = "SELECT SUM(`Book-Rating`), COUNT(`Book-Rating`) FROM `bx-book-ratings` WHERE ISBN = @ISBN";
-            string queryAddVote = "INSERT INTO `bx-book-ratings`(`User-ID`, `ISBN`, `Book-Rating`) VALUES (@UserID,@ISBN,@Rating)";
-            string queryUpdateVote = "UPDATE `bx-book-ratings` SET `Book-Rating` = @Rating, `Weight`= @Weight WHERE ISBN = @ISBN AND `User-ID` = @UserID";
-
-            var responsePrevVote = GetVote(userID, bookISBN);
-            int prevVote;
-            if (responsePrevVote.Success)
-            {
-                prevVote = responsePrevVote.Content;
-            }
+            Response.GenericResponse<List<Book>> response = new Response.GenericResponse<List<Book>>();
+            response.Content = new List<Book>();
+            string query = "SELECT * FROM `bx-books` AS B INNER JOIN (SELECT `ISBN`, COUNT(`ISBN`) AS NumberRating FROM `bx-book-ratings` GROUP BY `ISBN`) AS F ON B.`ISBN` = F.`ISBN` ORDER BY F.NumberRating DESC LIMIT 10";
 
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
+                MySqlCommand mySqlCommand = new MySqlCommand(query, conn);
+
                 try
                 {
                     conn.Open();
-                    MySqlDataReader reader = null;
-                    int voteFromTable;
 
-                    if (reader.Read())
-                    {
-                        //This is an already voted book.
-                        voteFromTable = (int)GetSafeField<Int64>(reader, 0);
-                    }
-                    else
-                    {
-                        //This is a newly voted book.
-                        MySqlCommand commandAddVote = new MySqlCommand(queryAddVote, conn);
-                        commandAddVote.Parameters.AddWithValue("@UserID", userID);
-                        commandAddVote.Parameters.AddWithValue("@ISBN", bookISBN);
-                        commandAddVote.Parameters.AddWithValue("@Rating", vote);
-                        commandAddVote.Parameters.AddWithValue("@Weight", userID);
+                    MySqlDataReader reader = mySqlCommand.ExecuteReader();
 
+                    while (reader.Read())
+                    {
+                        try
+                        {
+                            response.Content.Add(GetBookFromReader(reader));
+                        }
+                        catch (Exception e)
+                        {
+                            response.ErrorText += e.Message + "\n";
+                            continue;
+                        }
                     }
+                    response.Success = true;
                 }
                 catch (Exception e)
                 {
@@ -449,6 +197,352 @@ namespace BookRepository
                 }
             }
             return response;
+        }
+
+        public static Response.GenericResponse<List<Book>> GetHighRatedList()
+        {
+            Response.GenericResponse<List<Book>> response = new Response.GenericResponse<List<Book>>();
+            response.Content = new List<Book>();
+            string query = "SELECT * FROM `bx-books` ORDER BY RatingWeight DESC LIMIT 10";
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                MySqlCommand mySqlCommand = new MySqlCommand(query, conn);
+
+                try
+                {
+                    conn.Open();
+
+                    MySqlDataReader reader = mySqlCommand.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        try
+                        {
+                            response.Content.Add(GetBookFromReader(reader));
+                        }
+                        catch (Exception e)
+                        {
+                            response.ErrorText += e.Message + "\n";
+                            continue;
+                        }
+                    }
+                    response.Success = true;
+                }
+                catch (Exception e)
+                {
+                    response.ErrorText = e.Message;
+                }
+            }
+            return response;
+        }
+
+        public static Response.GenericResponse<List<Book>> GetNewsList()
+        {
+            Response.GenericResponse<List<Book>> response = new Response.GenericResponse<List<Book>>();
+            response.Content = new List<Book>();
+
+            string query = "SELECT * FROM `bx-books` ORDER BY AddedDate DESC LIMIT 10";
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                MySqlCommand mySqlCommand = new MySqlCommand(query, conn);
+
+                try
+                {
+                    conn.Open();
+
+                    MySqlDataReader reader = mySqlCommand.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        try
+                        {
+                            response.Content.Add(GetBookFromReader(reader));
+                        }
+                        catch (Exception e)
+                        {
+                            response.ErrorText += e.Message + "\n";
+                            continue;
+                        }
+                    }
+                    response.Success = true;
+                }
+                catch (Exception e)
+                {
+                    response.ErrorText = e.Message;
+                }
+            }
+            return response;
+        }
+
+        public static Response.GenericResponse<List<User>> GetAllUsers()
+        {
+            string queryGetBooks = "SELECT * FROM `bx-users` WHERE Username IS NOT NULL";
+            Response.GenericResponse<List<User>> response = new Response.GenericResponse<List<User>> { Content = new List<User>() };
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                MySqlCommand mySqlCommandGetAllUsers = new MySqlCommand(queryGetBooks, conn);
+
+                try
+                {
+                    conn.Open();
+
+                    MySqlDataReader reader = mySqlCommandGetAllUsers.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        try
+                        {
+                            response.Content.Add(GetUserFromReader(reader));
+                        }
+                        catch (Exception e)
+                        {
+                            response.ErrorText += e.Message + "\n";
+                            continue;
+                        }
+                    }
+                    response.Success = true;
+                }
+                catch (Exception e)
+                {
+                    response.ErrorText = e.Message;
+                }
+                return response;
+            }
+        }
+
+        public static Response.GenericResponse<List<Book>> GetAllBooks()
+        {
+            string queryGetBooks = ("SELECT * FROM `bx-books`");
+            Response.GenericResponse<List<Book>> response = new Response.GenericResponse<List<Book>> { Content = new List<Book>() };
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                MySqlCommand mySqlCommandGetAllBooks = new MySqlCommand(queryGetBooks, conn);
+                try
+                {
+                    conn.Open();
+                    MySqlDataReader reader = mySqlCommandGetAllBooks.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        try
+                        {
+                            response.Content.Add(GetBookFromReader(reader));
+                        }
+                        catch (Exception e)
+                        {
+                            response.ErrorText += e.Message + "\n";
+                            continue;
+                        }
+                    }
+                    if (response.Content.Count <= 0) throw new Exception("No books returned.");
+                    response.Success = true;
+                }
+                catch (Exception e)
+                {
+                    response.ErrorText = e.Message;
+                }
+                return response;
+            }
+        }
+
+        public static Response.GenericResponse<User> GetUser(string username, string password)
+        {
+            string queryLogin = "SELECT * FROM `bx-users` WHERE username = @username AND password = @password";
+            Response.GenericResponse<User> response = new Response.GenericResponse<User>();
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                MySqlCommand mySqlCommandLogin = new MySqlCommand(queryLogin, conn);
+                mySqlCommandLogin.Parameters.AddWithValue("@username", username);
+                mySqlCommandLogin.Parameters.AddWithValue("@password", password);
+                try
+                {
+                    conn.Open();
+                    MySqlDataReader reader = mySqlCommandLogin.ExecuteReader();
+
+                    if (reader.Read())
+                    {
+                        response.Content = GetUserFromReader(reader);
+                    }
+                    else
+                    {
+                        throw new Exception("No matching username and password combination.");
+                    }
+                    response.Success = true;
+                }
+                catch (Exception e)
+                {
+                    response.ErrorText = e.Message;
+                }
+                return response;
+            }
+        }
+
+        public static Response.GenericResponse<Book> GetBook(string ISBN)
+        {
+            Response.GenericResponse<Book> response = new Response.GenericResponse<Book>();
+            string query = "SELECT * FROM `bx-books` WHERE ISBN = @ISBN";
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                MySqlCommand mySqlCommand = new MySqlCommand(query, conn);
+                mySqlCommand.Parameters.AddWithValue("@ISBN", ISBN);
+                try
+                {
+                    conn.Open();
+                    MySqlDataReader reader = mySqlCommand.ExecuteReader();
+                    Book Book;
+
+                    if (reader.Read())
+                    {
+                        Book = GetBookFromReader(reader);
+                    }
+                    else
+                    {
+                        throw new Exception("Could not find a book with ISBN no: '" + ISBN + "'.");
+                    }
+                    response.Content = Book;
+                    response.Success = true;
+                }
+                catch (Exception e)
+                {
+                    response.ErrorText = e.Message;
+                }
+            }
+
+            return response;
+        }
+
+        public static Response.GenericResponse<int> GetVote(string userID, string bookISBN)
+        {
+            Response.GenericResponse<int> response = new Response.GenericResponse<int>();
+            string query = "SELECT `Book-Rating` FROM `bx-book-ratings` WHERE ISBN = @ISBN AND `User-ID` = @UserID";
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                MySqlCommand mySqlCommand = new MySqlCommand(query, conn);
+                mySqlCommand.Parameters.AddWithValue("@ISBN", bookISBN);
+                mySqlCommand.Parameters.AddWithValue("@UserID", userID);
+                try
+                {
+                    conn.Open();
+                    MySqlDataReader reader = mySqlCommand.ExecuteReader();
+
+                    if (reader.Read())
+                    {
+                        response.Content = GetSafeField<SByte>(reader, 0);
+                    }
+                    else
+                    {
+                        throw new Exception("No vote has been cast by user '" + userID + "' for the book '" + bookISBN + "'.");
+                    }
+                    response.Success = true;
+                }
+                catch (Exception e)
+                {
+                    response.ErrorText = e.Message;
+                }
+            }
+            return response;
+        }
+
+        internal static Response.GenericResponse<double> GetTotalAverageVotes()
+        {
+            Response.GenericResponse<double> response = new Response.GenericResponse<double>();
+            string queryGetC = "SELECT AVG(`Book-Rating`) FROM `bx-book-ratings`";
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+                    MySqlCommand commandGetC = new MySqlCommand(queryGetC, conn);
+                    MySqlDataReader reader = commandGetC.ExecuteReader();
+                    double C = 0.0;
+                    if (reader.Read())
+                    {
+                        C = GetSafeField<double>(reader, 0);
+                    }
+                    else
+                    {
+                        throw new Exception("Error getting mean value.");
+                    }
+                    response.Content = C;
+                    response.Success = true;
+                }
+                catch (Exception e)
+                {
+                    response.ErrorText = e.Message;
+                }
+                return response;
+            }
+        }
+
+        public static Response.BaseResponse AddVote(string userID, string bookISBN, int vote)
+        {
+            Response.BaseResponse response = new Response.BaseResponse();
+            string queryAddVote = "INSERT INTO `bx-book-ratings`(`User-ID`, `ISBN`, `Book-Rating`) VALUES (@UserID,@ISBN,@Rating)";
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                MySqlCommand mySqlCommandAddVote = new MySqlCommand(queryAddVote, conn);
+                mySqlCommandAddVote.Parameters.AddWithValue("@UserID", userID);
+                mySqlCommandAddVote.Parameters.AddWithValue("@ISBN", bookISBN);
+                mySqlCommandAddVote.Parameters.AddWithValue("@Rating", vote);
+
+                try
+                {
+                    conn.Open();
+                    //Calculate weight
+
+                    int rowsAffected = mySqlCommandAddVote.ExecuteNonQuery();
+                    if (rowsAffected != 1)
+                    {
+                        throw new Exception("Error inserting the vote. Rows affected: " + rowsAffected);
+                    }
+                    response.Success = true;
+                }
+                catch (Exception e)
+                {
+                    response.ErrorText = e.Message;
+                }
+                return response;
+            }
+        }
+
+        public static Response.BaseResponse UpdateVote(string userID, string bookISBN, int vote)
+        {
+            Response.BaseResponse response = new Response.BaseResponse();
+            string queryUpdateVote = "UPDATE `bx-book-ratings` SET `Book-Rating` = @Rating WHERE ISBN = @ISBN AND `User-ID` = @UserID";
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                MySqlCommand mySqlCommandUpdateVote = new MySqlCommand(queryUpdateVote, conn);
+                mySqlCommandUpdateVote.Parameters.AddWithValue("@UserID", userID);
+                mySqlCommandUpdateVote.Parameters.AddWithValue("@ISBN", bookISBN);
+                mySqlCommandUpdateVote.Parameters.AddWithValue("@Rating", vote);
+
+                try
+                {
+                    conn.Open();
+                    //Calculate weight
+
+                    int rowsAffected = mySqlCommandUpdateVote.ExecuteNonQuery();
+                    if (rowsAffected != 1)
+                    {
+                        throw new Exception("Error updating the vote. Rows affected: " + rowsAffected);
+                    }
+                    response.Success = true;
+                }
+                catch (Exception e)
+                {
+                    response.ErrorText = e.Message;
+                }
+                return response;
+            }
         }
 
         public static Response.BaseResponse AddUser(User user, string password)
@@ -497,43 +591,6 @@ namespace BookRepository
                     if (rowsAffected != 1)
                     {
                         throw new Exception("Error removing from users table. Rows affected: " + rowsAffected);
-                    }
-                    response.Success = true;
-                }
-                catch (Exception e)
-                {
-                    response.ErrorText = e.Message;
-                }
-                return response;
-            }
-        }
-
-        public static Response.GenericResponse<List<User>> GetAllUsers()
-        {
-            string queryGetBooks = "SELECT * FROM `bx-users` WHERE Username IS NOT NULL";
-            Response.GenericResponse<List<User>> response = new Response.GenericResponse<List<User>> { Content = new List<User>() };
-
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
-            {
-                MySqlCommand mySqlCommandGetAllUsers = new MySqlCommand(queryGetBooks, conn);
-
-                try
-                {
-                    conn.Open();
-
-                    MySqlDataReader reader = mySqlCommandGetAllUsers.ExecuteReader();
-
-                    while (reader.Read())
-                    {
-                        try
-                        {
-                            response.Content.Add(GetUserFromReader(reader));
-                        }
-                        catch (Exception e)
-                        {
-                            response.ErrorText += e.Message + "\n";
-                            continue;
-                        }
                     }
                     response.Success = true;
                 }
@@ -605,73 +662,6 @@ namespace BookRepository
                 }
             }
             return response;
-        }
-
-        public static Response.GenericResponse<List<Book>> GetAllBooks()
-        {
-            string queryGetBooks = ("SELECT * FROM `bx-books`");
-            Response.GenericResponse<List<Book>> response = new Response.GenericResponse<List<Book>> { Content = new List<Book>() };
-
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
-            {
-                MySqlCommand mySqlCommandGetAllBooks = new MySqlCommand(queryGetBooks, conn);
-                try
-                {
-                    conn.Open();
-                    MySqlDataReader reader = mySqlCommandGetAllBooks.ExecuteReader();
-
-                    while (reader.Read())
-                    {
-                        try
-                        {
-                            response.Content.Add(GetBookFromReader(reader));
-                        }
-                        catch (Exception e)
-                        {
-                            response.ErrorText += e.Message + "\n";
-                            continue;
-                        }
-                    }
-                    if (response.Content.Count <= 0) throw new Exception("No books returned.");
-                    response.Success = true;
-                }
-                catch (Exception e)
-                {
-                    response.ErrorText = e.Message;
-                }
-                return response;
-            }
-        }
-
-        public static Response.BaseResponse Register(string username, int age, string password, string country, string county, string city, bool IsAdmin)
-        {
-            string Concat = string.Join(",", country, county, city);
-            string queryUser = "INSERT INTO `bx-users`(`Username`, `Password`, `Location`, `Age`, `IsAdmin`) VALUES (@Username,@Password,@Location,@Age,@IsAdmin)";
-            Response.BaseResponse response = new Response.BaseResponse();
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
-            {
-                MySqlCommand mySqlCommandUser = new MySqlCommand(queryUser, conn);
-                mySqlCommandUser.Parameters.AddWithValue("@Age", age);
-                mySqlCommandUser.Parameters.AddWithValue("@Concat", Concat);
-                mySqlCommandUser.Parameters.AddWithValue("@Username", username);
-                mySqlCommandUser.Parameters.AddWithValue("@Password", password);
-                mySqlCommandUser.Parameters.AddWithValue("@IsAdmin", IsAdmin);
-                try
-                {
-                    conn.Open();
-                    int rowsAffected = mySqlCommandUser.ExecuteNonQuery();
-                    if (rowsAffected != 1)
-                    {
-                        throw new Exception("Error inserting into users table.");
-                    }
-                    response.Success = true;
-                }
-                catch (Exception e)
-                {
-                    response.ErrorText = e.Message;
-                }
-                return response;
-            }
         }
         #endregion
     }

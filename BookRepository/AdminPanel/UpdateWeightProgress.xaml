@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BookRepository.AdminPanel"
         mc:Ignorable="d"
-        Title="Updating..." Height="100" Width="300" ContentRendered="Window_ContentRendered" ResizeMode="NoResize" ShowInTaskbar="False">
+        Title="Updating... Do NOT Close This Window" Height="100" Width="300" ContentRendered="Window_ContentRendered" ResizeMode="NoResize">
     <Grid>
         <Grid.Background>
             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">

@@ -27,7 +27,7 @@ namespace BookRepository
 
         private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
-            var loginResponse = SqlHandler.UserEntry(txtUser.Text, txtPass.Password);
+            var loginResponse = SqlHandler.GetUser(txtUser.Text, txtPass.Password);
             if(loginResponse.Success)
             {
                 string extraText = String.Empty;

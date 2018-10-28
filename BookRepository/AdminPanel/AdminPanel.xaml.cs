@@ -39,14 +39,7 @@ namespace BookRepository.AdminPanel
                 "Do you want to continue anyway?", "Warning!", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
                 UpdateWeightProgress updateWeightProgress = new UpdateWeightProgress();
-                if (updateWeightProgress.ShowDialog() == true)
-                {
-                    MessageBox.Show("Database successfully updated.", "Success",MessageBoxButton.OK,MessageBoxImage.Information);
-                }
-                else
-                {
-                    MessageBox.Show("There was an error updating the database.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
+                updateWeightProgress.Show();
             }
         }
 

@@ -24,7 +24,14 @@ namespace BookRepository
 
         private void btnRegister_Click(object sender, RoutedEventArgs e)
         {
-            var register = SqlHandler.Register(txtUser.Text,Int32.Parse(txtAge.Text),txtCountry.Text,txtState.Text,txtCity.Text,txtPass.Password,chkIsAdmin.IsChecked ?? false);
+            User user = new User()
+            {
+                Username = txtUser.Text,
+                Age = UInt32.Parse(txtAge.Text),
+                Location = String.Join(txtCountry.Text,txtState.Text,txtCity.Text),
+                IsAdmin = chkIsAdmin.IsChecked ?? false
+            };
+            var register = SqlHandler.AddUser(user, txtPass.Password);
             if (register.Success)
             {
                 MessageBox.Show("User has been added successfully","Success",MessageBoxButton.OK,MessageBoxImage.Information);
