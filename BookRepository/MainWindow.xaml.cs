@@ -64,12 +64,17 @@ namespace BookRepository
         private void bgwNews_DoWork(object sender, DoWorkEventArgs e)
         {
             //SQL Latest Book Additions Return
-            List<string> list = new List<string>() { "000104799X", "0001046713", "0001046934", "0001047663", "000104799X", "0001061127", "0001053736" };
+            //List<string> list = new List<string>() { "000104799X", "0001046713", "0001046934", "0001047663", "000104799X", "0001061127", "0001053736" };
+            List<Book> list = SqlHandler.GetNewsList().Content;
             this.Dispatcher.Invoke(() =>
             {
-                foreach (string item in list)
+                if (!(list.Count > 0))
                 {
-                    Book book = SqlHandler.GetBook(item).Content;
+                    MessageBox.Show("Error getting news list.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                foreach (Book book in list)
+                {
                     if (book != null)
                         wrapNews.Children.Add(new BookFrame(book, currentUser));
                 }
@@ -82,7 +87,7 @@ namespace BookRepository
             List<Book> list = SqlHandler.GetPopularList().Content;
             this.Dispatcher.Invoke(() =>
             {
-                if (!(list.Count>0))
+                if (!(list.Count > 0))
                 {
                     MessageBox.Show("Error getting popular list.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
@@ -102,15 +107,15 @@ namespace BookRepository
             this.Dispatcher.Invoke(() =>
             {
                 if (!(list.Count > 0))
-                    {
-                        MessageBox.Show("Error getting high rated list.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                        return;
-                    }
-                    foreach (Book book in list)
-                    {
-                        if (book != null)
-                            wrapHighRated.Children.Add(new BookFrame(book, currentUser));
-                    }
+                {
+                    MessageBox.Show("Error getting high rated list.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                foreach (Book book in list)
+                {
+                    if (book != null)
+                        wrapHighRated.Children.Add(new BookFrame(book, currentUser));
+                }
             });
         }
 

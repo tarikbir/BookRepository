@@ -5,16 +5,19 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BookRepository.AdminPanel"
         mc:Ignorable="d"
-        Title="Admin Control Panel" Height="200" Width="300" ResizeMode="CanMinimize" Icon="pack://siteoforigin:,,,/Resources/bookrepoicon.png" Topmost="True">
-    <Grid>
+        Title="Admin Control Panel" Height="200" Width="300" ResizeMode="CanMinimize">
+    <Grid UseLayoutRounding="False">
         <Grid.Background>
             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                 <GradientStop Color="#FF578BBF" Offset="0"/>
                 <GradientStop Color="#FFB2D9FF" Offset="1"/>
             </LinearGradientBrush>
         </Grid.Background>
-        <Button x:Name="btnUserInfo" Content="User Control" HorizontalAlignment="Center" Height="26" VerticalAlignment="Center" Width="120" TabIndex="1" Click="btnUserInfo_Click"/>
-        <Button x:Name="btnBooks" Content="Book Control" HorizontalAlignment="Center" Height="26" Margin="0,-100,0,0" VerticalAlignment="Center" Width="120" TabIndex="2" Click="btnBooks_Click"/>
-        <Button x:Name="btnExit" Content="Close Admin Panel" HorizontalAlignment="Center" Height="26" Margin="0,100,0,0" VerticalAlignment="Center" Width="120" TabIndex="3" Click="btnExit_Click" Background="#FFAA0000"/>
+        <UniformGrid Rows="4" Columns="1">
+            <Button x:Name="btnUserInfo" Content="User Control" HorizontalAlignment="Center" Height="26" VerticalAlignment="Center" Width="120" TabIndex="1" Click="btnUserInfo_Click"/>
+            <Button x:Name="btnBooks" Content="Book Control" HorizontalAlignment="Center" Height="26" VerticalAlignment="Center" Width="120" TabIndex="2" Click="btnBooks_Click" />
+            <Button x:Name="btnUpdateWeights" Content="Update All Weights" HorizontalAlignment="Center" Height="26" VerticalAlignment="Center" Width="120" TabIndex="3" Click="btnUpdateWeights_Click"/>
+            <Button x:Name="btnExit" Content="Close Admin Panel" HorizontalAlignment="Center" Height="26" VerticalAlignment="Center" Width="120" TabIndex="4" Click="btnExit_Click" Background="#FFAA0000"/>
+        </UniformGrid>
     </Grid>
 </Window>

@@ -33,6 +33,23 @@ namespace BookRepository.AdminPanel
             UserPanel.ShowDialog();
         }
 
+        private void btnUpdateWeights_Click(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("This progress will take a really long time (about 30 mins). If you abruptly close the process, it might corrupt some data on the database. " +
+                "Do you want to continue anyway?", "Warning!", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            {
+                var response = SqlHandler.UpdateAllWeights();
+                if (response.Success)
+                {
+                    MessageBox.Show("Database successfully updated.", "Success",MessageBoxButton.OK,MessageBoxImage.Information);
+                }
+                else
+                {
+                    MessageBox.Show("There was an error updating the database.\n\n" + response.ErrorText, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
         private void btnExit_Click(object sender, RoutedEventArgs e)
         {
             Close();

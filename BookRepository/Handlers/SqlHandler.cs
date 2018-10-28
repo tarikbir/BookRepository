@@ -31,18 +31,25 @@ namespace BookRepository
             return true;
         }
 
+        private static T GetSafeField<T>(MySqlDataReader reader, int index)
+        {
+            if (!reader.IsDBNull(index))
+                return reader.GetFieldValue<T>(index);
+            return default(T);
+        }
+
         private static Book GetBookFromReader(MySqlDataReader reader)
         {
-            Int32.TryParse(reader.GetFieldValue<string>(3), out int year);
+            Int32.TryParse(GetSafeField<string>(reader, 3), out int year);
             Book Book = new Book()
             {
-                ISBN = reader.GetFieldValue<string>(0),
-                BookTitle = reader.GetFieldValue<string>(1).Trim(),
-                BookAuthor = reader.GetFieldValue<string>(2),
-                Publisher = reader.GetFieldValue<string>(4),
-                ImageURI_S = reader.GetFieldValue<string>(5),
-                ImageURI_M = reader.GetFieldValue<string>(6),
-                ImageURI_L = reader.GetFieldValue<string>(7),
+                ISBN = GetSafeField<string>(reader, 0),
+                BookTitle = GetSafeField<string>(reader, 1).Trim(),
+                BookAuthor = GetSafeField<string>(reader, 2),
+                Publisher = GetSafeField<string>(reader, 4),
+                ImageURI_S = GetSafeField<string>(reader, 5),
+                ImageURI_M = GetSafeField<string>(reader, 6),
+                ImageURI_L = GetSafeField<string>(reader, 7),
                 YearOfPublication = year
             };
             return Book;
@@ -52,11 +59,11 @@ namespace BookRepository
         {
             User user = new User()
             {
-                UserID = reader.GetFieldValue<UInt32>(0),
-                Username = reader.GetFieldValue<string>(1),
-                Location = reader.GetFieldValue<string>(3) ?? String.Empty,
-                Age = reader.IsDBNull(4) ? 0 : reader.GetUInt32(4),
-                IsAdmin = reader.GetFieldValue<bool>(5)
+                UserID = GetSafeField<UInt32>(reader, 0),
+                Username = GetSafeField<string>(reader, 1),
+                Location = GetSafeField<string>(reader, 3),
+                Age = GetSafeField<UInt32>(reader, 4),
+                IsAdmin = GetSafeField<bool>(reader, 5)
             };
             return user;
         }
@@ -105,7 +112,45 @@ namespace BookRepository
         {
             Response.GenericResponse<List<Book>> response = new Response.GenericResponse<List<Book>>();
             response.Content = new List<Book>();
-            string query = "SELECT * FROM `bx-books` AS B INNER JOIN (SELECT DISTINCT `ISBN`, Weight FROM `bx-book-ratings` ORDER BY Weight DESC LIMIT 10) AS F ON B.`ISBN` = F.`ISBN`";
+            string query = "SELECT * FROM `bx-books` ORDER BY RatingWeight DESC LIMIT 10";
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                MySqlCommand mySqlCommand = new MySqlCommand(query, conn);
+
+                try
+                {
+                    conn.Open();
+
+                    MySqlDataReader reader = mySqlCommand.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        try
+                        {
+                            response.Content.Add(GetBookFromReader(reader));
+                        }
+                        catch (Exception e)
+                        {
+                            response.ErrorText += e.Message + "\n";
+                            continue;
+                        }
+                    }
+                    response.Success = true;
+                }
+                catch (Exception e)
+                {
+                    response.ErrorText = e.Message;
+                }
+            }
+            return response;
+        }
+
+        public static Response.GenericResponse<List<Book>> GetNewsList()
+        {
+            Response.GenericResponse<List<Book>> response = new Response.GenericResponse<List<Book>>();
+            response.Content = new List<Book>();
+            string query = "SELECT * FROM `bx-books` ORDER BY AddedDate DESC LIMIT 10";
 
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
@@ -223,7 +268,7 @@ namespace BookRepository
 
                     if (reader.Read())
                     {
-                        response.Content = reader.GetFieldValue<int>(0);
+                        response.Content = GetSafeField<int>(reader, 0);
                     }
                     else
                     {
@@ -238,34 +283,114 @@ namespace BookRepository
             return response;
         }
 
+        internal static Response.BaseResponse UpdateAllWeights()
+        {
+            Response.BaseResponse response = new Response.BaseResponse();
+            string queryUpdate = "UPDATE `bx-books` SET `RatingWeight` = @Weight WHERE ISBN = @ISBN";
+            string queryGetC = "SELECT AVG(`Book-Rating`) FROM `bx-book-ratings`";
+            string queryGetSum = "SELECT SUM(`Book-Rating`), COUNT(`Book-Rating`) FROM `bx-book-ratings` WHERE ISBN = @ISBN";
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    var allBooksResponse = GetAllBooks();
+                    conn.Open();
+                    if (allBooksResponse.Success)
+                    {
+                        MySqlCommand commandGetC = new MySqlCommand(queryGetC, conn);
+                        MySqlDataReader reader = commandGetC.ExecuteReader();
+                        double C = 0.0;
+                        if (reader.Read())
+                        {
+                            C = GetSafeField<double>(reader, 0);
+                        }
+                        else
+                        {
+                            throw new Exception("Error getting mean value.");
+                        }
+
+                        foreach (Book item in allBooksResponse.Content)
+                        {
+                            reader.Close();
+                            MySqlCommand commandUpdate = new MySqlCommand(queryUpdate, conn);
+                            commandUpdate.Parameters.AddWithValue("@ISBN", item.ISBN);
+                            MySqlCommand commandGetSum = new MySqlCommand(queryGetSum, conn);
+                            commandGetSum.Parameters.AddWithValue("@ISBN", item.ISBN);
+                            int count = 0;
+                            double sum = 0.0;
+                            try
+                            {
+                                reader = commandGetSum.ExecuteReader();
+                                if (reader.Read())
+                                {
+                                    sum = GetSafeField<double>(reader, 0);
+                                    count = (int)GetSafeField<Int64>(reader, 1);
+                                }
+                                else
+                                {
+                                    throw new Exception("Can't read count and sum values for book " + item.ISBN + ".");
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                response.ErrorText += e.Message + " Error occured on update at " + item.ISBN + ".\n";
+                                continue;
+                            }
+                            double avg = count != 0 ? sum / count : 0;
+                            double weight = CommonLibrary.GetWeightRate(count, avg, C, 5);
+                            commandUpdate.Parameters.AddWithValue("@Weight", weight);
+                            reader.Close();
+                            int rowsAffected = commandUpdate.ExecuteNonQuery();
+                            if (rowsAffected != 1)
+                            {
+                                throw new Exception("Error weight update. Rows affected: " + rowsAffected);
+                            }
+                        }
+                    }
+                    response.Success = true;
+                }
+                catch (Exception e)
+                {
+                    response.ErrorText = e.Message;
+                }
+            }
+            return response;
+        }
+
         public static Response.BaseResponse CastVote(string userID, string bookISBN, int vote)
         {
             Response.BaseResponse response = new Response.BaseResponse();
-            string queryGetUserPrevVotes = "SELECT `Book-Rating` FROM `bx-book-ratings` WHERE ISBN = @ISBN AND `User-ID` = @UserID";
-            string queryGetVotesForBook = "SELECT * FROM `bx-book-ratings` WHERE ISBN = @ISBN";
+            string queryGetUserPrevVote = "SELECT `Book-Rating` FROM `bx-book-ratings` WHERE ISBN = @ISBN AND `User-ID` = @UserID";
+            string queryGetVotesForBook = "SELECT SUM(`Book-Rating`), COUNT(`Book-Rating`) FROM `bx-book-ratings` WHERE ISBN = @ISBN";
             string queryAddVote = "INSERT INTO `bx-book-ratings`(`User-ID`, `ISBN`, `Book-Rating`, `Weight`) VALUES (@UserID,@ISBN,@Rating,@Weight)";
             string queryUpdateVote = "UPDATE `bx-book-ratings` SET `Book-Rating` = @Rating, `Weight`= @Weight WHERE ISBN = @ISBN AND `User-ID` = @UserID";
-            //(NumberRating/1147285)*AverageRatingForItem+(1-(NumberRating/1147285))*2.866898
+
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
-                MySqlCommand mySqlCommand = new MySqlCommand(queryGetUserPrevVotes, conn);
-                mySqlCommand.Parameters.AddWithValue("@ISBN", bookISBN);
-                mySqlCommand.Parameters.AddWithValue("@UserID", userID);
+                MySqlCommand commandGetUserPrevVotes = new MySqlCommand(queryGetUserPrevVote, conn);
+                commandGetUserPrevVotes.Parameters.AddWithValue("@ISBN", bookISBN);
+                commandGetUserPrevVotes.Parameters.AddWithValue("@UserID", userID);
                 try
                 {
                     conn.Open();
-                    MySqlDataReader reader = mySqlCommand.ExecuteReader();
+                    MySqlDataReader reader = commandGetUserPrevVotes.ExecuteReader();
                     int voteFromTable;
 
                     if (reader.Read())
                     {
                         //This is an already voted book.
-                        voteFromTable = reader.GetFieldValue<int>(0);
+                        voteFromTable = (int) GetSafeField<Int64>(reader, 0);
                     }
                     else
                     {
                         //This is a newly voted book.
-                        
+                        MySqlCommand commandAddVote = new MySqlCommand(queryAddVote, conn);
+                        commandAddVote.Parameters.AddWithValue("@UserID", userID);
+                        commandAddVote.Parameters.AddWithValue("@ISBN", bookISBN);
+                        commandAddVote.Parameters.AddWithValue("@Rating", vote);
+                        commandAddVote.Parameters.AddWithValue("@Weight", userID);
+
                     }
                 }
                 catch (Exception e)
@@ -336,7 +461,7 @@ namespace BookRepository
         public static Response.GenericResponse<List<User>> GetAllUsers()
         {
             string queryGetBooks = "SELECT * FROM `bx-users` WHERE Username IS NOT NULL";
-            Response.GenericResponse<List<User>> response = new Response.GenericResponse<List<User>>{Content = new List<User>()};
+            Response.GenericResponse<List<User>> response = new Response.GenericResponse<List<User>> { Content = new List<User>() };
 
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
@@ -362,7 +487,7 @@ namespace BookRepository
                     }
                     response.Success = true;
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     response.ErrorText = e.Message;
                 }
@@ -376,12 +501,12 @@ namespace BookRepository
             string queryAddNewBook = "INSERT INTO `bx-books`(ISBN,BookTitle,BookAuthor,YearOfPublication,Publisher,ImageURI_S,ImageURI_M,ImageURI_L) VALUES (@ISBN,@BookTitle,@BookAuthor,@YearOfPublication,@Publisher,@ImageURI_S,ImageURI_M,ImageURI_L)";
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
-                MySqlCommand mySqlCommandAddBook = new MySqlCommand(queryAddNewBook,conn);
-                mySqlCommandAddBook.Parameters.AddWithValue("@ISBN ",book.ISBN);
+                MySqlCommand mySqlCommandAddBook = new MySqlCommand(queryAddNewBook, conn);
+                mySqlCommandAddBook.Parameters.AddWithValue("@ISBN ", book.ISBN);
                 mySqlCommandAddBook.Parameters.AddWithValue("@BookTitle ", book.BookTitle);
                 mySqlCommandAddBook.Parameters.AddWithValue("@BookAuthor ", book.BookAuthor);
-                mySqlCommandAddBook.Parameters.AddWithValue("@YearOfPublication" , book.YearOfPublication);
-                mySqlCommandAddBook.Parameters.AddWithValue("@Publisher",book.Publisher);
+                mySqlCommandAddBook.Parameters.AddWithValue("@YearOfPublication", book.YearOfPublication);
+                mySqlCommandAddBook.Parameters.AddWithValue("@Publisher", book.Publisher);
                 mySqlCommandAddBook.Parameters.AddWithValue("@ImageURI_S", book.ImageURI_S);
                 mySqlCommandAddBook.Parameters.AddWithValue("@ImageURI_M", book.ImageURI_M);
                 mySqlCommandAddBook.Parameters.AddWithValue("@ImageURI_L", book.ImageURI_L);
@@ -401,7 +526,7 @@ namespace BookRepository
                     response.ErrorText = e.Message;
                 }
             }
-                return response;
+            return response;
         }
 
         public static Response.BaseResponse RemoveBook(Book book)
@@ -410,7 +535,7 @@ namespace BookRepository
             Response.BaseResponse response = new Response.BaseResponse();
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
-                MySqlCommand mySqlCommandRemoveBook = new MySqlCommand(queryRemoveBook,conn);
+                MySqlCommand mySqlCommandRemoveBook = new MySqlCommand(queryRemoveBook, conn);
                 mySqlCommandRemoveBook.Parameters.AddWithValue("@ISBN", book.ISBN);
                 try
                 {
@@ -433,11 +558,11 @@ namespace BookRepository
         public static Response.GenericResponse<List<Book>> GetAllBooks()
         {
             string queryGetBooks = ("SELECT * FROM `bx-books`");
-            Response.GenericResponse<List<Book>> response = new Response.GenericResponse<List<Book>>{Content = new List<Book>()};
+            Response.GenericResponse<List<Book>> response = new Response.GenericResponse<List<Book>> { Content = new List<Book>() };
 
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
-                MySqlCommand mySqlCommandGetAllBooks = new MySqlCommand(queryGetBooks,conn);
+                MySqlCommand mySqlCommandGetAllBooks = new MySqlCommand(queryGetBooks, conn);
                 try
                 {
                     conn.Open();
@@ -465,7 +590,7 @@ namespace BookRepository
             }
         }
 
-        public static Response.BaseResponse Register(string username,int age,string password,string country,string county,string city,bool IsAdmin)
+        public static Response.BaseResponse Register(string username, int age, string password, string country, string county, string city, bool IsAdmin)
         {
             string Concat = string.Join(",", country, county, city);
             string queryUser = "INSERT INTO `bx-users`(`Username`, `Password`, `Location`, `Age`, `IsAdmin`) VALUES (@Username,@Password,@Location,@Age,@IsAdmin)";

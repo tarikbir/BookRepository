@@ -63,9 +63,9 @@ namespace BookRepository.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap bookrepoicon {
+        internal static System.Drawing.Bitmap BRIcon_big {
             get {
-                object obj = ResourceManager.GetObject("bookrepoicon", resourceCulture);
+                object obj = ResourceManager.GetObject("BRIcon_big", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
