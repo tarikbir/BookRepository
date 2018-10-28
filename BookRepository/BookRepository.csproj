@@ -74,14 +74,16 @@
     <Compile Include="BookViewWindow.xaml.cs">
       <DependentUpon>BookViewWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CommonLibrary.cs" />
+    <Compile Include="Classes\CommonLibrary.cs" />
     <Compile Include="Handlers\WebHandler.cs" />
     <Compile Include="FullBookListWindow.xaml.cs">
       <DependentUpon>FullBookListWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Objects\BookFrame.cs" />
+    <Compile Include="Classes\BookFrame.cs" />
     <Compile Include="Handlers\SqlHandler.cs" />
-    <Compile Include="Objects\User.cs" />
+    <Compile Include="Classes\Recommender.cs" />
+    <Compile Include="Classes\User.cs" />
+    <Compile Include="Classes\Vote.cs" />
     <Compile Include="Response\GenericResponse.cs" />
     <Compile Include="Response\BaseResponse.cs" />
     <Page Include="AdminPanel\AdminPanel.xaml">
@@ -124,7 +126,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Objects\Book.cs" />
+    <Compile Include="Classes\Book.cs" />
     <Compile Include="CreateAccountWindow.xaml.cs">
       <DependentUpon>CreateAccountWindow.xaml</DependentUpon>
     </Compile>

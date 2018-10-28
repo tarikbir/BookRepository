@@ -161,10 +161,47 @@ namespace BookRepository
             return response;
         }
 
+        public static Response.GenericResponse<List<Book>> GetRecommendList()
+        {
+            Response.GenericResponse<List<Book>> response = new Response.GenericResponse<List<Book>>() { Content = new List<Book>() };
+            string query = "SELECT * FROM `bx-books` A NATURAL JOIN (SELECT `Book-Rating`,`ISBN` FROM `bx-book-ratings` WHERE `User-ID` = @UserID) B";
+
+            /*
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                MySqlCommand mySqlCommand = new MySqlCommand(query, conn);
+                mySqlCommand.Parameters.AddWithValue("@UserID", CommonLibrary.LoggedInUser.UserID);
+
+                try
+                {
+                    conn.Open();
+                    MySqlDataReader reader = mySqlCommand.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        try
+                        {
+                            response.Content.Add(GetBookFromReader(reader));
+                        }
+                        catch (Exception e)
+                        {
+                            response.ErrorText += e.Message + "\n";
+                            continue;
+                        }
+                    }
+                    response.Success = true;
+                }
+                catch (Exception e)
+                {
+                    response.ErrorText = e.Message;
+                }
+            }*/
+            return response;
+        }
+
         public static Response.GenericResponse<List<Book>> GetPopularList()
         {
-            Response.GenericResponse<List<Book>> response = new Response.GenericResponse<List<Book>>();
-            response.Content = new List<Book>();
+            Response.GenericResponse<List<Book>> response = new Response.GenericResponse<List<Book>>() { Content = new List<Book>() };
             string query = "SELECT * FROM `bx-books` AS B INNER JOIN (SELECT `ISBN`, COUNT(`ISBN`) AS NumberRating FROM `bx-book-ratings` GROUP BY `ISBN`) AS F ON B.`ISBN` = F.`ISBN` ORDER BY F.NumberRating DESC LIMIT 10";
 
             using (MySqlConnection conn = new MySqlConnection(connectionString))
@@ -201,8 +238,7 @@ namespace BookRepository
 
         public static Response.GenericResponse<List<Book>> GetHighRatedList()
         {
-            Response.GenericResponse<List<Book>> response = new Response.GenericResponse<List<Book>>();
-            response.Content = new List<Book>();
+            Response.GenericResponse<List<Book>> response = new Response.GenericResponse<List<Book>>() { Content = new List<Book>() };
             string query = "SELECT * FROM `bx-books` ORDER BY RatingWeight DESC LIMIT 10";
 
             using (MySqlConnection conn = new MySqlConnection(connectionString))
@@ -239,10 +275,9 @@ namespace BookRepository
 
         public static Response.GenericResponse<List<Book>> GetNewsList()
         {
-            Response.GenericResponse<List<Book>> response = new Response.GenericResponse<List<Book>>();
-            response.Content = new List<Book>();
+            Response.GenericResponse<List<Book>> response = new Response.GenericResponse<List<Book>>() { Content = new List<Book>() };
 
-            string query = "SELECT * FROM `bx-books` ORDER BY AddedDate DESC LIMIT 10";
+            string query = "SELECT * FROM `bx-books` ORDER BY AddedDate DESC LIMIT 5";
 
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
@@ -315,7 +350,7 @@ namespace BookRepository
 
         public static Response.GenericResponse<List<Book>> GetAllBooks()
         {
-            string queryGetBooks = ("SELECT * FROM `bx-books`");
+            string queryGetBooks = "SELECT * FROM `bx-books`";
             Response.GenericResponse<List<Book>> response = new Response.GenericResponse<List<Book>> { Content = new List<Book>() };
 
             using (MySqlConnection conn = new MySqlConnection(connectionString))
@@ -339,6 +374,88 @@ namespace BookRepository
                         }
                     }
                     if (response.Content.Count <= 0) throw new Exception("No books returned.");
+                    response.Success = true;
+                }
+                catch (Exception e)
+                {
+                    response.ErrorText = e.Message;
+                }
+                return response;
+            }
+        }
+
+        public static Response.GenericResponse<List<Vote<string>>> GetAllUserVotes(User user)
+        {
+            string queryGetVotes = "SELECT `ISBN`, `Book-Rating` FROM `bx-book-ratings` WHERE `User-ID` = @UserID";
+            Response.GenericResponse<List<Vote<string>>> response = new Response.GenericResponse<List<Vote<string>>> { Content = new List<Vote<string>>() };
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                MySqlCommand mySqlCommandGetAllVotes = new MySqlCommand(queryGetVotes, conn);
+                mySqlCommandGetAllVotes.Parameters.AddWithValue("@UserID", user.UserID);
+
+                try
+                {
+                    conn.Open();
+                    MySqlDataReader reader = mySqlCommandGetAllVotes.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Vote<string> vote = new Vote<string>();
+                        try
+                        {
+                            vote.Content = GetSafeField<string>(reader, 0);
+                            vote.Rating = GetSafeField<int>(reader, 1);
+                            response.Content.Add(vote);
+                        }
+                        catch (Exception e)
+                        {
+                            response.ErrorText += e.Message + "\n";
+                            continue;
+                        }
+                    }
+                    if (response.Content.Count <= 0) throw new Exception("No votes returned.");
+                    response.Success = true;
+                }
+                catch (Exception e)
+                {
+                    response.ErrorText = e.Message;
+                }
+                return response;
+            }
+        }
+
+        public static Response.GenericResponse<List<Vote<UInt32>>> GetAllBookVotes(Book  book)
+        {
+            string queryGetVotes = "SELECT `User-ID`, `Book-Rating` FROM `bx-book-ratings` WHERE `ISBN` = @ISBN";
+            Response.GenericResponse<List<Vote<UInt32>>> response = new Response.GenericResponse<List<Vote<UInt32>>> { Content = new List<Vote<UInt32>>() };
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                MySqlCommand mySqlCommandGetAllVotes = new MySqlCommand(queryGetVotes, conn);
+                mySqlCommandGetAllVotes.Parameters.AddWithValue("@ISBN", book.ISBN);
+
+                try
+                {
+                    conn.Open();
+                    MySqlDataReader reader = mySqlCommandGetAllVotes.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Vote<UInt32> vote = new Vote<UInt32>();
+                        try
+                        {
+                            vote.Content = GetSafeField<UInt32>(reader, 0);
+                            vote.Rating = GetSafeField<int>(reader, 1);
+                            response.Content.Add(vote);
+                        }
+                        catch (Exception e)
+                        {
+                            response.ErrorText += e.Message + "\n";
+                            continue;
+                        }
+                    }
+                    if (response.Content.Count <= 0) throw new Exception("No votes returned.");
                     response.Success = true;
                 }
                 catch (Exception e)
@@ -437,7 +554,7 @@ namespace BookRepository
                     }
                     else
                     {
-                        throw new Exception("No vote has been cast by user '" + userID + "' for the book '" + bookISBN + "'.");
+                        response.Content = -1;
                     }
                     response.Success = true;
                 }
@@ -577,7 +694,7 @@ namespace BookRepository
 
         public static Response.BaseResponse RemoveUser(User user)
         {
-            string queryRemoveUser = ("DELETE FROM `bx-users` WHERE Username=@username");
+            string queryRemoveUser = "DELETE FROM `bx-users` WHERE Username=@username";
             Response.BaseResponse response = new Response.BaseResponse();
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
@@ -640,7 +757,7 @@ namespace BookRepository
 
         public static Response.BaseResponse RemoveBook(Book book)
         {
-            string queryRemoveBook = ("DELETE FROM `bx-books` WHERE ISBN = @ISBN");
+            string queryRemoveBook = "DELETE FROM `bx-books` WHERE ISBN = @ISBN";
             Response.BaseResponse response = new Response.BaseResponse();
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {

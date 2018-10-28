@@ -19,7 +19,7 @@ namespace BookRepository
     public partial class BookViewWindow : Window
     {
         private Book Book;
-        private int Vote = -1;
+        private int Vote;
         private int PreviousVote = -1;
 
         public BookViewWindow(Book book)
