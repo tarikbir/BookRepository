@@ -121,16 +121,12 @@ namespace BookRepository
         private void bgwRecommended_DoWork(object sender, DoWorkEventArgs e)
         {
             // User-Based Collaborative Filtering Algorithm
-            List<Book> list = SqlHandler.GetRecommendList().Content;
+            List<string> list = new List<string>() { "000104799X", "0001046713", "0001046934", "0001047663", "000104799X", "0001061127", "0001053736" };
             this.Dispatcher.Invoke(() =>
             {
-                if (!(list.Count > 0))
+                foreach (string item in list)
                 {
-                    //MessageBox.Show("Error getting recommendation list.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
-                }
-                foreach (Book book in list)
-                {
+                    Book book = SqlHandler.GetBook(item).Content;
                     if (book != null)
                         wrapRecommended.Children.Add(new BookFrame(book));
                 }
