@@ -38,14 +38,14 @@ namespace BookRepository.AdminPanel
             if (MessageBox.Show("This progress will take a really long time (about 30 mins). If you abruptly close the process, it might corrupt some data on the database. " +
                 "Do you want to continue anyway?", "Warning!", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
-                var response = SqlHandler.UpdateAllWeights();
-                if (response.Success)
+                UpdateWeightProgress updateWeightProgress = new UpdateWeightProgress();
+                if (updateWeightProgress.ShowDialog() == true)
                 {
                     MessageBox.Show("Database successfully updated.", "Success",MessageBoxButton.OK,MessageBoxImage.Information);
                 }
                 else
                 {
-                    MessageBox.Show("There was an error updating the database.\n\n" + response.ErrorText, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("There was an error updating the database.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
         }

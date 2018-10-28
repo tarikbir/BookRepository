@@ -38,7 +38,7 @@ namespace BookRepository.AdminPanel
         {
             if (String.IsNullOrWhiteSpace(txtAddUsername.Text))
             {
-                MessageBox.Show("Please enter a valid username!","Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Please enter a valid username!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else
             {
@@ -47,7 +47,7 @@ namespace BookRepository.AdminPanel
                     Username = txtAddUsername.Text,
                     Age = UInt32.Parse(txtAddAge.Text),
                     Location = String.Join(",", txtAddCountry.Text, txtAddState.Text, txtAddCity.Text),
-                    IsAdmin = false
+                    IsAdmin = chkIsAdmin.IsChecked ?? false
                 };
                 var addUserResponse = SqlHandler.AddUser(user, txtAddPass.Password);
                 if (addUserResponse.Success)
@@ -65,6 +65,11 @@ namespace BookRepository.AdminPanel
             if (lbxUser.SelectedIndex > -1)
             {
                 User user = (User)lbxUser.SelectedItem;
+                if (user.UserID == CommonLibrary.LoggedInUser.UserID)
+                {
+                    MessageBox.Show("You can't remove yourself from the database.", "Error", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                    return;
+                }
                 var removeUserResponse = SqlHandler.RemoveUser(user);
                 if (removeUserResponse.Success)
                 {
@@ -80,13 +85,14 @@ namespace BookRepository.AdminPanel
         {
             if (lbxUser.SelectedIndex > -1)
             {
-                User user = (User) lbxUser.SelectedItem;
+                User user = (User)lbxUser.SelectedItem;
                 txtAddUsername.Text = user.Username;
                 txtAddAge.Text = user.Age.ToString();
                 string[] location = user.Location.Split(',');
                 txtAddCountry.Text = location[0];
                 txtAddState.Text = location[1];
                 txtAddCity.Text = location[2];
+                chkIsAdmin.IsChecked = user.IsAdmin;
             }
         }
     }

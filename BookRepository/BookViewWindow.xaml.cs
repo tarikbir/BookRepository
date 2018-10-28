@@ -19,20 +19,18 @@ namespace BookRepository
     public partial class BookViewWindow : Window
     {
         private Book Book;
-        private User User;
         private int Vote;
 
-        public BookViewWindow(Book book, User user)
+        public BookViewWindow(Book book)
         {
             InitializeComponent();
             Book = book;
-            User = user;
             InitVotes();
         }
 
         private void InitVotes()
         {
-            var voteResponse = SqlHandler.GetVote(User.UserID.ToString(), Book.ISBN);
+            var voteResponse = SqlHandler.GetVote(CommonLibrary.LoggedInUser.UserID.ToString(), Book.ISBN);
             int vote = 0;
             for (int i = 0; i <= 10; i++)
             {
@@ -68,7 +66,7 @@ namespace BookRepository
 
         private void btnApplyVote_Click(object sender, RoutedEventArgs e)
         {
-            SqlHandler.CastVote(User.UserID.ToString(), Book.ISBN, Vote);
+            SqlHandler.CastVote(CommonLibrary.LoggedInUser.UserID.ToString(), Book.ISBN, Vote);
         }
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
@@ -108,7 +106,8 @@ namespace BookRepository
             var match = reg.Matches(ISBN);
             foreach (var item in match)
             {
-                Int32.TryParse(item.ToString(), out int num);
+                int num = 0;
+                Int32.TryParse(item.ToString(), out num);
                 hashNumber += num*++i;
             }
             return hashNumber%3;

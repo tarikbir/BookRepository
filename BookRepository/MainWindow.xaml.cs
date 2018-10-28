@@ -17,7 +17,6 @@ namespace BookRepository
 {
     public partial class MainWindow : Window
     {
-        public User currentUser;
         private BackgroundWorker bgwNews;
         private BackgroundWorker bgwPopular;
         private BackgroundWorker bgwHighRated;
@@ -26,6 +25,7 @@ namespace BookRepository
         public MainWindow()
         {
             InitializeComponent();
+            CommonLibrary.MinBookToCountVote = 15;
             bgwNews = new BackgroundWorker();
             bgwPopular = new BackgroundWorker();
             bgwHighRated = new BackgroundWorker();
@@ -43,8 +43,8 @@ namespace BookRepository
                     AdminPanel.AdminPanel adminPanel = new AdminPanel.AdminPanel();
                     adminPanel.Show();
                 }
-                currentUser = loginWindow.User;
-                lblGreeting.Content = $"Welcome {loginWindow.User.Username},";
+                CommonLibrary.LogInUser(loginWindow.User);
+                lblGreeting.Content = $"Welcome {CommonLibrary.LoggedInUser.Username},";
                 bgwNews.RunWorkerAsync();
                 bgwPopular.RunWorkerAsync();
                 bgwHighRated.RunWorkerAsync();
@@ -64,7 +64,6 @@ namespace BookRepository
         private void bgwNews_DoWork(object sender, DoWorkEventArgs e)
         {
             //SQL Latest Book Additions Return
-            //List<string> list = new List<string>() { "000104799X", "0001046713", "0001046934", "0001047663", "000104799X", "0001061127", "0001053736" };
             List<Book> list = SqlHandler.GetNewsList().Content;
             this.Dispatcher.Invoke(() =>
             {
@@ -76,7 +75,7 @@ namespace BookRepository
                 foreach (Book book in list)
                 {
                     if (book != null)
-                        wrapNews.Children.Add(new BookFrame(book, currentUser));
+                        wrapNews.Children.Add(new BookFrame(book));
                 }
             });
         }
@@ -95,7 +94,7 @@ namespace BookRepository
                 foreach (Book book in list)
                 {
                     if (book != null)
-                        wrapPopular.Children.Add(new BookFrame(book, currentUser));
+                        wrapPopular.Children.Add(new BookFrame(book));
                 }
             });
         }
@@ -114,7 +113,7 @@ namespace BookRepository
                 foreach (Book book in list)
                 {
                     if (book != null)
-                        wrapHighRated.Children.Add(new BookFrame(book, currentUser));
+                        wrapHighRated.Children.Add(new BookFrame(book));
                 }
             });
         }
@@ -129,7 +128,7 @@ namespace BookRepository
                 {
                     Book book = SqlHandler.GetBook(item).Content;
                     if (book != null)
-                        wrapRecommended.Children.Add(new BookFrame(book, currentUser));
+                        wrapRecommended.Children.Add(new BookFrame(book));
                 }
             });
         }

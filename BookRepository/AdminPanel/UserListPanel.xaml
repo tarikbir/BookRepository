@@ -29,5 +29,6 @@
         <TextBox x:Name="txtAddState" HorizontalAlignment="Left" Height="26" Margin="685,232,0,0" VerticalAlignment="Top" Width="147" IsInactiveSelectionHighlightEnabled="True" MaxLines="1" MaxLength="24" VerticalContentAlignment="Center" TabIndex="7"/>
         <TextBox x:Name="txtAddCity" HorizontalAlignment="Left" Height="26" Margin="685,262,0,0" VerticalAlignment="Top" Width="147" IsInactiveSelectionHighlightEnabled="True" MaxLines="1" MaxLength="24" VerticalContentAlignment="Center" TabIndex="8"/>
         <PasswordBox x:Name="txtAddPass" HorizontalAlignment="Left" Height="26" Margin="685,292,0,0" VerticalAlignment="Top" Width="147" VerticalContentAlignment="Center" TabIndex="9"/>
+        <CheckBox x:Name="chkIsAdmin" Content="Admin" HorizontalAlignment="Left" Margin="685,332,0,0" VerticalAlignment="Top" Padding="5,0"/>
     </Grid>
 </Window>

@@ -8,9 +8,19 @@ namespace BookRepository
 {
     internal static class CommonLibrary
     {
+        public static int MinBookToCountVote { get; set; }
+
+        public static User LoggedInUser { get; private set; }
+
+        internal static void LogInUser (User user)
+        {
+            if (LoggedInUser == null)
+                LoggedInUser = user;
+        }
+
         internal static double GetWeightRate(double v, double R)
         {
-            /**<summary>Gets the weight rate of books (hard coded).</summary>
+            /**<summary>Gets the weight rate of books (quick).</summary>
              * <param name="v">Number of votes for the book.</param>
              * <param name="R">Average rating for the book.</param>
              * <remarks>Weighted rating (WR) = (v ÷ (v+m)) × R + (m ÷ (v+m)) × C where:
@@ -19,7 +29,8 @@ namespace BookRepository
              * m = minimum votes required to be listed
              * C = the mean vote across the whole report</remarks>
              **/
-            return GetWeightRate(v, R, 2.8668988850040877, 5);
+            double C = SqlHandler.GetTotalAverageVotes().Content;
+            return GetWeightRate(v, R, C, MinBookToCountVote);
         }
 
         internal static double GetWeightRate(double v, double R, double C, double m)

@@ -65,6 +65,9 @@
     <Compile Include="AdminPanel\BookListPanel.xaml.cs">
       <DependentUpon>BookListPanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="AdminPanel\UpdateWeightProgress.xaml.cs">
+      <DependentUpon>UpdateWeightProgress.xaml</DependentUpon>
+    </Compile>
     <Compile Include="AdminPanel\UserListPanel.xaml.cs">
       <DependentUpon>UserListPanel.xaml</DependentUpon>
     </Compile>
@@ -86,6 +89,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="AdminPanel\BookListPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AdminPanel\UpdateWeightProgress.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

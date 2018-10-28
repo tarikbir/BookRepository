@@ -14,12 +14,10 @@ namespace BookRepository
     public partial class BookFrame : Button
     {
         public Book Book { get; private set; }
-        public User User;
 
-        public BookFrame(Book book, User user)
+        public BookFrame(Book book)
         {
             Book = book;
-            User = user;
             Click += new System.Windows.RoutedEventHandler(OnBookClick);
 
             ToolTip = Book.BookTitle;
@@ -46,7 +44,7 @@ namespace BookRepository
                     AddChild(new TextBlock() { Text = "No Image Available" });
                 }
             }
-            catch (Exception e)
+            catch
             {
                 AddChild(new TextBlock() { Text = "No Image Available" });
             }
@@ -54,7 +52,7 @@ namespace BookRepository
 
         public void OnBookClick(object sender, RoutedEventArgs e)
         {
-            BookViewWindow bookWindow = new BookViewWindow(Book,User);
+            BookViewWindow bookWindow = new BookViewWindow(Book);
             bookWindow.ShowDialog();
         }
     }
