@@ -28,7 +28,7 @@ namespace BookRepository
 
         public override string ToString()
         {
-            return String.Concat(UserID, " - ", Username);
+            return String.Concat(Username, " (", UserID, ")");
         }
     }
 }

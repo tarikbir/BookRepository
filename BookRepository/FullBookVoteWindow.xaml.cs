@@ -10,17 +10,20 @@ using System.Windows.Controls;
 
 namespace BookRepository
 {
-    public partial class FullBookListWindow : Window
+    public partial class FullBookVoteWindow : Window
     {
         List<Book> FullList;
         int index;
         int increment = 52;
+        public List<Vote<Book>> userVotes;
         bool searchMode;
         bool scrollBarLock;
 
-        public FullBookListWindow()
+        public FullBookVoteWindow(List<Vote<Book>> userVoteList)
         {
             InitializeComponent();
+            userVotes = userVoteList;
+            lblVoteInfoNumber.Content = 10 - userVoteList.Count;
             index = 104;
             var response = SqlHandler.GetAllBooks();
             if (response.Success)
@@ -42,12 +45,7 @@ namespace BookRepository
         {
             mainScrollBar.IsEnabled = false;
             wrapBooks.Children.Clear();
-            foreach (var item in list)
-            {
-                if (item != null)
-                    wrapBooks.Children.Add(new BookFrame(item));
-            }
-            mainScrollBar.IsEnabled = true;
+            AddToList(list);
         }
 
         private void AddToList(IEnumerable<Book> list)
@@ -56,7 +54,35 @@ namespace BookRepository
             foreach (var item in list)
             {
                 if (item != null)
-                    wrapBooks.Children.Add(new BookFrame(item));
+                {
+                    wrapBooks.Children.Add(new BookFrame(item, (sender, e) =>
+                    {
+                        int vote;
+                        var bookFound = from t in userVotes where t.Content.ISBN == item.ISBN select t;
+                        if (bookFound.Count<Vote<Book>>() == 0)
+                            vote = -1;
+                        else
+                            vote = bookFound.ElementAt(0).Rating;
+                        BookViewVoteWindow bookWindow = new BookViewVoteWindow(item, vote);
+                        bookWindow.ShowDialog();
+                        if (bookWindow.DialogResult == true)
+                        {
+                            if (bookWindow.Vote == -1) return;
+                            if (bookFound.Count<Vote<Book>>() != 0)
+                            {
+                                userVotes.Remove(bookFound.ElementAt(0));
+                                userVotes.Add(new Vote<Book>() { Content = item, Rating = bookWindow.Vote });
+                            }
+                            else
+                            {
+                                userVotes.Add(new Vote<Book>() { Content = item, Rating = bookWindow.Vote });
+                            }
+                            
+                            lblVoteInfoNumber.Content = 10 - userVotes.Count;
+                        }
+                        if (userVotes.Count >= 10) DialogResult = true;
+                    }));
+                }
             }
             mainScrollBar.IsEnabled = true;
         }

@@ -53,14 +53,7 @@ namespace BookRepository
 
         private void btnRecover_Click(object sender, RoutedEventArgs e)
         {
-            User = new User()
-            {
-                UserID = 1,
-                Username = "admin",
-                IsAdmin = true
-            };
-            LoggedIn = true;
-            this.Close();
+            MessageBox.Show("Not yet implemented.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
         }
     }
 }

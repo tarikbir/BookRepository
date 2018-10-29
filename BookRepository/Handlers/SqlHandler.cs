@@ -662,10 +662,10 @@ namespace BookRepository
             }
         }
 
-        public static Response.BaseResponse AddUser(User user, string password)
+        public static Response.GenericResponse<UInt32> AddUser(User user, string password)
         {
             string queryAddUser = "INSERT INTO `bx-users`(`Username`, `Password`, `Location`, `Age`) VALUES (@Username,@Password,@Location,@Age)";
-            Response.BaseResponse response = new Response.BaseResponse();
+            Response.GenericResponse<UInt32> response = new Response.GenericResponse<UInt32>();
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
                 MySqlCommand mySqlCommandAddUser = new MySqlCommand(queryAddUser, conn);
@@ -682,6 +682,20 @@ namespace BookRepository
                     {
                         throw new Exception("Error inserting into users table. Rows affected: " + rowsAffected);
                     }
+
+                    string queryGetID = "SELECT MAX(`User-ID`) FROM `bx-users`";
+                    MySqlCommand mySqlCommandGetID = new MySqlCommand(queryGetID, conn);
+
+                    UInt32 getID = 0;
+
+                    using (MySqlDataReader reader = mySqlCommandGetID.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            getID = GetSafeField<UInt32>(reader, 0);
+                        }
+                    }
+                    response.Content = getID;
                     response.Success = true;
                 }
                 catch (Exception e)
@@ -722,7 +736,7 @@ namespace BookRepository
         public static Response.BaseResponse AddBook(Book book)
         {
             Response.BaseResponse response = new Response.BaseResponse();
-            string queryAddNewBook = "INSERT INTO `bx-books`(ISBN,BookTitle,BookAuthor,YearOfPublication,Publisher,ImageURI_S,ImageURI_M,ImageURI_L,AddedDate) VALUES (@ISBN,@BookTitle,@BookAuthor,@YearOfPublication,@Publisher,@ImageURI_S,@ImageURI_M,@ImageURI_L,@AddedDate)";
+            string queryAddNewBook = "INSERT INTO `bx-books`(`ISBN`,`Book-Title`,`Book-Author`,`Year-Of-Publication`,`Publisher`,`Image-URL-S`,`Image-URL-M`,`Image-URL-L`,`AddedDate`) VALUES (@ISBN,@BookTitle,@BookAuthor,@YearOfPublication,@Publisher,@ImageURI_S,@ImageURI_M,@ImageURI_L,@AddedDate)";
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
                 MySqlCommand mySqlCommandAddBook = new MySqlCommand(queryAddNewBook, conn);

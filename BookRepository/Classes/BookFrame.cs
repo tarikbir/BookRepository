@@ -15,16 +15,28 @@ namespace BookRepository
     {
         public Book Book { get; private set; }
 
-        public BookFrame(Book book)
+        public BookFrame()
         {
-            Book = book;
-            Click += new System.Windows.RoutedEventHandler(OnBookClick);
-
-            ToolTip = Book.BookTitle;
             Width = 100;
             Height = 160;
             MaxWidth = 100;
             MaxHeight = 160;
+        }
+
+        public BookFrame(Book book):this()
+        {
+            Book = book;
+            ToolTip = Book.BookTitle;
+            Click += new System.Windows.RoutedEventHandler(OnBookClick);
+
+            SetImage();
+        }
+
+        public BookFrame(Book book, System.Windows.RoutedEventHandler action):this()
+        {
+            Book = book;
+            ToolTip = Book.BookTitle;
+            Click += action;
 
             SetImage();
         }

@@ -71,10 +71,16 @@
     <Compile Include="AdminPanel\UserListPanel.xaml.cs">
       <DependentUpon>UserListPanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BookViewVoteWindow.xaml.cs">
+      <DependentUpon>BookViewVoteWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="BookViewWindow.xaml.cs">
       <DependentUpon>BookViewWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Classes\CommonLibrary.cs" />
+    <Compile Include="FullBookVoteWindow.xaml.cs">
+      <DependentUpon>FullBookVoteWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Handlers\WebHandler.cs" />
     <Compile Include="FullBookListWindow.xaml.cs">
       <DependentUpon>FullBookListWindow.xaml</DependentUpon>
@@ -102,6 +108,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="BookViewVoteWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="BookViewWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -109,6 +119,10 @@
     <Page Include="CreateAccountWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="FullBookVoteWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="LoginWindow.xaml">
       <SubType>Designer</SubType>

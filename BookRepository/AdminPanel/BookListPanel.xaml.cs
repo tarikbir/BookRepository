@@ -46,12 +46,15 @@ namespace BookRepository.AdminPanel
             }
             else
             {
+                int year = 0;
+                Int32.TryParse(txtYearOfPublication.Text, out year);
                 Book book = new Book()
                 {
                     ISBN = txtISBN.Text,
                     BookTitle = txtBookTitle.Text,
                     BookAuthor = txtBookAuthor.Text,
                     Publisher = txtPublisher.Text,
+                    YearOfPublication = year,
                     ImageURI_L = txtURIL.Text,
                     ImageURI_M = txtURIM.Text,
                     ImageURI_S = txtURIS.Text

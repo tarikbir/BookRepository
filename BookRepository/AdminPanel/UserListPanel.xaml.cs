@@ -52,7 +52,8 @@ namespace BookRepository.AdminPanel
                 var addUserResponse = SqlHandler.AddUser(user, txtAddPass.Password);
                 if (addUserResponse.Success)
                 {
-                    MessageBox.Show("Successfully added " + user.Username + ".", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                    user.UserID = addUserResponse.Content;
+                    MessageBox.Show("Successfully added " + user.Username + " (" + user.UserID + ").", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                     lbxUser.Items.Add(user);
                 }
                 else
