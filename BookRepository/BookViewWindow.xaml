@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BookRepository"
         mc:Ignorable="d"
-        Title="Viewing Book" Height="330" Width="500" ResizeMode="CanMinimize" WindowStartupLocation="CenterOwner" Loaded="Window_Loaded" >
+        Title="Viewing Book" Height="330" Width="500" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" >
     <Grid x:Name="Grid">
         <Grid.Background>
             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">

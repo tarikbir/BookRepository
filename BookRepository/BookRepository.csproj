@@ -185,5 +185,8 @@
   <ItemGroup>
     <Resource Include="Resources\BRIcon.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Gear.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

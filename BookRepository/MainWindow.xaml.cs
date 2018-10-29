@@ -145,5 +145,16 @@ namespace BookRepository
             }
             return true;
         }
+
+        private void btnSettings_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Not yet implemented.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void btnShowAll_Click(object sender, RoutedEventArgs e)
+        {
+            FullBookListWindow fullBookListWindow = new FullBookListWindow();
+            fullBookListWindow.Show();
+        }
     }
 }

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BookRepository.AdminPanel"
         mc:Ignorable="d"
-        Title="Admin Control Panel" Height="200" Width="300" ResizeMode="CanMinimize">
+        Title="Admin Control Panel" Height="200" Width="300" ResizeMode="CanMinimize" Left="0" Top="0">
     <Grid UseLayoutRounding="False">
         <Grid.Background>
             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">

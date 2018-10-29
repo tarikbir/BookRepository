@@ -21,7 +21,10 @@ namespace BookRepository
             Click += new System.Windows.RoutedEventHandler(OnBookClick);
 
             ToolTip = Book.BookTitle;
-            MaxWidth = 126;
+            Width = 100;
+            Height = 160;
+            MaxWidth = 100;
+            MaxHeight = 160;
 
             SetImage();
         }
@@ -35,18 +38,24 @@ namespace BookRepository
                 {
                     var bookImage = new Image
                     {
-                        Source = image
+                        Source = image,
+                        Stretch = System.Windows.Media.Stretch.Fill,
+                        RenderSize = new Size(98, 158),
+                        Width = 98,
+                        Height = 158,
+                        MaxWidth = 98,
+                        MaxHeight = 158
                     };
                     AddChild(bookImage);
                 }
                 else
                 {
-                    AddChild(new TextBlock() { Text = "No Image Available" });
+                    AddChild(new TextBlock() { Text = "No Image Available", TextWrapping=TextWrapping.Wrap });
                 }
             }
             catch
             {
-                AddChild(new TextBlock() { Text = "No Image Available" });
+                AddChild(new TextBlock() { Text = "No Image Available", TextWrapping = TextWrapping.Wrap });
             }
         }
 
