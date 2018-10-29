@@ -25,6 +25,7 @@ namespace BookRepository
         public MainWindow()
         {
             InitializeComponent();
+            
             CommonLibrary.MinBookToCountVote = 15;
             bgwNews = new BackgroundWorker();
             bgwPopular = new BackgroundWorker();
@@ -59,6 +60,35 @@ namespace BookRepository
             bgwPopular.DoWork += new DoWorkEventHandler(bgwPopular_DoWork);
             bgwHighRated.DoWork += new DoWorkEventHandler(bgwHighRated_DoWork);
             bgwRecommended.DoWork += new DoWorkEventHandler(bgwRecommended_DoWork);
+            bgwNews.WorkerSupportsCancellation = true;
+            bgwPopular.WorkerSupportsCancellation = true;
+            bgwHighRated.WorkerSupportsCancellation = true;
+            bgwRecommended.WorkerSupportsCancellation = true;
+        }
+
+        private void Refresh()
+        {
+            bgwNews.CancelAsync();
+            bgwPopular.CancelAsync();
+            bgwHighRated.CancelAsync();
+            bgwRecommended.CancelAsync();
+            bgwNews.Dispose();
+            bgwPopular.Dispose();
+            bgwHighRated.Dispose();
+            bgwRecommended.Dispose();
+            bgwNews = new BackgroundWorker();
+            bgwPopular = new BackgroundWorker();
+            bgwHighRated = new BackgroundWorker();
+            bgwRecommended = new BackgroundWorker();
+            wrapNews.Children.Clear();
+            wrapPopular.Children.Clear();
+            wrapHighRated.Children.Clear();
+            wrapRecommended.Children.Clear();
+            InitializeBackgroundWorkers();
+            bgwNews.RunWorkerAsync();
+            bgwPopular.RunWorkerAsync();
+            bgwHighRated.RunWorkerAsync();
+            bgwRecommended.RunWorkerAsync();
         }
 
         private void bgwNews_DoWork(object sender, DoWorkEventArgs e)
@@ -148,7 +178,7 @@ namespace BookRepository
 
         private void btnSettings_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Not yet implemented.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+            Refresh();
         }
 
         private void btnShowAll_Click(object sender, RoutedEventArgs e)

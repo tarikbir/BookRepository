@@ -79,7 +79,7 @@
                     <DropShadowEffect Opacity="0.6" ShadowDepth="0"/>
                 </Label.Effect>
             </Label>
-            <Button x:Name="btnSettings" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Width="35" Height="35" ToolTip="Settings" Click="btnSettings_Click">
+            <Button x:Name="btnSettings" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Width="35" Height="35" ToolTip="Refresh" Click="btnSettings_Click">
                 <Image Source="pack://siteoforigin:,,,/Resources/Gear.png" Stretch="Fill"/>
                 <Button.Effect>
                     <DropShadowEffect ShadowDepth="1"/>

@@ -15,11 +15,11 @@ namespace BookRepository
         List<Book> FullList;
         int index;
         int increment = 52;
-        public List<Vote<Book>> userVotes;
+        public List<Vote> userVotes;
         bool searchMode;
         bool scrollBarLock;
 
-        public FullBookVoteWindow(List<Vote<Book>> userVoteList)
+        public FullBookVoteWindow(List<Vote> userVoteList)
         {
             InitializeComponent();
             userVotes = userVoteList;
@@ -58,8 +58,8 @@ namespace BookRepository
                     wrapBooks.Children.Add(new BookFrame(item, (sender, e) =>
                     {
                         int vote;
-                        var bookFound = from t in userVotes where t.Content.ISBN == item.ISBN select t;
-                        if (bookFound.Count<Vote<Book>>() == 0)
+                        var bookFound = from t in userVotes where t.Book.ISBN == item.ISBN select t;
+                        if (bookFound.Count<Vote>() == 0)
                             vote = -1;
                         else
                             vote = bookFound.ElementAt(0).Rating;
@@ -68,14 +68,14 @@ namespace BookRepository
                         if (bookWindow.DialogResult == true)
                         {
                             if (bookWindow.Vote == -1) return;
-                            if (bookFound.Count<Vote<Book>>() != 0)
+                            if (bookFound.Count<Vote>() != 0)
                             {
                                 userVotes.Remove(bookFound.ElementAt(0));
-                                userVotes.Add(new Vote<Book>() { Content = item, Rating = bookWindow.Vote });
+                                userVotes.Add(new Vote() { Book = item, Rating = bookWindow.Vote });
                             }
                             else
                             {
-                                userVotes.Add(new Vote<Book>() { Content = item, Rating = bookWindow.Vote });
+                                userVotes.Add(new Vote() { Book = item, Rating = bookWindow.Vote });
                             }
                             
                             lblVoteInfoNumber.Content = 10 - userVotes.Count;

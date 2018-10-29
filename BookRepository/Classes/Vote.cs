@@ -6,9 +6,16 @@ using System.Threading.Tasks;
 
 namespace BookRepository
 {
-    public class Vote<T>
+    public class Vote
     {
-        public T Content { get; set; }
+        public User User { get; set; }
+        public Book Book { get; set; }
         public int Rating { get; set; }
+
+        public Vote()
+        {
+            User = new User();
+            Book = new Book();
+        }
     }
 }

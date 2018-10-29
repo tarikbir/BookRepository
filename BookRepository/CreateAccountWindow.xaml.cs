@@ -17,12 +17,12 @@ namespace BookRepository
 {
     public partial class CreateAccountWindow : Window
     {
-        List<Vote<Book>> userVotes;
+        List<Vote> userVotes;
 
         public CreateAccountWindow()
         {
             InitializeComponent();
-            userVotes = new List<Vote<Book>>();
+            userVotes = new List<Vote>();
         }
 
         private void btnRegister_Click(object sender, RoutedEventArgs e)
@@ -56,7 +56,7 @@ namespace BookRepository
                 {
                     foreach (var item in userVotes)
                     {
-                        SqlHandler.AddVote(register.Content.ToString(), item.Content.ISBN, item.Rating);
+                        SqlHandler.AddVote(register.Content.ToString(), item.Book.ISBN, item.Rating);
                     }
                 }
                 else
