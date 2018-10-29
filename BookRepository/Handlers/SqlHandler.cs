@@ -740,9 +740,9 @@ namespace BookRepository
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
                 MySqlCommand mySqlCommandAddBook = new MySqlCommand(queryAddNewBook, conn);
-                mySqlCommandAddBook.Parameters.AddWithValue("@ISBN ", book.ISBN);
-                mySqlCommandAddBook.Parameters.AddWithValue("@BookTitle ", book.BookTitle);
-                mySqlCommandAddBook.Parameters.AddWithValue("@BookAuthor ", book.BookAuthor);
+                mySqlCommandAddBook.Parameters.AddWithValue("@ISBN", book.ISBN);
+                mySqlCommandAddBook.Parameters.AddWithValue("@BookTitle", book.BookTitle);
+                mySqlCommandAddBook.Parameters.AddWithValue("@BookAuthor", book.BookAuthor);
                 mySqlCommandAddBook.Parameters.AddWithValue("@YearOfPublication", book.YearOfPublication);
                 mySqlCommandAddBook.Parameters.AddWithValue("@Publisher", book.Publisher);
                 mySqlCommandAddBook.Parameters.AddWithValue("@ImageURI_S", book.ImageURI_S);
