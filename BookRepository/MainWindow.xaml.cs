@@ -25,7 +25,8 @@ namespace BookRepository
         public MainWindow()
         {
             InitializeComponent();
-            
+            Recommender.Recommend(new User() { Location = "denver,utah,usa", Age = 19, UserID = 1, IsAdmin = true, Username = "admin" });
+            /*
             CommonLibrary.MinBookToCountVote = 15;
             bgwNews = new BackgroundWorker();
             bgwPopular = new BackgroundWorker();
@@ -51,7 +52,7 @@ namespace BookRepository
                 bgwHighRated.RunWorkerAsync();
                 bgwRecommended.RunWorkerAsync();
             }
-            else this.Close();
+            else this.Close();*/
         }
 
         private void InitializeBackgroundWorkers()

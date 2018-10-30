@@ -17,13 +17,25 @@ namespace BookRepository
             fullBookList = SqlHandler.GetAllBooks().Content;
             fullVoteList = SqlHandler.GetAllVotes().Content;
             fullUserList = SqlHandler.GetAllDataUsers().Content;
-            int[,] bigArray = new int[300000,300000];
-            var bigData = from v in fullVoteList join b in fullBookList on v.Book.ISBN equals b.ISBN join u in fullUserList on v.User.UserID equals u.UserID select new { Book = b, User = u, Vote = v.Rating };
-
-            foreach (var item in bigData)
+            var voteQuery = from v in fullVoteList group v by v.Book.ISBN into grp where grp.Count() > 50 select grp;
+            var userQuery = from u in fullUserList where (u.Location.Contains(user.Location.Split(',').ElementAt(2)) && user.Age >= u.Age-3 && user.Age <= u.Age+3) select u;
+            
+            foreach (var item in userQuery)
             {
-                
+                if (user.UserID != item.UserID)
+                {
+                    var userVoteQuery = from c in voteQuery select (from innerC in c where item.UserID == innerC.User.UserID select innerC);
+                    foreach (var item2 in userVoteQuery)
+                    {
+                        var b = item2;
+                    }
+                }
             }
+            /*
+            foreach (IGrouping<string,Vote> item in voteQuery)
+            {
+                var b = item.ElementAt(0).Book.ISBN;
+            }*/
         }
     }
 }
