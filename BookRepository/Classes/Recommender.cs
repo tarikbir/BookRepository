@@ -8,34 +8,63 @@ namespace BookRepository
 {
     public static class Recommender
     {
-        private static List<Book> fullBookList;
         private static List<Vote> fullVoteList;
         private static List<User> fullUserList;
 
-        public static void Recommend(User user)
+        public static List<string> Recommend(User user)
         {
-            fullBookList = SqlHandler.GetAllBooks().Content;
+            if (user.Age == null || user.Age == 0) return null;
+            string[] location = user.Location.Split(',');
+            string country = location[2];
+            string state = location[1];
+            string city = location[0];
             fullVoteList = SqlHandler.GetAllVotes().Content;
             fullUserList = SqlHandler.GetAllDataUsers().Content;
-            var voteQuery = from v in fullVoteList group v by v.Book.ISBN into grp where grp.Count() > 50 select grp;
-            var userQuery = from u in fullUserList where (u.Location.Contains(user.Location.Split(',').ElementAt(2)) && user.Age >= u.Age-3 && user.Age <= u.Age+3) select u;
-            
-            foreach (var item in userQuery)
+            var popularBookVotesQuery = from v in fullVoteList group v by v.Book.ISBN into grp where grp.Count() > 50 select grp;
+            var userBookVotesQuery = from v in fullVoteList where user.UserID == v.User.UserID select v;
+            var popularBookVotes = popularBookVotesQuery.SelectMany(group => group);
+            var similiarUsers = from u in fullUserList where (u.Location.Contains(state) && u.Location.Contains(country) && user.Age >= u.Age-3 && user.Age <= u.Age+3) select u;
+
+            List<KeyValuePair<string,double>> neighbours = new List<KeyValuePair<string, double>>();
+            var userBookVotes = new List<Vote>(userBookVotesQuery);
+            foreach (var item in similiarUsers)
             {
                 if (user.UserID != item.UserID)
                 {
-                    var userVoteQuery = from c in voteQuery select (from innerC in c where item.UserID == innerC.User.UserID select innerC);
-                    foreach (var item2 in userVoteQuery)
-                    {
-                        var b = item2;
-                    }
+                    var neighbourVotes = from v in popularBookVotes where v.User.UserID == item.UserID select v;
+                    if (neighbourVotes.Count() <= 0) continue;
+                    var n = NeighbouringMethod(userBookVotes, new List<Vote>(neighbourVotes));
+                    neighbours.Add(new KeyValuePair<string, double>(item.UserID.ToString(), n));
                 }
             }
-            /*
-            foreach (IGrouping<string,Vote> item in voteQuery)
+            neighbours.Sort((x, y) => x.Value.CompareTo(y.Value));
+            var test = from n in neighbours select n.Key;
+
+            return new List<string>(test);
+        }
+
+        private static double NeighbouringMethod(List<Vote> userVotes, List<Vote> neighbourVotes)
+        {
+            double result = Double.MaxValue;
+            var sharedLikes = from u in userVotes from n in neighbourVotes where u.Book.ISBN == n.Book.ISBN select n;
+            if (sharedLikes.Count() <= 0) return result;
+            result = 0.0;
+            foreach (var item in sharedLikes)
             {
-                var b = item.ElementAt(0).Book.ISBN;
-            }*/
+                var userVoteQuery = from u in userVotes where u.Book.ISBN == item.Book.ISBN select u;
+                Vote userVote = userVoteQuery.FirstOrDefault();
+                result += VotePow(userVote, item);
+            }
+            result = Math.Sqrt(result) / sharedLikes.Count();
+            return result;
+        }
+
+        private static double VotePow(Vote user, Vote neighbour)
+        {
+            if (user == null || neighbour == null) return 0.0;
+            int u = user.Rating, n = neighbour.Rating;
+            double result = Math.Pow((n - u), 2);
+            return result;
         }
     }
 }

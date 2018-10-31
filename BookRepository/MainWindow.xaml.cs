@@ -25,7 +25,7 @@ namespace BookRepository
         public MainWindow()
         {
             InitializeComponent();
-            Recommender.Recommend(new User() { Location = "denver,utah,usa", Age = 19, UserID = 1, IsAdmin = true, Username = "admin" });
+            Recommender.Recommend(new User() { Location = "denver,utah,usa", Age = 20, UserID = 11676, IsAdmin = true, Username = "kevin" });
             /*
             CommonLibrary.MinBookToCountVote = 15;
             bgwNews = new BackgroundWorker();
@@ -188,7 +188,7 @@ namespace BookRepository
             fullBookListWindow.Show();
         }
 
-        private void btnGetSuggestion(object sender, RoutedEventArgs e)
+        private void btnSuggestionAll_Click(object sender, RoutedEventArgs e)
         {
             RecommendationPage recommendationPageWindow = new RecommendationPage();
             recommendationPageWindow.Show();

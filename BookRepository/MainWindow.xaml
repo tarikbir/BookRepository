@@ -94,7 +94,11 @@
                     <DropShadowEffect ShadowDepth="1"/>
                 </Button.Effect>
             </Button>
-            <Button x:Name="btnGetSuggestion" Content="Suggestion for you" FontFamily="MS Gothic" FontSize="22" HorizontalAlignment="Center" Height="30" Margin="809,10,358.2,0" VerticalAlignment="Top" Width="200" TabIndex="2" Click="btnGetSuggestio_Click" Grid.ColumnSpan="2" />
+            <Button x:Name="btnSuggestionAll" Content="Suggestions" FontFamily="MS Gothic" FontSize="22" HorizontalAlignment="Center" Margin="804,10,363.2,0" VerticalAlignment="Top" Width="200" Height="30" TabIndex="2" Click="btnSuggestionAll_Click" Grid.ColumnSpan="2">
+                <Button.Effect>
+                    <DropShadowEffect ShadowDepth="1"/>
+                </Button.Effect>
+            </Button>
         </Grid>
     </ScrollViewer>
 </Window>

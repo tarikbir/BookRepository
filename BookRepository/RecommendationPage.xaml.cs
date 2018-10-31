@@ -14,14 +14,12 @@ using System.Windows.Shapes;
 
 namespace BookRepository
 {
-    /// <summary>
-    /// RecommendationPage.xaml etkileşim mantığı
-    /// </summary>
     public partial class RecommendationPage : Window
     {
         public RecommendationPage()
         {
             InitializeComponent();
+
         }
     }
 }
