@@ -90,6 +90,9 @@
     <Compile Include="Classes\Recommender.cs" />
     <Compile Include="Classes\User.cs" />
     <Compile Include="Classes\Vote.cs" />
+    <Compile Include="RecommendationPage.xaml.cs">
+      <DependentUpon>RecommendationPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Response\GenericResponse.cs" />
     <Compile Include="Response\BaseResponse.cs" />
     <Page Include="AdminPanel\AdminPanel.xaml">
@@ -151,6 +154,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="RecommendationPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

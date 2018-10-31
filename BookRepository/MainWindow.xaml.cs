@@ -187,5 +187,11 @@ namespace BookRepository
             FullBookListWindow fullBookListWindow = new FullBookListWindow();
             fullBookListWindow.Show();
         }
+
+        private void btnGetSuggestion(object sender, RoutedEventArgs e)
+        {
+            RecommendationPage recommendationPageWindow = new RecommendationPage();
+            recommendationPageWindow.Show();
+        }
     }
 }
