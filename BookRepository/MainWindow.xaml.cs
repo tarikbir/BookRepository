@@ -20,18 +20,14 @@ namespace BookRepository
         private BackgroundWorker bgwNews;
         private BackgroundWorker bgwPopular;
         private BackgroundWorker bgwHighRated;
-        private BackgroundWorker bgwRecommended;
 
         public MainWindow()
         {
             InitializeComponent();
-            Recommender.Recommend(new User() { Location = "denver,utah,usa", Age = 20, UserID = 11676, IsAdmin = true, Username = "kevin" });
-            /*
             CommonLibrary.MinBookToCountVote = 15;
             bgwNews = new BackgroundWorker();
             bgwPopular = new BackgroundWorker();
             bgwHighRated = new BackgroundWorker();
-            bgwRecommended = new BackgroundWorker();
             LoginWindow loginWindow = new LoginWindow();
 
             if (!CheckConnection()) this.Close();
@@ -50,9 +46,8 @@ namespace BookRepository
                 bgwNews.RunWorkerAsync();
                 bgwPopular.RunWorkerAsync();
                 bgwHighRated.RunWorkerAsync();
-                bgwRecommended.RunWorkerAsync();
             }
-            else this.Close();*/
+            else this.Close();
         }
 
         private void InitializeBackgroundWorkers()
@@ -60,11 +55,9 @@ namespace BookRepository
             bgwNews.DoWork += new DoWorkEventHandler(bgwNews_DoWork);
             bgwPopular.DoWork += new DoWorkEventHandler(bgwPopular_DoWork);
             bgwHighRated.DoWork += new DoWorkEventHandler(bgwHighRated_DoWork);
-            bgwRecommended.DoWork += new DoWorkEventHandler(bgwRecommended_DoWork);
             bgwNews.WorkerSupportsCancellation = true;
             bgwPopular.WorkerSupportsCancellation = true;
             bgwHighRated.WorkerSupportsCancellation = true;
-            bgwRecommended.WorkerSupportsCancellation = true;
         }
 
         private void Refresh()
@@ -72,24 +65,18 @@ namespace BookRepository
             bgwNews.CancelAsync();
             bgwPopular.CancelAsync();
             bgwHighRated.CancelAsync();
-            bgwRecommended.CancelAsync();
             bgwNews.Dispose();
             bgwPopular.Dispose();
             bgwHighRated.Dispose();
-            bgwRecommended.Dispose();
             bgwNews = new BackgroundWorker();
             bgwPopular = new BackgroundWorker();
             bgwHighRated = new BackgroundWorker();
-            bgwRecommended = new BackgroundWorker();
             wrapNews.Children.Clear();
             wrapPopular.Children.Clear();
             wrapHighRated.Children.Clear();
-            wrapRecommended.Children.Clear();
-            InitializeBackgroundWorkers();
             bgwNews.RunWorkerAsync();
             bgwPopular.RunWorkerAsync();
             bgwHighRated.RunWorkerAsync();
-            bgwRecommended.RunWorkerAsync();
         }
 
         private void bgwNews_DoWork(object sender, DoWorkEventArgs e)
@@ -149,21 +136,6 @@ namespace BookRepository
             });
         }
 
-        private void bgwRecommended_DoWork(object sender, DoWorkEventArgs e)
-        {
-            // User-Based Collaborative Filtering Algorithm
-            List<string> list = new List<string>() { "000104799X", "0001046713", "0001046934", "0001047663", "000104799X", "0001061127", "0001053736" };
-            this.Dispatcher.Invoke(() =>
-            {
-                foreach (string item in list)
-                {
-                    Book book = SqlHandler.GetBook(item).Content;
-                    if (book != null)
-                        wrapRecommended.Children.Add(new BookFrame(book));
-                }
-            });
-        }
-
         private bool CheckConnection()
         {
             while (!SqlHandler.IsConnected())
@@ -190,8 +162,10 @@ namespace BookRepository
 
         private void btnSuggestionAll_Click(object sender, RoutedEventArgs e)
         {
-            RecommendationPage recommendationPageWindow = new RecommendationPage();
-            recommendationPageWindow.Show();
+            Recommender rec = new Recommender();
+            var waitthisorillkillyourfamily = rec.Recommend(CommonLibrary.LoggedInUser);
+            RecommendationPage recommendationPageWindow = new RecommendationPage(waitthisorillkillyourfamily);
+            recommendationPageWindow.ShowDialog();
         }
     }
 }

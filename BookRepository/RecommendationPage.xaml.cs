@@ -16,10 +16,46 @@ namespace BookRepository
 {
     public partial class RecommendationPage : Window
     {
+        List<Book> bookList;
+
         public RecommendationPage()
         {
             InitializeComponent();
+        }
 
+        public RecommendationPage(List<string> books)
+        {
+            bookList = new List<Book>();
+            foreach (var item in books)
+            {
+                var bookResponse = SqlHandler.GetBook(item);
+                if (bookResponse.Success)
+                    bookList.Add(bookResponse.Content);
+            }
+
+            foreach (var item in bookList)
+            {
+                AddBookToWrap(item);
+            }
+
+            if (bookList.Count < 10)
+            {
+                var popularListResponse = SqlHandler.GetPopularList();
+                if (popularListResponse.Success)
+                    foreach (var item in popularListResponse.Content)
+                    {
+                        AddBookToWrap(item);
+                    }
+            }
+        }
+
+        private void AddBookToWrap(Book item)
+        {
+            if (item != null) wrapRecommendedBooks.Children.Add(new BookFrame(item));
+        }
+
+        private void RecommendationWindow_Loaded(object sender, RoutedEventArgs e)
+        {
         }
     }
 }
