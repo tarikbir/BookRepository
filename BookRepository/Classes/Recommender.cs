@@ -21,12 +21,12 @@ namespace BookRepository
             fullVoteList = SqlHandler.GetAllVotes().Content;
             fullUserList = SqlHandler.GetAllDataUsers().Content;
             var popularBookVotesQuery = from v in fullVoteList group v by v.Book.ISBN into grp where grp.Count() > 50 select grp;
+            var popularBookVotes = popularBookVotesQuery.SelectMany(group => group).Where((x) => x.Rating < 5);
             var userBookVotesQuery = from v in fullVoteList where user.UserID == v.User.UserID select v;
-            var popularBookVotes = popularBookVotesQuery.SelectMany(group => group);
+            var userBookVotes = new List<Vote>(userBookVotesQuery);
             var similiarUsers = from u in fullUserList where (u.Location.Contains(state) && u.Location.Contains(country) && user.Age >= u.Age-3 && user.Age <= u.Age+3) select u;
 
             List<KeyValuePair<string,double>> neighbours = new List<KeyValuePair<string, double>>();
-            var userBookVotes = new List<Vote>(userBookVotesQuery);
             foreach (var item in similiarUsers)
             {
                 if (user.UserID != item.UserID)
@@ -38,9 +38,21 @@ namespace BookRepository
                 }
             }
             neighbours.Sort((x, y) => x.Value.CompareTo(y.Value));
-            var test = from n in neighbours select n.Key;
+            List<string> booksToRecommend = new List<string>();
+            if (neighbours.Count() <= 0) return null;
+            foreach (var item in neighbours.Take(6))
+            {
+                var neighbourVotes = from v in popularBookVotes where item.Key == v.User.UserID.ToString() select v;
+                foreach (var vote in neighbourVotes)
+                {
+                    if (vote.Rating > 7 && !booksToRecommend.Contains(vote.Book.ISBN))
+                    {
+                        booksToRecommend.Add(vote.Book.ISBN);
+                    }
+                }
+            }
 
-            return new List<string>(test);
+            return booksToRecommend;
         }
 
         private static double NeighbouringMethod(List<Vote> userVotes, List<Vote> neighbourVotes)
