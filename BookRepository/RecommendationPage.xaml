@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BookRepository"
         mc:Ignorable="d"
-        Title="RecommendationPage" Height="450" Width="800" Loaded="RecommendationWindow_Loaded">
+        Title="Suggest Me!" Height="450" Width="800">
     <ScrollViewer x:Name="mainScrollBar" CanContentScroll="True" VerticalScrollBarVisibility="Visible">
         <Grid>
             <Grid.Background>
@@ -15,6 +15,8 @@
                 </LinearGradientBrush>
             </Grid.Background>
             <WrapPanel x:Name="wrapRecommendedBooks" Margin="25,40,25,25"/>
+            <Label x:Name="lbInfo" Content="Loading recommendations. This could take some time..." HorizontalAlignment="Left" Margin="2,2,0,0" VerticalAlignment="Top"/>
+            <ProgressBar x:Name="pbBgw" HorizontalAlignment="Center" Height="20" Margin="0,0,0,0" VerticalAlignment="Bottom" Width="700"/>
         </Grid>
     </ScrollViewer>
 </Window>

@@ -149,7 +149,7 @@ namespace BookRepository
             return true;
         }
 
-        private void btnSettings_Click(object sender, RoutedEventArgs e)
+        private void btnRefresh_Click(object sender, RoutedEventArgs e)
         {
             Refresh();
         }
@@ -162,9 +162,7 @@ namespace BookRepository
 
         private void btnSuggestionAll_Click(object sender, RoutedEventArgs e)
         {
-            Recommender rec = new Recommender();
-            var waitthisorillkillyourfamily = rec.Recommend(CommonLibrary.LoggedInUser);
-            RecommendationPage recommendationPageWindow = new RecommendationPage(waitthisorillkillyourfamily);
+            RecommendationPage recommendationPageWindow = new RecommendationPage();
             recommendationPageWindow.ShowDialog();
         }
     }

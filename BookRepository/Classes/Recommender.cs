@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace BookRepository
 {
-    public class Recommender
+    public static class Recommender
     {
-        private List<Vote> fullVoteList;
-        private List<User> fullUserList;
+        private static List<Vote> fullVoteList;
+        private static List<User> fullUserList;
 
-        public List<string> Recommend(User user)
+        public static List<string> Recommend(User user)
         {
             if (user.Age == null || user.Age == 0) return null;
             string[] location = user.Location.Split(',');
@@ -27,8 +27,9 @@ namespace BookRepository
             var similiarUsers = from u in fullUserList where (u.Location.Contains(state) && u.Location.Contains(country) && user.Age >= u.Age-3 && user.Age <= u.Age+3) select u;
 
             List<KeyValuePair<string,double>> neighbours = new List<KeyValuePair<string, double>>();
-            foreach (var item in similiarUsers)
+            for (int i = 0; i< similiarUsers.Count(); i++)
             {
+                var item = similiarUsers.ElementAt(i);
                 if (user.UserID != item.UserID)
                 {
                     var neighbourVotes = from v in popularBookVotes where v.User.UserID == item.UserID select v;
@@ -56,7 +57,7 @@ namespace BookRepository
             return booksToRecommend;
         }
 
-        private double NeighbouringMethod(List<Vote> userVotes, List<Vote> neighbourVotes)
+        private static double NeighbouringMethod(List<Vote> userVotes, List<Vote> neighbourVotes)
         {
             double result = Double.MaxValue;
             var sharedLikes = from u in userVotes from n in neighbourVotes where u.Book.ISBN == n.Book.ISBN select n;
@@ -72,7 +73,7 @@ namespace BookRepository
             return result;
         }
 
-        private double VotePow(Vote user, Vote neighbour)
+        private static double VotePow(Vote user, Vote neighbour)
         {
             if (user == null || neighbour == null) return 0.0;
             int u = user.Rating, n = neighbour.Rating;

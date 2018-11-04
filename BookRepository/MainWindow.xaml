@@ -64,18 +64,17 @@
                     <DropShadowEffect Opacity="0.6" ShadowDepth="0"/>
                 </Label.Effect>
             </Label>
-            <Button x:Name="btnSettings" HorizontalAlignment="Right" Margin="0,10,10.2,0" VerticalAlignment="Top" Width="35" Height="35" ToolTip="Refresh" Click="btnSettings_Click" Grid.Column="1">
-                <Image Source="pack://siteoforigin:,,,/Resources/Gear.png" Stretch="Fill"/>
+            <Button x:Name="btnShowAll" Content="Search Books" FontFamily="MS Gothic" FontSize="20" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top" Width="200" Height="30" TabIndex="1" Click="btnShowAll_Click">
                 <Button.Effect>
                     <DropShadowEffect ShadowDepth="1"/>
                 </Button.Effect>
             </Button>
-            <Button x:Name="btnShowAll" Content="Search Books" FontFamily="MS Gothic" FontSize="22" HorizontalAlignment="Center" Margin="584,10,103.2,0" VerticalAlignment="Top" Width="200" Height="30" TabIndex="1" Click="btnShowAll_Click">
+            <Button x:Name="btnRefresh" Content="Refresh" FontFamily="MS Gothic" FontSize="20" HorizontalAlignment="Center" Margin="300,10,0,0" VerticalAlignment="Top" Width="90" Height="30" ToolTip="Refresh" TabIndex="2" Click="btnRefresh_Click">
                 <Button.Effect>
                     <DropShadowEffect ShadowDepth="1"/>
                 </Button.Effect>
             </Button>
-            <Button x:Name="btnSuggestionAll" Content="Suggest Me!" FontFamily="MS Gothic" FontSize="22" HorizontalAlignment="Center" Margin="0,665,0,0" VerticalAlignment="Top" Width="200" Height="30" TabIndex="2" Click="btnSuggestionAll_Click">
+            <Button x:Name="btnSuggestionAll" Content="Suggest Me!" FontFamily="MS Gothic" FontSize="20" HorizontalAlignment="Center" Margin="0,665,0,0" VerticalAlignment="Top" Width="200" Height="30" TabIndex="3" Click="btnSuggestionAll_Click">
                 <Button.Effect>
                     <DropShadowEffect ShadowDepth="1"/>
                 </Button.Effect>
