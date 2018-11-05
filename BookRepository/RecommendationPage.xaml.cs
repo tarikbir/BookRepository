@@ -39,23 +39,24 @@ namespace BookRepository
 
         private void bgwRecommender_DoWork(object sender, DoWorkEventArgs e)
         {
-            int bookTotal = 0;
-            var books = Recommender.Recommend(CommonLibrary.LoggedInUser);
-            bookTotal = books.Count();
-
+            int bookTotal = 0, progress = 1;
             bookList = new List<Book>();
-            foreach (var item in books)
-            {
-                var bookResponse = SqlHandler.GetBook(item);
-                if (bookResponse.Success)
-                    bookList.Add(bookResponse.Content);
-            }
+            var books = Recommender.Recommend(CommonLibrary.LoggedInUser);
 
-            int progress = 1;
+            if (books != null) {
+                bookTotal = books.Count();
 
-            foreach (var item in bookList)
-            {
-                bgwRecommender.ReportProgress(80 * progress++ / bookTotal, item);
+                foreach (var item in books)
+                {
+                    var bookResponse = SqlHandler.GetBook(item);
+                    if (bookResponse.Success)
+                        bookList.Add(bookResponse.Content);
+                }
+
+                foreach (var item in bookList)
+                {
+                    bgwRecommender.ReportProgress(80 * progress++ / bookTotal, item);
+                }
             }
 
             progress = 1;

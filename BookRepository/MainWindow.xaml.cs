@@ -13,6 +13,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
+//160202103 Tarık Bir
+//150202040 Yasin Emir KUTLU
+
 namespace BookRepository
 {
     public partial class MainWindow : Window
